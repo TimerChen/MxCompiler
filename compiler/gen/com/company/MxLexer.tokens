@@ -1,0 +1,10 @@
+Constant=1
+Expr=2
+EmptySegment=3
+FullSegment=4
+Segment=5
+Line=6
+Whitespace=7
+Newline=8
+BlockComment=9
+LineComment=10
