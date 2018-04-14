@@ -1,51 +1,19 @@
 lexer grammar Mx_Lex;
 
 
-Auto : 'auto';
 Break : 'break';
-Case : 'case';
-Char : 'char';
-Constant : 'const';
 Continue : 'continue';
-Default : 'default';
-Do : 'do';
-Double : 'double';
 Else : 'else';
-Enum : 'enum';
-Extern : 'extern';
-Float : 'float';
 For : 'for';
-Goto : 'goto';
 If : 'if';
-Inline : 'inline';
 Int : 'int';
-Long : 'long';
-Register : 'register';
-Restrict : 'restrict';
 Return : 'return';
-Short : 'short';
-Signed : 'signed';
-Sizeof : 'sizeof';
-Static : 'static';
 Struct : 'struct';
-Switch : 'switch';
-Typedef : 'typedef';
-Union : 'union';
 Unsigned : 'unsigned';
 Void : 'void';
-Volatile : 'volatile';
 While : 'while';
+Class : 'class';
 
-Alignas : '_Alignas';
-Alignof : '_Alignof';
-Atomic : '_Atomic';
-Bool : '_Bool';
-Complex : '_Complex';
-Generic : '_Generic';
-Imaginary : '_Imaginary';
-Noreturn : '_Noreturn';
-StaticAssert : '_Static_assert';
-ThreadLocal : '_Thread_local';
 
 LeftParen : '(';
 RightParen : ')';
@@ -113,29 +81,38 @@ Nondigit
     ;
 
 fragment
-NonzeroDigit
-    :   [1-9]
-    ;
-fragment
 Digit
     :   [0-9]
     ;
 
 Const
 	:	IntConst
+	|	CharacterConstant
 	;
 fragment
 IntConst
-	:	Sign? NonzeroDigit Digit*
+	:	NonzeroDigit Digit*
 	;
 
+fragment
+NonzeroDigit
+    :   [1-9]
+    ;
 fragment
 Sign
     :   '+' | '-'
     ;
-StringLiteral
-   :   '"' SCharSequence? '"'
-   ;
+
+DigitSequence
+    :   Digit+
+    ;
+
+
+fragment
+CharacterConstant
+    :   '\'' CCharSequence '\''
+    ;
+
 fragment
 CCharSequence
     :   CChar+
@@ -146,7 +123,6 @@ CChar
     :   ~['\\\r\n]
     |   EscapeSequence
     ;
-
 fragment
 EscapeSequence
 	:	SimpleEscapeSequence
@@ -155,6 +131,10 @@ fragment
 SimpleEscapeSequence
    :   '\\' ['"?abfnrtv\\]
    ;
+StringLiteral
+   :   '"' SCharSequence? '"'
+   ;
+fragment
 SCharSequence
 	:
 	SChar+
