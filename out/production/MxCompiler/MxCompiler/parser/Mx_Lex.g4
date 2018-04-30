@@ -85,18 +85,29 @@ Digit
     ;
 
 Const
-	:	IntConst
+	:	BoolConst
+	|	IntConst
 	|	CharacterConstant
+	;
+fragment
+BoolConst
+	:	True
+	|	False
 	;
 fragment
 IntConst
 	:	NonzeroDigit Digit*
+	|	ZeroDigit
 	;
 
 fragment
 NonzeroDigit
     :   [1-9]
     ;
+fragment
+ZeroDigit
+	:	[0]
+	;
 fragment
 Sign
     :   '+' | '-'

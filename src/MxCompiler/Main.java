@@ -26,6 +26,7 @@ public class Main
 		try
 		{
 			MxC.compile();
+			Debuger.printInfo("Info", "Success compile.");
 		}catch (RuntimeException error){
 			Debuger.printInfo("Error", error.toString());
 			System.exit(1);

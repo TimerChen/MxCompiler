@@ -85,8 +85,14 @@ Digit
     ;
 
 Const
-	:	IntConst
+	:	BoolConst
+	|	IntConst
 	|	CharacterConstant
+	;
+fragment
+BoolConst
+	:	True
+	|	False
 	;
 fragment
 IntConst

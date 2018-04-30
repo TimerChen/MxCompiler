@@ -8,17 +8,55 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface MxListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by the {@code constIntExpr}
-	 * labeled alternative in {@link MxParser#expr}.
+	 * Enter a parse tree produced by {@link MxParser#compilationUnit}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstIntExpr(MxParser.ConstIntExprContext ctx);
+	void enterCompilationUnit(MxParser.CompilationUnitContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code constIntExpr}
-	 * labeled alternative in {@link MxParser#expr}.
+	 * Exit a parse tree produced by {@link MxParser#compilationUnit}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstIntExpr(MxParser.ConstIntExprContext ctx);
+	void exitCompilationUnit(MxParser.CompilationUnitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxParser#externalDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterExternalDeclaration(MxParser.ExternalDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxParser#externalDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitExternalDeclaration(MxParser.ExternalDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxParser#classDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassDefinition(MxParser.ClassDefinitionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxParser#classDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassDefinition(MxParser.ClassDefinitionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxParser#functionDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDefinition(MxParser.FunctionDefinitionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxParser#functionDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDefinition(MxParser.FunctionDefinitionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxParser#constructedfunctionDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstructedfunctionDefinition(MxParser.ConstructedfunctionDefinitionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxParser#constructedfunctionDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstructedfunctionDefinition(MxParser.ConstructedfunctionDefinitionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link MxParser#expr}.
@@ -32,18 +70,6 @@ public interface MxListener extends ParseTreeListener {
 	 */
 	void exitNewExpr(MxParser.NewExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code variableExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableExpr(MxParser.VariableExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code variableExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableExpr(MxParser.VariableExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code thisExpr}
 	 * labeled alternative in {@link MxParser#expr}.
 	 * @param ctx the parse tree
@@ -56,30 +82,6 @@ public interface MxListener extends ParseTreeListener {
 	 */
 	void exitThisExpr(MxParser.ThisExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code prefixExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrefixExpr(MxParser.PrefixExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code prefixExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrefixExpr(MxParser.PrefixExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code funcallExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncallExpr(MxParser.FuncallExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code funcallExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncallExpr(MxParser.FuncallExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code suffixExpr}
 	 * labeled alternative in {@link MxParser#expr}.
 	 * @param ctx the parse tree
@@ -91,18 +93,6 @@ public interface MxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSuffixExpr(MxParser.SuffixExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code arefExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterArefExpr(MxParser.ArefExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arefExpr}
-	 * labeled alternative in {@link MxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitArefExpr(MxParser.ArefExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code memberExpr}
 	 * labeled alternative in {@link MxParser#expr}.
@@ -151,6 +141,78 @@ public interface MxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConstStringExpr(MxParser.ConstStringExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code constIntExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstIntExpr(MxParser.ConstIntExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code constIntExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstIntExpr(MxParser.ConstIntExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code variableExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableExpr(MxParser.VariableExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code variableExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableExpr(MxParser.VariableExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code prefixExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrefixExpr(MxParser.PrefixExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code prefixExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrefixExpr(MxParser.PrefixExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code funcallExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncallExpr(MxParser.FuncallExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code funcallExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncallExpr(MxParser.FuncallExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code constBoolExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstBoolExpr(MxParser.ConstBoolExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code constBoolExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstBoolExpr(MxParser.ConstBoolExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arefExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArefExpr(MxParser.ArefExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arefExpr}
+	 * labeled alternative in {@link MxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArefExpr(MxParser.ArefExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxParser#creator}.
 	 * @param ctx the parse tree
@@ -437,54 +499,4 @@ public interface MxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitJumpStatement(MxParser.JumpStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxParser#compilationUnit}.
-	 * @param ctx the parse tree
-	 */
-	void enterCompilationUnit(MxParser.CompilationUnitContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxParser#compilationUnit}.
-	 * @param ctx the parse tree
-	 */
-	void exitCompilationUnit(MxParser.CompilationUnitContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxParser#externalDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterExternalDeclaration(MxParser.ExternalDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxParser#externalDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitExternalDeclaration(MxParser.ExternalDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxParser#classDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassDefinition(MxParser.ClassDefinitionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxParser#classDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassDefinition(MxParser.ClassDefinitionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxParser#functionDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionDefinition(MxParser.FunctionDefinitionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxParser#functionDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionDefinition(MxParser.FunctionDefinitionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxParser#constructedfunctionDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void enterConstructedfunctionDefinition(MxParser.ConstructedfunctionDefinitionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxParser#constructedfunctionDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void exitConstructedfunctionDefinition(MxParser.ConstructedfunctionDefinitionContext ctx);
 }

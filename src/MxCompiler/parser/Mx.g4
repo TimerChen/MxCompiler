@@ -2,9 +2,34 @@ grammar Mx;
 
 import Mx_Lex;
 
+compilationUnit
+    :   externalDeclaration* EOF
+    ;
+
+externalDeclaration
+    :	classDefinition
+    |	functionDefinition
+    |   declaration
+    ;
+classDefinition
+	:   'class' className '{' classDeclaration* '}'
+//    |	className '::' constructedfunctionDefinition
+//    |	typeSpecifier className '::' declarator '(' parameterList? ')' compoundStatement
+	;
+functionDefinition
+    :   typeSpecifier declarator '(' parameterList? ')' compoundStatement
+    ;
+
+constructedfunctionDefinition
+	:	className '(' parameterList? ')' compoundStatement
+	;
+
+
+
 expr
     :   Identifier								#variableExpr
     |	'this'									#thisExpr
+    |	(True|False)							#constBoolExpr
     |   Const									#constIntExpr
     |   StringLiteral+							#constStringExpr
     |	'new' creator							#newExpr
@@ -140,24 +165,3 @@ jumpStatement
     |   'return' expr? ';'
     ;
 
-compilationUnit
-    :   externalDeclaration* EOF
-    ;
-
-externalDeclaration
-    :	classDefinition
-    |	functionDefinition
-    |   declaration
-    ;
-classDefinition
-	:   'class' className '{' classDeclaration* '}'
-//    |	className '::' constructedfunctionDefinition
-//    |	typeSpecifier className '::' declarator '(' parameterList? ')' compoundStatement
-	;
-functionDefinition
-    :   typeSpecifier declarator '(' parameterList? ')' compoundStatement
-    ;
-
-constructedfunctionDefinition
-	:	className '(' parameterList? ')' compoundStatement
-	;
