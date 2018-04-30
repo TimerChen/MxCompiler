@@ -26,10 +26,12 @@ public class Main
 		try
 		{
 			MxC.compile();
-
-		}catch (IOException error)
-		{
-
+		}catch (RuntimeException error){
+			Debuger.printInfo("Error", error.toString());
+			System.exit(1);
+		}catch (IOException error){
+			Debuger.printInfo("Error", error.toString());
+			System.exit(2);
 		}
 	}
 }

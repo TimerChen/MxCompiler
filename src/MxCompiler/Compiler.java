@@ -16,11 +16,11 @@ public class Compiler
 
 
 	}
-	public void compile() throws IOException
+	public void compile() throws IOException, RuntimeException
 	{
 		compile("");
 	}
-	public void compile( String fileName ) throws IOException
+	public void compile( String fileName ) throws IOException, RuntimeException
 	{
 
 		InputStream is;
@@ -40,13 +40,7 @@ public class Compiler
 		parser.removeErrorListeners();
 		parser.addErrorListener(new ParseErrorListener());
 
-		try
-		{
-			tree = parser.compilationUnit();
-		}catch (RuntimeException error){
-			Debuger.printInfo("Error", error.toString());
-			return;
-		}
+		tree = parser.compilationUnit();
 
 		Debuger.printInfo("Output", "");
 		Debuger.print(tree.toStringTree(parser));

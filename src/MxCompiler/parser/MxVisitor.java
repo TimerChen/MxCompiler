@@ -173,12 +173,6 @@ public interface MxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInt(MxParser.IntContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxParser#classSpecifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitClassSpecifier(MxParser.ClassSpecifierContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxParser#classDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

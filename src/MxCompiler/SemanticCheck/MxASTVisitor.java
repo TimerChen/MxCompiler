@@ -185,13 +185,6 @@ public class MxASTVisitor extends MxBaseVisitor
 	}
 
 	@Override
-	public Object visitClassSpecifier(MxParser.ClassSpecifierContext ctx)
-	{
-		Object ret = super.visitClassSpecifier(ctx);
-		return ret;
-	}
-
-	@Override
 	public Object visitClassDeclaration(MxParser.ClassDeclarationContext ctx)
 	{
 		Object ret = super.visitClassDeclaration(ctx);

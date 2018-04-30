@@ -69,9 +69,6 @@ typeSpecifier
     |	typeSpecifier '[' ']'	#array
     ;
 
-classSpecifier
-    :   'class' className '{' classDeclaration* '}'
-    ;
 
 classDeclaration
     :   declaration
@@ -153,7 +150,7 @@ externalDeclaration
     |   declaration
     ;
 classDefinition
-	:	classSpecifier initDeclaratorList? ';'
+	:   'class' className '{' classDeclaration* '}'
 //    |	className '::' constructedfunctionDefinition
 //    |	typeSpecifier className '::' declarator '(' parameterList? ')' compoundStatement
 	;

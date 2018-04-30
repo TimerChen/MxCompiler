@@ -284,16 +284,6 @@ public interface MxListener extends ParseTreeListener {
 	 */
 	void exitInt(MxParser.IntContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxParser#classSpecifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassSpecifier(MxParser.ClassSpecifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxParser#classSpecifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassSpecifier(MxParser.ClassSpecifierContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MxParser#classDeclaration}.
 	 * @param ctx the parse tree
 	 */
