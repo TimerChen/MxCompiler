@@ -9,11 +9,18 @@ package MxCompiler.AST;
 public class WhileNode extends StmtNode
 {
 	private ExprNode condi;
+	private StmtNode body;
 
-	public WhileNode(SourcePosition pos, ExprNode condi)
+	public WhileNode(SourcePosition pos, ExprNode condi, StmtNode body)
 	{
 		super(pos);
 		this.condi = condi;
+		this.body = body;
+	}
+
+	public StmtNode body()
+	{
+		return body;
 	}
 
 	public ExprNode condi()

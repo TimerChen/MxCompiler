@@ -9,9 +9,9 @@ package MxCompiler.AST;
 public class IfNode extends StmtNode
 {
 	private ExprNode Condi;
-	private BlockNode trueBody, falseBody;
+	private StmtNode trueBody, falseBody;
 
-	public IfNode(SourcePosition pos, ExprNode condi, BlockNode trueBody, BlockNode falseBody)
+	public IfNode(SourcePosition pos, ExprNode condi, StmtNode trueBody, StmtNode falseBody)
 	{
 		super(pos);
 		Condi = condi;
@@ -24,12 +24,12 @@ public class IfNode extends StmtNode
 		return Condi;
 	}
 
-	public BlockNode trueBody()
+	public StmtNode trueBody()
 	{
 		return trueBody;
 	}
 
-	public BlockNode falseBody()
+	public StmtNode falseBody()
 	{
 		return falseBody;
 	}

@@ -1,17 +1,17 @@
 package MxCompiler;
 import MxCompiler.*;
+import MxCompiler.AST.BlockNode;
 import MxCompiler.tools.*;
 //import javax.swing.text.html.Option;
 import java.io.IOException;
-
 
 public class Main
 {
 
 	static void preSetting()
 	{
-		//MxCompiler.Options.DEBUG_MODE = true;
 		Debuger.setDebugOptions();
+		//Debuger.setDefaultOptions();
 	}
 
 	static void init()
@@ -21,6 +21,7 @@ public class Main
 
 	public static void main(String[] args) {
 		init();
+
 		MxCompiler.Compiler MxC = new MxCompiler.Compiler();
 
 		try

@@ -1,6 +1,7 @@
 package MxCompiler;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
+import MxCompiler.Type.TypeTable;
 import MxCompiler.tools.Debuger;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -12,7 +13,7 @@ public class Compiler
 {
 	public Compiler()
 	{
-
+		Options.typeTable = new TypeTable();
 
 
 	}

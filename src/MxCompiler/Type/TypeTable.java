@@ -1,5 +1,9 @@
 package MxCompiler.Type;
 
+import MxCompiler.AST.SourcePosition;
+import MxCompiler.Util.SemanticError;
+
+import javax.swing.text.Position;
 import java.util.*;
 
 
@@ -28,13 +32,32 @@ public class TypeTable
 		currentType = null;
 		init();
 	}
-	public Type creatNewType(String name, int size)
+	public Type getType(String name)
+	{
+		return getType(name, 0);
+	}
+	public Type getType(String name, int dim)
+	{
+		Type type;
+		if (typeSet.containsKey(name) == false)
+		{
+			type = new TypeClass(name);
+			typeSet.put(name, type);
+		}else
+			type = typeSet.get(name);
+			//throw new RuntimeException("Create existed type.");
+		for (int i=1;i<=dim;++i)
+			type = type.next();
+		return type;
+	}
+	public void setDefPosition(String name, SourcePosition position)
 	{
 		if (typeSet.containsKey(name))
-			throw new RuntimeException("Create existed type.");
-		TypeClass newType = new TypeClass(name, size);
-		typeSet.put(name, newType);
-		return newType;
+			throw new RuntimeException("Type does not existed.");
+		TypeClass type = (TypeClass)typeSet.get(name);
+		if (type.defPosition != null)
+			throw new SemanticError(position, "Class have been defined.");
+		type.defPosition = position;
 	}
 	/*
 	public Type setCurrentType(String name)

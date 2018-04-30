@@ -14,12 +14,11 @@ public class BinaryOpNode extends ExprNode
 	ExprNode left, right;
 	BinaryOp operator;
 
-	BinaryOpNode(ExprNode left, BinaryOp operator, ExprNode right)
+	public BinaryOpNode(ExprNode left, ExprNode right, BinaryOp operator)
 	{
-		super();
 		this.left = left;
-		this.operator = operator;
 		this.right = right;
+		this.operator = operator;
 	}
 
 	@Override

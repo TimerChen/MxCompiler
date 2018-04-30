@@ -20,7 +20,7 @@ functionDefinition
     :   typeSpecifier declarator '(' parameterList? ')' compoundStatement
     ;
 
-constructedfunctionDefinition
+constructorDefinition
 	:	className '(' parameterList? ')' compoundStatement
 	;
 
@@ -31,7 +31,7 @@ expr
     |	'this'									#thisExpr
     |	(True|False)							#constBoolExpr
     |   Const									#constIntExpr
-    |   StringLiteral+							#constStringExpr
+    |   StringLiteral							#constStringExpr
     |	'new' creator							#newExpr
     |   '(' expr ')'							#subExpr
     |   <assoc=right>
@@ -41,37 +41,35 @@ expr
     |   <assoc=right>
     	expr	'.' Identifier					#memberExpr
     |   <assoc=right>
-        	expr	(	'++'
-        			|	'--')					#prefixExpr
+        	expr	op=(	'++'
+        				|	'--')					#suffixExpr
     |   <assoc=right>
-    	('++' | '--' | unaryOperator) expr		#suffixExpr
-    |	expr ('/' | '*' | '%') expr				#binaryExpr
-    |	expr ('+' | '-' ) expr					#binaryExpr
-    |	expr ('<<' | '>>') expr					#binaryExpr
-    |	expr ('>' | '>=' | '<' | '<=') expr		#binaryExpr
-    |	expr ('==' | '!=') expr					#binaryExpr
-    |	expr '&' expr							#binaryExpr
-    |	expr '^' expr							#binaryExpr
-    |	expr '|' expr							#binaryExpr
-    |	expr '&&' expr							#binaryExpr
-    |	expr '||' expr							#binaryExpr
-    |	expr '|' expr							#binaryExpr
-    |	expr '=' expr							#binaryExpr
-    |	expr ',' expr							#binaryExpr
+    	op=('++' | '--' | '+' | '-' | '~' | '!' )
+    	expr										#prefixExpr
+    |	expr op=('/' | '*' | '%') expr				#binaryExpr
+    |	expr op=('+' | '-' ) expr					#binaryExpr
+    |	expr op=('<<' | '>>') expr					#binaryExpr
+    |	expr op=('>' | '>=' | '<' | '<=') expr		#binaryExpr
+    |	expr op=('==' | '!=') expr					#binaryExpr
+    |	expr op='&' expr							#binaryExpr
+    |	expr op='^' expr							#binaryExpr
+    |	expr op='|' expr							#binaryExpr
+    |	expr op='&&' expr							#binaryExpr
+    |	expr op='||' expr							#binaryExpr
+    |	expr op='|' expr							#binaryExpr
+    |	expr op='=' expr							#binaryExpr
+    //|	expr ',' expr							#binaryExpr
 	;
 creator
 	:	typeSpecifier //'('parameterList?')'
-	| 	typeSpecifier ('['expr']')+('['']')*
+	| 	typeSpecifier ('['expr']')+(arraySpecifier)*
 	;
 argumentExprList
     :   expr
     |   argumentExprList ',' expr
     ;
-unaryOperator
-    :   '&' | '*' | '+' | '-' | '~' | '!'
-    ;
 declaration
-    :   typeSpecifier initDeclaratorList? ';'
+    :   typeSpecifier initDeclaratorList ';'
     ;
 
 
@@ -91,14 +89,14 @@ typeSpecifier
     |   'string'				#string
     |   'int'					#int
     |   className				#class
-    |	typeSpecifier '[' ']'	#array
+    |	typeSpecifier arraySpecifier	#array
     ;
 
 
 classDeclaration
     :   declaration
     |	functionDefinition
-    |	constructedfunctionDefinition
+    |	constructorDefinition
     ;
 
 
@@ -114,7 +112,7 @@ parameterList
     ;
 
 parameterDeclaration
-    :   typeSpecifier declarator?
+    :   typeSpecifier declarator
     ;
 
 statement
@@ -150,18 +148,19 @@ iterationStatement
 
 
 forCondition
-	:   expr? ';' expr? ';' expr?
+	:   forInit=expr? ';' forCondi=expr? ';' forStep=expr?
 //	|	forDeclaration ';' expr? ';' expr?
 	;
-
+/*
 forDeclaration
     :   typeSpecifier initDeclaratorList
     ;
-
+*/
 
 jumpStatement
-    :   'continue' ';'
-    |   'break' ';'
-    |   'return' expr? ';'
+    :   'continue' ';'			#continueStmt
+    |   'break' ';'				#breakStmt
+    |   'return' expr? ';'		#returnStmt
     ;
 
+arraySpecifier : '['']';

@@ -9,14 +9,19 @@ import MxCompiler.Type.Type;
 
 public class VariableNode extends LHSNode
 {
-	VariableEntity entity;
-	SourcePosition position;
+	private String name;
+	private SourcePosition position;
 
-	public VariableNode(Type type, VariableEntity entity, SourcePosition position)
+	public VariableNode(String name, SourcePosition position)
 	{
-		super(type);
-		this.entity = entity;
+		super(null);
+		this.name = name;
 		this.position = position;
+	}
+
+	public String name()
+	{
+		return name;
 	}
 
 	@Override

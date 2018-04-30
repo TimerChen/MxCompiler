@@ -11,13 +11,25 @@ import MxCompiler.Type.Type;
 public class MemberNode extends LHSNode
 {
 	private ExprNode parent;
+	private String name;
 	private SourcePosition position;
 
-	public MemberNode(Type type, ExprNode parent, SourcePosition position)
+	public MemberNode(ExprNode parent, String name, SourcePosition position)
 	{
-		super(type);
+		super(null);
 		this.parent = parent;
+		this.name = name;
 		this.position = position;
+	}
+
+	public ExprNode parent()
+	{
+		return parent;
+	}
+
+	public String name()
+	{
+		return name;
 	}
 
 	@Override

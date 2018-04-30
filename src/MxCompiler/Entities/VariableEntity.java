@@ -17,7 +17,10 @@ public class VariableEntity extends Entity
 		super(name, type, position);
 		this.init = init;
 	}
-
+	public void setType(Type type)
+	{
+		this.type = type;
+	}
 	public ExprNode init()
 	{
 		return init;

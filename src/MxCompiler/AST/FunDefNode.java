@@ -4,12 +4,17 @@ import MxCompiler.Entities.FunctionEntity;
 
 public class FunDefNode extends DefinitionNode
 {
-	FunctionEntity entity;
+	private FunctionEntity entity;
 
 	public FunDefNode(SourcePosition pos, FunctionEntity entity)
 	{
 		super(pos, entity.name());
 		this.entity = entity;
+	}
+
+	public FunctionEntity entity()
+	{
+		return entity;
 	}
 
 	@Override

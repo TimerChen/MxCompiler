@@ -7,6 +7,13 @@ public class FuncallNode extends ExprNode
 {
 	ExprNode function;
 	List<ExprNode> params;
+
+	public FuncallNode(ExprNode function, List<ExprNode> params)
+	{
+		this.function = function;
+		this.params = params;
+	}
+
 	@Override
 	public SourcePosition position()
 	{

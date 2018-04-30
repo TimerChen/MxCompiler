@@ -1,13 +1,23 @@
 package MxCompiler.Type;
 
+import MxCompiler.AST.SourcePosition;
+
 public class TypeClass extends Type
 {
-	String name;
-	TypeClass(String Name, int Size)
+	private String name;
+	public SourcePosition defPosition;
+
+	public TypeClass(String name)
 	{
-		this.name = Name;
-		this.size = Size;
+		this.name = name;
+		this.defPosition = null;
 	}
+
+	public String name()
+	{
+		return name;
+	}
+
 	@Override
 	public String toString()
 	{

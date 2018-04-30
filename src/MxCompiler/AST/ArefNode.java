@@ -10,12 +10,12 @@ import MxCompiler.Type.Type;
 
 public class ArefNode extends LHSNode
 {
-	ExprNode var, index;
+	ExprNode ref, index;
 
-	public ArefNode(ExprNode var, ExprNode index)
+	public ArefNode(ExprNode ref, ExprNode index)
 	{
-		super(var.type().next());
-		this.var = var;
+		super(ref.type().next());
+		this.ref = ref;
 		this.index = index;
 	}
 
@@ -28,6 +28,6 @@ public class ArefNode extends LHSNode
 	@Override
 	public SourcePosition position()
 	{
-		return var.position();
+		return ref.position();
 	}
 }

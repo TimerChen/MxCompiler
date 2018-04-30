@@ -5,8 +5,8 @@ import MxCompiler.Entities.ClassEntity;
 
 public class ClassDefNode extends DefinitionNode
 {
-	ClassEntity entity;
-	ClassDefNode(SourcePosition pos, ClassEntity ent)
+	private ClassEntity entity;
+	public ClassDefNode(SourcePosition pos, ClassEntity ent)
 	{
 		super(ent.position(), ent.name());
 		this.entity = ent;
@@ -14,6 +14,11 @@ public class ClassDefNode extends DefinitionNode
 	public SourcePosition position()
 	{
 		return entity.position();
+	}
+
+	public ClassEntity entity()
+	{
+		return entity;
 	}
 
 	@Override

@@ -2,24 +2,21 @@ package MxCompiler.Entities;
 
 import MxCompiler.AST.FunDefNode;
 import MxCompiler.AST.SourcePosition;
-import MxCompiler.AST.VarDefNode;
+import MxCompiler.AST.VarDecNode;
 import MxCompiler.Type.Type;
 import java.util.*;
 
 public class ClassEntity extends Entity
 {
-	protected SourcePosition position;
-
 	private List<FunDefNode> funList;
-	private List<VarDefNode> varList;
+	private List<VarDecNode> varList;
 	private FunctionEntity constructor;
 	private Scope scope;
 	private int size;
 
-	public ClassEntity(String name, Type type, SourcePosition position, SourcePosition position1, List<FunDefNode> funList, List<VarDefNode> varList, FunctionEntity constructor, Scope scope, int size)
+	public ClassEntity(String name, Type type, SourcePosition position, List<FunDefNode> funList, List<VarDecNode> varList, FunctionEntity constructor, Scope scope, int size)
 	{
 		super(name, type, position);
-		this.position = position1;
 		this.funList = funList;
 		this.varList = varList;
 		this.constructor = constructor;

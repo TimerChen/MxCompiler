@@ -9,9 +9,9 @@ package MxCompiler.AST;
 public class ForNode extends StmtNode
 {
 	private ExprNode init, condi, step;
-	private BlockNode body;
+	private StmtNode body;
 
-	public ForNode(SourcePosition pos, ExprNode init, ExprNode condi, ExprNode step, BlockNode body)
+	public ForNode(SourcePosition pos, ExprNode init, ExprNode condi, ExprNode step, StmtNode body)
 	{
 		super(pos);
 		this.init = init;
@@ -35,7 +35,7 @@ public class ForNode extends StmtNode
 		return step;
 	}
 
-	public BlockNode body()
+	public StmtNode body()
 	{
 		return body;
 	}

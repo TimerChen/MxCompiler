@@ -13,15 +13,27 @@ import java.util.List;
 
 public class CreatorNode extends ExprNode
 {
-	Type type;
-	List<ExprNode> args;
-	SourcePosition position;
+	private SourcePosition position;
+	private Type type;
+	private List<ExprNode> args;
+	private int dim;
 
-	public CreatorNode(Type type, List<ExprNode> args, SourcePosition position)
+	public CreatorNode(SourcePosition position, Type type, List<ExprNode> args, int dim)
 	{
+		this.position = position;
 		this.type = type;
 		this.args = args;
-		this.position = position;
+		this.dim = dim;
+	}
+
+	public List<ExprNode> args()
+	{
+		return args;
+	}
+
+	public int dim()
+	{
+		return dim;
 	}
 
 	@Override

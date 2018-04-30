@@ -7,8 +7,8 @@ abstract public class DefinitionNode extends StmtNode
 	{
 		super(pos);
 		this.name = name;
-
 	}
+
 	public String name()
 	{
 		return name;

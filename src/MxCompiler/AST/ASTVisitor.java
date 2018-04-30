@@ -15,7 +15,7 @@ public interface ASTVisitor<S, E> {
 	S visit(ContinueNode node);
 	S visit(ReturnNode node);
 	// Definitions
-	S visit(VarDefNode node);
+	S visit(VarDecNode node);
 	S visit(FunDefNode node);
 	S visit(ClassDefNode node);
 

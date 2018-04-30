@@ -6,13 +6,13 @@ import java.util.List;
 
 public class FunctionEntity extends Entity
 {
-	private List<Type> args;
+	private List<ParameterEntity> params;
 	private BlockNode body;
 
-	public FunctionEntity(String name, Type type, SourcePosition position, List<Type> args, BlockNode body)
+	public FunctionEntity(String name, Type type, SourcePosition position, List<ParameterEntity> params, BlockNode body)
 	{
 		super(name, type, position);
-		this.args = args;
+		this.params = params;
 		this.body = body;
 	}
 }
