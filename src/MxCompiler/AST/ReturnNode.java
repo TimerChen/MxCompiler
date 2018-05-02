@@ -6,6 +6,8 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.tools.Debuger;
+
 public class ReturnNode extends StmtNode
 {
 	private ExprNode ret;

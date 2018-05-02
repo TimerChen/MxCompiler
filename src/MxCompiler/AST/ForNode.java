@@ -6,18 +6,16 @@
 
 package MxCompiler.AST;
 
-public class ForNode extends StmtNode
+public class ForNode extends LoopNode
 {
 	private ExprNode init, condi, step;
-	private StmtNode body;
 
 	public ForNode(SourcePosition pos, ExprNode init, ExprNode condi, ExprNode step, StmtNode body)
 	{
-		super(pos);
+		super(pos, body);
 		this.init = init;
 		this.condi = condi;
 		this.step = step;
-		this.body = body;
 	}
 
 	public ExprNode init()
@@ -35,10 +33,6 @@ public class ForNode extends StmtNode
 		return step;
 	}
 
-	public StmtNode body()
-	{
-		return body;
-	}
 
 	@Override
 	public <S, E> S accept(ASTVisitor<S, E> visitor)

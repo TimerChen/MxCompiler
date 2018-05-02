@@ -17,6 +17,11 @@ public class VariableEntity extends Entity
 		super(name, type, position);
 		this.init = init;
 	}
+	public VariableEntity(ParameterEntity pe)
+	{
+		super(pe.name, pe.type, pe.position);
+		this.init = null;
+	}
 	public void setType(Type type)
 	{
 		this.type = type;

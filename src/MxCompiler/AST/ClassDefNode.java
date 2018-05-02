@@ -21,6 +21,7 @@ public class ClassDefNode extends DefinitionNode
 		return entity;
 	}
 
+
 	@Override
 	public <S, E> S accept(ASTVisitor<S, E> visitor)
 	{

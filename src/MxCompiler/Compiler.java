@@ -1,4 +1,6 @@
 package MxCompiler;
+import MxCompiler.AST.AssignNode;
+import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
 import MxCompiler.Type.TypeTable;
@@ -21,18 +23,8 @@ public class Compiler
 	{
 		compile("");
 	}
-	public void compile( String fileName ) throws IOException, RuntimeException
+	private ASTree parse(InputStream is) throws IOException, RuntimeException
 	{
-
-		InputStream is;
-		if(fileName == "")
-		{
-			Debuger.printInfo("Info", "Input: stdin");
-			is = System.in;
-		}else{
-			Debuger.printInfo("Info", "Input: "+fileName);
-			is = new FileInputStream(fileName);
-		}
 		ParseTree tree;
 		MxLexer lexer = new MxLexer(CharStreams.fromStream(is));
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -47,10 +39,37 @@ public class Compiler
 		Debuger.print(tree.toStringTree(parser));
 		Debuger.println();
 
-		Debuger.printLine("Visitor");
-		MxVisitor ASTBuilder = new MxASTVisitor();
+		Debuger.printLine("AST Building");
+		MxASTVisitor ASTBuilder = new MxASTVisitor();
 		ASTBuilder.visit(tree);
 		Debuger.println();
+
+		return ASTBuilder.ast();
+	}
+	private void CheckOnAst(ASTree ast)
+	{
+		Debuger.printLine("Resolve Symbol");
+		ast.resolveSymbol();
+		Debuger.println();
+
+		Debuger.printLine("Type Checking");
+		ast.typeCheck();
+		Debuger.println();
+	}
+	public void compile( String fileName ) throws IOException, RuntimeException
+	{
+
+		InputStream is;
+		if(fileName == "")
+		{
+			Debuger.printInfo("Info", "Input: stdin");
+			is = System.in;
+		}else{
+			Debuger.printInfo("Info", "Input: "+fileName);
+			is = new FileInputStream(fileName);
+		}
+		ASTree ast = parse(is);
+		CheckOnAst(ast);
 
 		/*
 		Debuger.printLine("Lisener");

@@ -1,16 +1,16 @@
-int[] f(int i) {
-    return new int[20][] [12];
+int main()
+{
+int [][][]a = (new int[3][2][][])[1];
+
 }
 
-int main() {
-    f(110);
-}
-
-
+//TimerChen
+//new multi-dim Array
+//success compile
 
 /*!! metadata:
 === comment ===
-test lvalue-asiop-5-5100379071-puyouer.mx
+陈竞潇 [success]new multi-dim Array
 === is_public ===
 True
 === assert ===
@@ -20,11 +20,11 @@ success_compile
 === input ===
 
 === phase ===
-semantic pretest
+semantic extended
 === output ===
 
 === exitcode ===
-
+0
 
 !!*/
 

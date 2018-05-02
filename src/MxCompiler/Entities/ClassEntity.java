@@ -24,6 +24,36 @@ public class ClassEntity extends Entity
 		this.size = size;
 	}
 
+	public List<FunDefNode> funList()
+	{
+		return funList;
+	}
+
+	public List<VarDecNode> varList()
+	{
+		return varList;
+	}
+
+	public FunctionEntity constructor()
+	{
+		return constructor;
+	}
+
+	public Scope scope()
+	{
+		return scope;
+	}
+
+	public int size()
+	{
+		return size;
+	}
+
+	public void setScope(Scope scope)
+	{
+		this.scope = scope;
+	}
+
 	@Override
 	public String toString()
 	{

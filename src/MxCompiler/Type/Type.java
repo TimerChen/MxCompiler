@@ -20,6 +20,10 @@ public class Type extends Object
 			next = new TypeArray(this);
 		return next;
 	}
+	public String toRootString()
+	{
+		return toString();
+	}
 }
 
 

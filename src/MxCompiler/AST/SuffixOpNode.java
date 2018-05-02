@@ -8,9 +8,9 @@ package MxCompiler.AST;
 
 public class SuffixOpNode extends UnaryOpNode
 {
-	public SuffixOpNode(UnaryOp operator, ExprNode expr)
+	public SuffixOpNode(SourcePosition position, UnaryOp operator, ExprNode expr)
 	{
-		super(operator, expr);
+		super(position, operator, expr);
 	}
 
 	@Override

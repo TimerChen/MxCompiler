@@ -3,13 +3,23 @@ import MxCompiler.Type.*;
 
 public class AssignNode extends ExprNode
 {
-	ExprNode lhs, rhs;
+	private ExprNode lhs, rhs;
 
 	AssignNode(ExprNode lhs, ExprNode rhs)
 	{
 		super();
 		this.lhs = lhs;
 		this.rhs = rhs;
+	}
+
+	public ExprNode lhs()
+	{
+		return lhs;
+	}
+
+	public ExprNode rhs()
+	{
+		return rhs;
 	}
 
 	public Type type()

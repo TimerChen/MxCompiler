@@ -8,6 +8,7 @@ package MxCompiler.AST;
 
 public class BreakNode extends StmtNode
 {
+	public LoopNode loop = null;
 	public BreakNode(SourcePosition pos)
 	{
 		super(pos);

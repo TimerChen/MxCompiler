@@ -10,50 +10,69 @@ import java.util.*;
 public class Scope extends Object
 {
 	private Scope parent = null;
-	private Map<String, VariableEntity>vars = new HashMap<String, VariableEntity>();
-	private Map<String, FunctionEntity>funs = new HashMap<String, FunctionEntity>();
+	private Map<String, Entity>vars = new HashMap<>();
 
-	void add(VariableEntity entity)
+	public Scope()
+	{
+		this.parent = null;
+	}
+	public Scope(Scope parent)
+	{
+		this.parent = parent;
+	}
+
+	public Scope(Scope parent, Map<String, Entity> vars)
+	{
+		this.parent = parent;
+		this.vars = vars;
+	}
+
+	public Scope parent()
+	{
+		return parent;
+	}
+
+	public Map<String, Entity> vars()
+	{
+		return vars;
+	}
+	public void add(ParameterEntity entity)
+	{
+		add(new VariableEntity(entity));
+	}
+	public void add(VariableEntity entity)
 	{
 		if(vars.containsKey(entity.name))
 			throw new SemanticError(entity.position, "Repeated variable name:" + entity.name);
 		vars.put(entity.name, entity);
 	}
-	void add(FunctionEntity entity)
+	public void add(FunctionEntity entity)
 	{
-		if(funs.containsKey(entity.name))
+		if(vars.containsKey(entity.name))
 			throw new SemanticError(entity.position, "Repeated variable name:" + entity.name);
-		funs.put(entity.name, entity);
+		vars.put(entity.name, entity);
 	}
-	VariableEntity findVarCurrent(String name)
+	public void add(ClassEntity entity)
+	{
+		if(parent!=null)
+			throw new RuntimeException("Class is not in top scope");
+		if(vars.containsKey(entity.name))
+			throw new SemanticError(entity.position, "Repeated variable name:" + entity.name);
+		vars.put(entity.name, entity);
+	}
+	public Entity findCurrent(String name)
 	{
 		return vars.get(name);
 	}
-	FunctionEntity findFunCurrent(String name)
+	public Entity find(String name)
 	{
-		return funs.get(name);
-	}
-	VariableEntity findVar(String name)
-	{
-		VariableEntity ret = vars.get(name);
+		Entity ret = vars.get(name);
 		if(ret == null)
 		{
 			if(this.parent == null)
 				ret = null;
 			else
-				ret = parent.findVar(name);
-		}
-		return ret;
-	}
-	FunctionEntity findFun(String name)
-	{
-		FunctionEntity ret = funs.get(name);
-		if(ret == null)
-		{
-			if(this.parent == null)
-				ret = null;
-			else
-				ret = parent.findFun(name);
+				ret = parent.find(name);
 		}
 		return ret;
 	}

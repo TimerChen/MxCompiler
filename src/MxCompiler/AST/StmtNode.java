@@ -5,7 +5,7 @@ abstract public class StmtNode extends ASTNode
 	protected SourcePosition position;
 	public StmtNode( SourcePosition pos )
 	{
-		pos = position;
+		position = pos;
 	}
 
 	@Override

@@ -8,17 +8,11 @@ import MxCompiler.Type.Type;
 abstract public class LHSNode extends ExprNode
 {
 
-	protected Type type;
+	//private Type type;
 
-	public LHSNode(Type type)
+	public LHSNode()
 	{
-		this.type = type;
-	}
 
-	@Override
-	public Type type()
-	{
-		return type;
 	}
 
 

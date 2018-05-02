@@ -1,6 +1,7 @@
 package MxCompiler.Type;
 
 import MxCompiler.AST.SourcePosition;
+import MxCompiler.Options;
 import MxCompiler.Util.SemanticError;
 
 import javax.swing.text.Position;
@@ -10,6 +11,7 @@ import java.util.*;
 public class TypeTable
 {
 	static final int AddressLength = 32;
+	//static public Type typeVoid, typeNull, typeBool, typeInt, typeString;
 	//static final String VOID_NAME = "void";
 
 	Type currentType;
@@ -19,11 +21,12 @@ public class TypeTable
 	private void init()
 	{
 		//int bool string
-		typeSet.put("void", new TypeVoid());
-		typeSet.put("null", new TypeNull());
-		typeSet.put("bool", new TypeBool());
-		typeSet.put("int", new TypeInt());
-		typeSet.put("string", new TypeString());
+		typeSet.put("void", Options.typeVoid = new TypeVoid());
+		typeSet.put("null", Options.typeNull = new TypeNull());
+		typeSet.put("bool", Options.typeBool = new TypeBool());
+		typeSet.put("int", Options.typeInt = new TypeInt());
+		typeSet.put("string", Options.typeString = new TypeString());
+		Options.typeFunction = new TypeFunction();
 	}
 
 	public TypeTable()

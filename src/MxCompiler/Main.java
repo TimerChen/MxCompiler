@@ -4,7 +4,6 @@ import MxCompiler.AST.BlockNode;
 import MxCompiler.tools.*;
 //import javax.swing.text.html.Option;
 import java.io.IOException;
-
 public class Main
 {
 
@@ -21,7 +20,9 @@ public class Main
 
 	public static void main(String[] args) {
 		init();
-
+		String str = "FuckYou";
+		Integer val = new Integer(str.length());
+		Debuger.println(val.toString());
 		MxCompiler.Compiler MxC = new MxCompiler.Compiler();
 
 		try
@@ -30,6 +31,7 @@ public class Main
 			Debuger.printInfo("Info", "Success compile.");
 		}catch (RuntimeException error){
 			Debuger.printInfo("Error", error.toString());
+			//throw error;
 			System.exit(1);
 		}catch (IOException error){
 			Debuger.printInfo("Error", error.toString());

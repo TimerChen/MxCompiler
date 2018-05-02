@@ -7,6 +7,9 @@
 package MxCompiler.AST;
 
 import MxCompiler.Type.Type;
+import MxCompiler.Type.TypeArray;
+import MxCompiler.Util.SemanticError;
+
 
 public class ArefNode extends LHSNode
 {
@@ -14,9 +17,17 @@ public class ArefNode extends LHSNode
 
 	public ArefNode(ExprNode ref, ExprNode index)
 	{
-		super(ref.type().next());
+		super();
 		this.ref = ref;
 		this.index = index;
+	}
+
+	@Override
+	public Type type()
+	{
+		if(!(ref.type() instanceof TypeArray))
+			throw new SemanticError(position(),"Array excepted.");
+		return ((TypeArray)ref.type()).base();
 	}
 
 	@Override

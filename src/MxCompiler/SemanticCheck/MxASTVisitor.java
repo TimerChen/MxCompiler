@@ -38,6 +38,11 @@ public class MxASTVisitor extends MxBaseVisitor
 		typeTable = Options.typeTable;
 	}
 
+	public ASTree ast()
+	{
+		return ast;
+	}
+
 	@Override
 	public Object visitConstBoolExpr(MxParser.ConstBoolExprContext ctx)
 	{
@@ -100,7 +105,7 @@ public class MxASTVisitor extends MxBaseVisitor
 			case "!":op=PrefixOpNode.UnaryOp.LOGIC_NOT;break;
 
 		}
-		map.put(ctx, new PrefixOpNode(op, (ExprNode)map.get(ctx.expr())));
+		map.put(ctx, new PrefixOpNode(new SourcePosition(ctx.op), op, (ExprNode)map.get(ctx.expr())));
 		return ret;
 	}
 
@@ -126,7 +131,7 @@ public class MxASTVisitor extends MxBaseVisitor
 			case "++":op=SuffixOpNode.UnaryOp.SUF_INC;break;
 			case "--":op=SuffixOpNode.UnaryOp.SUF_DEC;break;
 		}
-		map.put(ctx, new SuffixOpNode(op, (ExprNode)map.get(ctx.expr())));
+		map.put(ctx, new SuffixOpNode(new SourcePosition(ctx.op), op, (ExprNode)map.get(ctx.expr())));
 		return ret;
 	}
 
@@ -181,7 +186,7 @@ public class MxASTVisitor extends MxBaseVisitor
 		ExprNode left, right;
 		left = (ExprNode)map.get(ctx.expr(0));
 		right = (ExprNode)map.get(ctx.expr(1));
-		map.put(ctx, new BinaryOpNode(left, right, op));
+		map.put(ctx, new BinaryOpNode(new SourcePosition(ctx.op), left, right, op));
 		return ret;
 	}
 
@@ -202,9 +207,16 @@ public class MxASTVisitor extends MxBaseVisitor
 	}
 
 	@Override
-	public Object visitCreator(MxParser.CreatorContext ctx)
+	public Object visitErrorCreator(MxParser.ErrorCreatorContext ctx)
 	{
-		Object ret = super.visitCreator(ctx);
+		throw new SemanticError(new SourcePosition(ctx), "Array excepted.");
+		//return super.visitErrorCreator(ctx);
+	}
+
+	@Override
+	public Object visitArrayCreator(MxParser.ArrayCreatorContext ctx)
+	{
+		Object ret = super.visitArrayCreator(ctx);
 		int dim = ctx.expr().size() + ctx.arraySpecifier().size();
 		Type type = typeTable.getType(ctx.typeSpecifier().getText(), dim);
 		List<ExprNode> args = new LinkedList<ExprNode>();
@@ -214,6 +226,16 @@ public class MxASTVisitor extends MxBaseVisitor
 			args.add(expr);
 		}
 		map.put(ctx, new CreatorNode(new SourcePosition(ctx), type, args, dim));
+		return ret;
+	}
+
+	@Override
+	public Object visitSingleCreator(MxParser.SingleCreatorContext ctx)
+	{
+		Object ret = super.visitSingleCreator(ctx);
+		Type type = typeTable.getType(ctx.typeSpecifier().getText());
+		List<ExprNode> args = new LinkedList<ExprNode>();
+		map.put(ctx, new CreatorNode(new SourcePosition(ctx), type, args, 0));
 		return ret;
 	}
 
@@ -528,7 +550,7 @@ public class MxASTVisitor extends MxBaseVisitor
 		Object ret = super.visitCompilationUnit(ctx);
 		//Build ASTree
 		List<DefinitionNode> definitionNodes = new ArrayList<DefinitionNode>();
-		for(int i=0;i<=ctx.externalDeclaration().size();++i)
+		for(int i=0;i<ctx.externalDeclaration().size();++i)
 			definitionNodes.add((DefinitionNode) map.get(ctx.externalDeclaration(i)));
 		ast = new ASTree(definitionNodes);
 		return ret;
@@ -566,6 +588,10 @@ public class MxASTVisitor extends MxBaseVisitor
 						new SourcePosition((ParserRuleContext) ctx.getChild(i)),
 						"Multi constructor.");
 			constructor = (FunctionEntity) map.get(ctx.getChild(i));
+			if(constructor.params().size() > 0)
+				throw new SemanticError(
+						new SourcePosition((ParserRuleContext) ctx.getChild(i)),
+						"Constructor can not have params.");
 		}else
 		{
 			throw new RuntimeException("Unknown ClassDefinition child type.");

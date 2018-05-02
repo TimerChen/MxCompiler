@@ -6,21 +6,29 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.Entities.Entity;
+import MxCompiler.Entities.FunctionEntity;
+import MxCompiler.Entities.VariableEntity;
+import MxCompiler.Options;
 import MxCompiler.Type.Type;
+import MxCompiler.Util.SemanticError;
+
+import java.util.OptionalInt;
 
 public class MemberNode extends LHSNode
 {
 	private ExprNode parent;
 	private String name;
 	private SourcePosition position;
+	private Entity refEntity=null;
 
 	public MemberNode(ExprNode parent, String name, SourcePosition position)
 	{
-		super(null);
 		this.parent = parent;
 		this.name = name;
 		this.position = position;
 	}
+
 
 	public ExprNode parent()
 	{
@@ -32,6 +40,21 @@ public class MemberNode extends LHSNode
 		return name;
 	}
 
+
+	@Override
+	public Type type()
+	{
+		if(refEntity instanceof VariableEntity)
+		{
+			return refEntity.type();
+		}else
+		if(refEntity instanceof FunctionEntity){
+			return Options.typeFunction;
+		}else
+		{
+			throw new SemanticError(position, "Type error");
+		}
+	}
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)
 	{

@@ -22,7 +22,7 @@ public interface ASTVisitor<S, E> {
 	// Expressions
 	E visit(AssignNode node);
 	E visit(BinaryOpNode node);
-	E visit(UnaryOpNode node);
+	//E visit(UnaryOpNode node);
 	E visit(CreatorNode node);
 	E visit(PrefixOpNode node);
 	E visit(SuffixOpNode node);

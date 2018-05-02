@@ -15,6 +15,23 @@ public class BlockNode extends StmtNode
 	{
 		super(pos);
 		this.stmts = stmts;
+		if(stmts == null)
+			this.stmts = new LinkedList<>();
+		this.scope = scope;
+	}
+
+	public List<StmtNode> stmts()
+	{
+		return stmts;
+	}
+
+	public Scope scope()
+	{
+		return scope;
+	}
+
+	public void setScope(Scope scope)
+	{
 		this.scope = scope;
 	}
 

@@ -8,9 +8,9 @@ package MxCompiler.AST;
 
 public class PrefixOpNode extends UnaryOpNode
 {
-	public PrefixOpNode(UnaryOp operator, ExprNode expr)
+	public PrefixOpNode(SourcePosition position, UnaryOp operator, ExprNode expr)
 	{
-		super(operator, expr);
+		super(position, operator, expr);
 	}
 
 	@Override

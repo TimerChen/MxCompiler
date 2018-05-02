@@ -1,6 +1,9 @@
 package MxCompiler.AST;
 
+import MxCompiler.Options;
 import MxCompiler.Type.Type;
+import MxCompiler.Util.SemanticError;
+
 import java.util.*;
 
 public class FuncallNode extends ExprNode
@@ -17,13 +20,16 @@ public class FuncallNode extends ExprNode
 	@Override
 	public SourcePosition position()
 	{
-		return null;
+		return function.position();
 	}
 
 	@Override
 	public Type type()
 	{
-		return null;
+		Type re = function.type();
+		if(re != Options.typeFunction)
+			throw new SemanticError(function.position(), re + " found, but function excepted.");
+		return re;
 	}
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)

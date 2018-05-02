@@ -6,21 +6,22 @@
 
 package MxCompiler.AST;
 
-public class WhileNode extends StmtNode
+import java.util.LinkedList;
+import java.util.List;
+
+public class WhileNode extends LoopNode
 {
 	private ExprNode condi;
-	private StmtNode body;
-
+	/*
+	public WhileNode(SourcePosition pos, ExprNode condi, BlockNode body)
+	{
+		super(pos, body);
+		this.condi = condi;
+	}*/
 	public WhileNode(SourcePosition pos, ExprNode condi, StmtNode body)
 	{
-		super(pos);
+		super(pos, body);
 		this.condi = condi;
-		this.body = body;
-	}
-
-	public StmtNode body()
-	{
-		return body;
 	}
 
 	public ExprNode condi()
