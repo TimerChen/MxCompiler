@@ -6,7 +6,7 @@ public class TypeArray extends Type
 {
 	private int dim;
 	private Type base;
-	TypeArray(Type Base)
+	public TypeArray(Type Base)
 	{
 		this.size = TypeTable.AddressLength/8;
 		this.base = Base;

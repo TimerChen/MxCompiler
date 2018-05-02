@@ -113,6 +113,8 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	@Override
 	public Void visit(VarDecNode node)
 	{
+		if(node.type().toRootString().equals("void"))
+			throw new SemanticError(node.position(), "No void-type variable.");
 		for(VariableEntity i : node.entity())
 		{
 			if(i.type() != node.type())

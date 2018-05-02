@@ -40,6 +40,10 @@ public class MemberNode extends LHSNode
 		return name;
 	}
 
+	public void setRefEntity(Entity refEntity)
+	{
+		this.refEntity = refEntity;
+	}
 
 	@Override
 	public Type type()
@@ -48,7 +52,8 @@ public class MemberNode extends LHSNode
 		{
 			return refEntity.type();
 		}else
-		if(refEntity instanceof FunctionEntity){
+		if(refEntity instanceof FunctionEntity)
+		{
 			return Options.typeFunction;
 		}else
 		{

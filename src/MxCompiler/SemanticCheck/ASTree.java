@@ -115,6 +115,15 @@ public class ASTree extends Object
 		mainScope.add(new ClassEntity("bool", typeBool, invalidPos, listF, listV, null, null, 0));
 		mainScope.add(new ClassEntity("int", typeInt, invalidPos, listF, listV, null, null, 0));
 		mainScope.add(new ClassEntity("string", typeString, invalidPos, listF, listV, null, strScope, 0));
+		/*
+		Array:
+			int size()
+		 */
 
+		Options.arrayScope = new Scope(mainScope);
+		list = (new LinkedList<>());
+		Options.arrayScope.add(new FunctionEntity("size", new TypeArray(typeVoid), invalidPos, list, null));
+
+		//...
 	}
 }

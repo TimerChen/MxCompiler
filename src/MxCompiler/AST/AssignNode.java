@@ -5,7 +5,7 @@ public class AssignNode extends ExprNode
 {
 	private ExprNode lhs, rhs;
 
-	AssignNode(ExprNode lhs, ExprNode rhs)
+	public AssignNode(ExprNode lhs, ExprNode rhs)
 	{
 		super();
 		this.lhs = lhs;

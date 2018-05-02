@@ -182,11 +182,19 @@ public class MxASTVisitor extends MxBaseVisitor
 			case "|": op=BinaryOpNode.BinaryOp.BIT_OR; break;
 			case "&&": op=BinaryOpNode.BinaryOp.LOGIC_AND; break;
 			case "||": op=BinaryOpNode.BinaryOp.LOGIC_OR; break;
+			case "=": op=null; break;
 		}
 		ExprNode left, right;
 		left = (ExprNode)map.get(ctx.expr(0));
 		right = (ExprNode)map.get(ctx.expr(1));
-		map.put(ctx, new BinaryOpNode(new SourcePosition(ctx.op), left, right, op));
+		if(op!=null)
+		{
+			map.put(ctx, new BinaryOpNode(new SourcePosition(ctx.op), left, right, op));
+		}else
+			//Assign
+		{
+			map.put(ctx, new AssignNode(left, right));
+		}
 		return ret;
 	}
 

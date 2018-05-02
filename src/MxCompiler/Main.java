@@ -20,9 +20,6 @@ public class Main
 
 	public static void main(String[] args) {
 		init();
-		String str = "FuckYou";
-		Integer val = new Integer(str.length());
-		Debuger.println(val.toString());
 		MxCompiler.Compiler MxC = new MxCompiler.Compiler();
 
 		try

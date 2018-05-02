@@ -8,7 +8,11 @@ package MxCompiler.SemanticCheck;
 
 import MxCompiler.AST.*;
 import MxCompiler.Entities.*;
+import MxCompiler.Options;
+import MxCompiler.Type.TypeArray;
 import MxCompiler.Type.TypeClass;
+import MxCompiler.Type.TypeNull;
+import MxCompiler.Type.TypeVoid;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
 
@@ -150,8 +154,20 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 	public Void visit(MemberNode node)
 	{
 		super.visit(node);
-		if(!(node.parent().type() instanceof TypeClass))
+
+		if(node.parent().type() instanceof TypeVoid)
 			throw new SemanticError(node.position(), "Type error.");
+		if(node.parent().type() instanceof TypeNull)
+			throw new SemanticError(node.position(), "Type error.");
+		if(node.parent().type() instanceof TypeArray)
+		{
+			//???
+			if(!node.name().equals("size"))
+				throw new SemanticError(node.position(), "No member "+node.name()+" existed.");
+			node.setRefEntity(Options.arrayScope.find("size"));
+			return null;
+		}
+
 		TypeClass type = (TypeClass)node.parent().type();
 		Entity entity;
 		ClassEntity cEntity;
@@ -163,7 +179,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		entity = ((ClassEntity) entity).scope().findCurrent(node.name());
 		if(entity == null)
 			throw new SemanticError(node.position(), "No member "+node.name()+" existed.");
-
+		node.setRefEntity(entity);
 		return null;
 	}
 
@@ -171,6 +187,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 	public Void visit(FuncallNode node)
 	{
 		super.visit(node);
+		node.type();
 		return null;
 	}
 
