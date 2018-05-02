@@ -20,13 +20,13 @@ public class ASTree extends Object
 {
 	private Scope mainScope;
 
-	private List<DefinitionNode> definitionNodes;
+	private List<ASTNode> definitionNodes;
 //	private List<ClassEntity> classEntities;
 //	private List<FunctionEntity> functionEntities;
 //	private List<VariableEntity> variableEntities;
 
 
-	public ASTree(List<DefinitionNode> definitionNodes)
+	public ASTree(List<ASTNode> definitionNodes)
 	{
 		this.mainScope = new Scope();
 		this.definitionNodes = definitionNodes;
@@ -36,18 +36,18 @@ public class ASTree extends Object
 	{
 		loadInteriorLibary();
 		ASTSymbolVisitor visitor = new ASTSymbolVisitor(mainScope);
-		for(DefinitionNode i : definitionNodes)
+		for(ASTNode i : definitionNodes)
 		{
 			Debuger.printInfo("Info", "visit "+i.getClass());
-			visitor.visit(i);
+			visitor.visit((StmtNode) i);
 		}
 	}
 	public void typeCheck()
 	{
 		ASTTypeVisitor visitor = new ASTTypeVisitor(mainScope);
-		for(DefinitionNode i : definitionNodes)
+		for(ASTNode i : definitionNodes)
 		{
-			visitor.visit(i);
+			visitor.visit((StmtNode) i);
 		}
 	}
 	private void loadInteriorLibary()

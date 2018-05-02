@@ -6,6 +6,7 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Type.TypeBool;
 
@@ -27,7 +28,7 @@ public class BoolLiteralNode extends LiteralNode
 	@Override
 	public Type type()
 	{
-		return new TypeBool();
+		return Options.typeBool;
 	}
 
 	@Override

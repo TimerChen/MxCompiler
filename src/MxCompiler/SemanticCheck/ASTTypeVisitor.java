@@ -119,8 +119,21 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 		{
 			if(i.type() != node.type())
 				throw new SemanticError(i.position(), "Type error");
-			if(i.init() != null && i.init().type() != node.type())
-				throw new SemanticError(i.init().position(), "Type error");
+			if(i.init() != null)
+			{
+
+				if(i.init().type() != node.type())
+				{
+					if((node.type() instanceof TypeArray ||
+							node.type() instanceof TypeClass) &&
+							i.init().type() == Options.typeNull)
+						;//OK
+					else
+						throw new SemanticError(i.init().position(), i.init().type()+" found, but "+node.type()+" excepted.");
+				}
+
+			}
+
 		}
 		return super.visit(node);
 	}
@@ -157,7 +170,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 				throw new SemanticError(node.position(), "Type error");
 		}else
 		if(node.lhs().type() != node.rhs().type())
-			throw new SemanticError(node.position(), "Type error");
+			throw new SemanticError(node.position(), node.lhs().type()+" found, but "+node.rhs().type()+" excepted.");
 		return null;
 	}
 

@@ -6,6 +6,7 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Type.TypeString;
 
@@ -27,7 +28,7 @@ public class StringLiteralNode extends LiteralNode
 	@Override
 	public Type type()
 	{
-		return new TypeString();
+		return Options.typeString;
 	}
 
 	@Override

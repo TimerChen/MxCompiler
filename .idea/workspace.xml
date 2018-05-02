@@ -7,16 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="591d0fc4-2eaa-4e18-9f1e-1ea9a24058b6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/AssignNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/AssignNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/MemberNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/MemberNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/BoolLiteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/BoolLiteralNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/IntLiteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/IntLiteralNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/StringLiteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/StringLiteralNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MxCompiler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Type/TypeArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Type/TypeArray.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testcases/program.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testcases/program.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -28,14 +26,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.20359667">
+    <splitter split-orientation="horizontal" split-proportion="0.8317277">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="ASTTypeVisitor.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="502">
-                  <caret line="116" column="76" selection-start-line="116" selection-start-column="76" selection-end-line="116" selection-end-column="76" />
+                <state relative-caret-position="482">
+                  <caret line="172" column="103" selection-start-line="172" selection-start-column="103" selection-end-line="172" selection-end-column="103" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#305#306#0" expanded="true" />
@@ -51,11 +49,20 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="TypeTable.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/MxCompiler/Type/TypeTable.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="380">
+                  <caret line="30" selection-start-line="30" selection-end-line="30" />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="ASTSymbolVisitor.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="362">
-                  <caret line="166" column="52" selection-start-line="166" selection-start-column="52" selection-end-line="166" selection-end-column="52" />
+                <state relative-caret-position="380">
+                  <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -83,53 +90,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="260">
                   <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ArefNode.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ArefNode.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="411">
-                  <caret line="29" column="46" selection-start-line="29" selection-start-column="46" selection-end-line="29" selection-end-column="46" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#633#634#0" expanded="true" />
-                    <element signature="e#666#667#0" expanded="true" />
-                    <element signature="e#715#716#0" expanded="true" />
-                    <element signature="e#743#744#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="FuncallNode.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/FuncallNode.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="80">
-                  <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-                  <folding>
-                    <element signature="e#331#332#0" expanded="true" />
-                    <element signature="e#349#350#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="FunDefNode.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/FunDefNode.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="80">
-                  <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="VariableNode.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/VariableNode.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="680">
-                  <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
                 </state>
               </provider>
             </entry>
@@ -163,6 +123,33 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="IntLiteralNode.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/IntLiteralNode.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="400">
+                  <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="StringLiteralNode.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/StringLiteralNode.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="400">
+                  <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BoolLiteralNode.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/BoolLiteralNode.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="400">
+                  <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+                </state>
+              </provider>
+            </entry>
+          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -170,8 +157,8 @@
           <file leaf-file-name="Mx.g4" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/parser/Mx.g4">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="116">
-                  <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+                <state relative-caret-position="80">
+                  <caret line="4" column="9" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="46" />
                 </state>
               </provider>
             </entry>
@@ -184,8 +171,8 @@
           <file leaf-file-name="MxASTVisitor.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="627">
-                  <caret line="195" column="40" selection-start-line="195" selection-start-column="40" selection-end-line="195" selection-end-column="40" />
+                <state relative-caret-position="327">
+                  <caret line="563" column="20" selection-start-line="563" selection-start-column="20" selection-end-line="563" selection-end-column="20" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#959#960#0" expanded="true" />
@@ -198,13 +185,22 @@
           <file leaf-file-name="ASTBaseVisitor.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ASTBaseVisitor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="267">
-                  <caret line="119" column="16" selection-start-line="119" selection-start-column="16" selection-end-line="119" selection-end-column="16" />
+                <state relative-caret-position="220">
+                  <caret line="14" column="43" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#710#711#0" expanded="true" />
                     <element signature="e#734#735#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ASTVisitor.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ASTVisitor.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="200">
+                  <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
                 </state>
               </provider>
             </entry>
@@ -224,20 +220,20 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/Main.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="460">
-                  <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
+                <state relative-caret-position="480">
+                  <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ASTree.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="ASTree.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="602">
-                  <caret line="124" column="63" selection-start-line="124" selection-start-column="63" selection-end-line="124" selection-end-column="63" />
+                <state relative-caret-position="640">
+                  <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -250,19 +246,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="160">
                   <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="StmtNode.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/StmtNode.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="100">
-                  <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-                  <folding>
-                    <element signature="e#220#221#0" expanded="true" />
-                    <element signature="e#242#243#0" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -293,16 +276,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>void</find>
-      <find>creator</find>
-      <find>var</find>
-      <find>initDec</find>
       <find>FunctionNode</find>
       <find>parameterList</find>
       <find>compoundStatement</find>
       <find>//...</find>
-      <find>new FunctionEntity[()]</find>
-      <find>(new FunctionEntity.*);</find>
+      <find />
+      <find />
       <find>visitStmt[s]?</find>
       <find>compilation</find>
       <find>StmtNode</find>
@@ -310,7 +289,7 @@
       <find>([A-Z_]*),</find>
       <find>intOps</find>
       <find>type</find>
-      <find>([a-zA-Z]*) = typeTable.getType\(\&quot;[a-z]*\&quot;\)</find>
+      <find />
       <find>ClassEntity</find>
       <find>Continue</find>
       <find>FunctionDef</find>
@@ -318,11 +297,15 @@
       <find>ReturnNode</find>
       <find>ArefNode</find>
       <find>Creator</find>
-      <find>FunDefNode</find>
       <find>currentReturn</find>
-      <find>load</find>
-      <find>Bina</find>
       <find>null</find>
+      <find>Bina</find>
+      <find>getChild</find>
+      <find>FunDefNode</find>
+      <find>classDec</find>
+      <find>(DefinitionNode)</find>
+      <find />
+      <find>load</find>
     </findStrings>
     <replaceStrings>
       <replace>MxParser</replace>
@@ -333,8 +316,8 @@
       <replace>parent</replace>
       <replace>ref</replace>
       <replace>mainScope.add($1);</replace>
-      <replace>intOps.put(BinaryOp.$1, intType);\n\t\t</replace>
-      <replace>$1 = Options.$1</replace>
+      <replace />
+      <replace />
       <replace>visit</replace>
       <replace>stringOps</replace>
     </replaceStrings>
@@ -348,9 +331,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/MxCompiler/AST/IntLiteralNode.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ParseErrorListener.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/AST/SourcePosition.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Util/SemanticError.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/parser/MxBaseVisitor.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Type/TypeClass.java" />
@@ -392,17 +372,20 @@
         <option value="$PROJECT_DIR$/src/MxCompiler/AST/MemberNode.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Options.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Type/TypeArray.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/AST/AssignNode.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/parser/Mx.g4" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Main.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/AST/IntLiteralNode.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/AST/StringLiteralNode.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/AST/BoolLiteralNode.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-55" />
     <option name="y" value="320" />
     <option name="width" value="1717" />
@@ -655,7 +638,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="3" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1890625" />
-      <window_info anchor="bottom" id="ANTLR Preview" order="11" weight="0.32921347" />
+      <window_info anchor="bottom" id="ANTLR Preview" order="11" weight="0.5595506" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
@@ -679,38 +662,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/lang/String.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="704" column="18" selection-start-line="704" selection-start-column="18" selection-end-line="704" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/lang/Override.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Entities/ParameterEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding>
-            <element signature="e#293#294#0" expanded="true" />
-            <element signature="e#327#328#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ParseErrorListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ClassDefNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -839,13 +790,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Type/TypeTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
@@ -978,9 +922,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/parser/Mx_Lex.g4">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ExprNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -1016,18 +957,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ASTBaseVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="119" column="16" selection-start-line="119" selection-start-column="16" selection-end-line="119" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#710#711#0" expanded="true" />
-            <element signature="e#734#735#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/FuncallNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -1057,16 +986,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="602">
-          <caret line="124" column="63" selection-start-line="124" selection-start-column="63" selection-end-line="124" selection-end-column="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/Entities/Scope.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="278">
@@ -1087,31 +1006,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/AssignNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#241#242#0" expanded="true" />
-            <element signature="e#258#259#0" expanded="true" />
-            <element signature="e#285#286#0" expanded="true" />
-            <element signature="e#302#303#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="195" column="40" selection-start-line="195" selection-start-column="40" selection-end-line="195" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#959#960#0" expanded="true" />
-            <element signature="e#976#977#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/BinaryOpNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="908">
@@ -1126,20 +1020,119 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java">
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="166" column="52" selection-start-line="166" selection-start-column="52" selection-end-line="166" selection-end-column="52" />
+        <state relative-caret-position="480">
+          <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/parser/Mx_Lex.g4">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/parser/Mx.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="9" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/MxASTVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="563" column="20" selection-start-line="563" selection-start-column="20" selection-end-line="563" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#959#960#0" expanded="true" />
+            <element signature="e#976#977#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ASTBaseVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="14" column="43" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#734#735#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/ASTVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/AssignNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#241#242#0" expanded="true" />
+            <element signature="e#258#259#0" expanded="true" />
+            <element signature="e#285#286#0" expanded="true" />
+            <element signature="e#302#303#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Type/TypeTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/IntLiteralNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/StringLiteralNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/AST/BoolLiteralNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="116" column="76" selection-start-line="116" selection-start-column="76" selection-end-line="116" selection-end-column="76" />
+        <state relative-caret-position="482">
+          <caret line="172" column="103" selection-start-line="172" selection-start-column="103" selection-end-line="172" selection-end-column="103" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#305#306#0" expanded="true" />
@@ -1151,20 +1144,6 @@
             <element signature="e#772#773#0" expanded="true" />
             <element signature="e#790#791#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/parser/Mx.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
         </state>
       </provider>
     </entry>

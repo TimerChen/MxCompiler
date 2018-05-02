@@ -17,6 +17,7 @@ import MxCompiler.Type.TypeTable;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.parser.MxBaseVisitor;
 import MxCompiler.parser.MxParser;
+import MxCompiler.tools.Debuger;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
@@ -557,9 +558,9 @@ public class MxASTVisitor extends MxBaseVisitor
 	{
 		Object ret = super.visitCompilationUnit(ctx);
 		//Build ASTree
-		List<DefinitionNode> definitionNodes = new ArrayList<DefinitionNode>();
+		List<ASTNode> definitionNodes = new ArrayList<>();
 		for(int i=0;i<ctx.externalDeclaration().size();++i)
-			definitionNodes.add((DefinitionNode) map.get(ctx.externalDeclaration(i)));
+			definitionNodes.add((ASTNode) map.get(ctx.externalDeclaration(i)));
 		ast = new ASTree(definitionNodes);
 		return ret;
 	}
@@ -602,6 +603,7 @@ public class MxASTVisitor extends MxBaseVisitor
 						"Constructor can not have params.");
 		}else
 		{
+			Debuger.printInfo("tmp","index"+ctx.getChild(i).toStringTree());
 			throw new RuntimeException("Unknown ClassDefinition child type.");
 		}
 

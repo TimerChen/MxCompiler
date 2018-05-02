@@ -28,8 +28,8 @@ public class Main
 			Debuger.printInfo("Info", "Success compile.");
 		}catch (RuntimeException error){
 			Debuger.printInfo("Error", error.toString());
-			//throw error;
-			System.exit(1);
+			throw error;
+			//System.exit(1);
 		}catch (IOException error){
 			Debuger.printInfo("Error", error.toString());
 			System.exit(2);

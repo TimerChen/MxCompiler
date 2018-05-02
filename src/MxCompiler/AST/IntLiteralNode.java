@@ -6,6 +6,7 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Type.TypeInt;
 
@@ -27,7 +28,7 @@ public class IntLiteralNode extends LiteralNode
 	@Override
 	public Type type()
 	{
-		return new TypeInt();
+		return Options.typeInt;
 	}
 
 	@Override
