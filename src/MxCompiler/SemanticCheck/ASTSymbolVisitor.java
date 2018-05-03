@@ -185,7 +185,11 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		{
 			newScope();
 			entity = ((ClassEntity) entity).constructor();
-			visit(((FunctionEntity) entity).body().stmts());
+			if(entity != null)
+			{
+				((ClassEntity)entity).setScope(currentScope);
+				visit(((FunctionEntity) entity).body().stmts());
+			}
 			exitScope();
 		}
 		exitScope();
