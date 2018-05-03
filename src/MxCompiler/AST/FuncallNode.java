@@ -39,6 +39,17 @@ public class FuncallNode extends ExprNode
 			throw new RuntimeException(function.getClass() + " found, but variable() excepted.");
 		}
 	}
+
+	public ExprNode function()
+	{
+		return function;
+	}
+
+	public List<ExprNode> params()
+	{
+		return params;
+	}
+
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)
 	{

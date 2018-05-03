@@ -11,6 +11,7 @@ import MxCompiler.Entities.*;
 import MxCompiler.Options;
 import MxCompiler.Type.*;
 import MxCompiler.tools.Debuger;
+import sun.security.ssl.Debug;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +37,16 @@ public class ASTree extends Object
 	{
 		loadInteriorLibary();
 		ASTSymbolVisitor visitor = new ASTSymbolVisitor(mainScope);
+		Debuger.printInfo("Info","Pre setting");
+		for(ASTNode i : definitionNodes)
+		{
+			Debuger.printInfo("Info", "visit "+i.getClass());
+			if(i instanceof FunDefNode)
+				visitor.preVisit((FunDefNode) i);
+			else if(i instanceof ClassDefNode)
+				visitor.preVisit((ClassDefNode) i);
+		}
+		Debuger.printInfo("Info","Start resolve");
 		for(ASTNode i : definitionNodes)
 		{
 			Debuger.printInfo("Info", "visit "+i.getClass());
@@ -122,7 +133,7 @@ public class ASTree extends Object
 
 		Options.arrayScope = new Scope(mainScope);
 		list = (new LinkedList<>());
-		Options.arrayScope.add(new FunctionEntity("size", new TypeArray(typeVoid), invalidPos, list, null));
+		Options.arrayScope.add(new FunctionEntity("size", typeInt, invalidPos, list, null));
 
 		//...
 	}

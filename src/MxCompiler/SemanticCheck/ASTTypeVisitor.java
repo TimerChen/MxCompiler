@@ -7,8 +7,7 @@
 package MxCompiler.SemanticCheck;
 
 import MxCompiler.AST.*;
-import MxCompiler.Entities.Scope;
-import MxCompiler.Entities.VariableEntity;
+import MxCompiler.Entities.*;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Type.TypeArray;
@@ -16,6 +15,7 @@ import MxCompiler.Type.TypeClass;
 import MxCompiler.Type.TypeNull;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
+import sun.security.ssl.Debug;
 
 import java.util.List;
 import java.util.Stack;
@@ -162,15 +162,10 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		if(!node.lhs().isLValue())
 			throw new SemanticError(node.lhs().position(), "LValue excepted");
-		if(node.rhs().type() == Options.typeNull)
-		{
-			if(node.lhs().type() == Options.typeBool ||
-					node.lhs().type() == Options.typeInt ||
-					node.lhs().type() == Options.typeString)
-				throw new SemanticError(node.position(), "Type error");
-		}else
-		if(node.lhs().type() != node.rhs().type())
-			throw new SemanticError(node.position(), node.rhs().type()+" found, but "+node.lhs().type()+" excepted.");
+
+		Type lType = node.lhs().type(), rType = node.rhs().type();
+		if(!Options.typeTable.isEqual(lType, rType))
+			throw new SemanticError(node.position(), rType+" found, but "+lType+" excepted.");
 		return null;
 	}
 
@@ -227,6 +222,31 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		super.visit(node);
 		node.type();
+		ExprNode function = node.function();
+		Entity entity;
+		if(function instanceof VariableNode)
+		{
+			//Debuger.printInfo("tmp", "find " + ((VariableNode)function).refEntity().name());
+			entity = ((VariableNode)function).refEntity();
+			if(!(entity instanceof FunctionEntity))
+				throw new SemanticError(node.position(), entity.name() + "is not a function.");
+		}else
+		{
+			throw new RuntimeException(function.getClass() + " found, but variable() excepted.");
+		}
+		int n = node.params().size();
+		List<ExprNode> params = node.params();
+		List<ParameterEntity> paramEntities = ((FunctionEntity)entity).params();
+		if(n!=paramEntities.size())
+			throw new SemanticError(node.position(), n+" params found, but "+ paramEntities.size()+" excepted.");
+
+		for(int i=0;i<n;++i)
+		{
+			Type lType=paramEntities.get(i).type(), rType=params.get(i).type();
+			if(!Options.typeTable.isEqual(lType, rType))
+				throw new SemanticError(params.get(i).position(), rType+" found, but "+lType+" excepted.");
+		}
+
 		return null;
 	}
 

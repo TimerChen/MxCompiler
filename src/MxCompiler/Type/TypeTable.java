@@ -62,6 +62,20 @@ public class TypeTable
 			throw new SemanticError(position, "Class have been defined.");
 		type.defPosition = position;
 	}
+	public boolean isEqual(Type ref, Type var)
+	{
+		//null
+		if(var instanceof TypeNull)
+		{
+			if(ref instanceof TypeClass)
+				return true;
+			else
+				return false;
+		}else
+		{
+			return (ref == var);
+		}
+	}
 	/*
 	public Type setCurrentType(String name)
 	{

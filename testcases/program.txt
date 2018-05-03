@@ -1,8 +1,48 @@
-int main()
+int main() {
+	string str;
+	str.substring(1,2);
+	str.substring(1,2).length();
+	ar()[0].size();
+	A tmp;
+	tmp.a.b.s.length();
+    return tmp.a.b.s.substring(0,1).length();
+
+}
+int[][] ar()
 {
 
-;
 }
-/*
+class A{
+	B a;
+}
+class B{
+	C b;
+}
+class C{
+	string s;
+	int[][] ar()
+	{
 
-*/
+	}
+}
+
+
+/*!! metadata:
+=== comment ===
+王天哲 Class.Class.Class.substring.length:)
+=== is_public ===
+True
+=== assert ===
+success_compile
+=== timeout ===
+0
+=== input ===
+
+=== phase ===
+semantic pretest
+=== output ===
+
+=== exitcode ===
+0
+
+!!*/

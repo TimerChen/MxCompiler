@@ -43,7 +43,7 @@ public class MemberNode extends VariableNode
 			return Options.typeFunction;
 		}else
 		{
-			throw new SemanticError(position, "Type error");
+			throw new SemanticError(position, "Type error"+refEntity);
 		}
 	}
 	@Override
