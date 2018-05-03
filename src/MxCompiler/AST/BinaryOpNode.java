@@ -3,6 +3,7 @@ package MxCompiler.AST;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Util.SemanticError;
+import MxCompiler.tools.Debuger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,27 +95,35 @@ public class BinaryOpNode extends ExprNode
 		Type typeBool = Options.typeTable.getType("bool"),
 				typeInt = Options.typeTable.getType("int"),
 				typeString = Options.typeTable.getType("string");
+		Type lType, rType;
+		lType = left.type();
+		rType = right.type();
+		Debuger.printInfo("tmp", "opeartor " + operator);
+		Debuger.printInfo("tmp", "lType " + lType);
+		/*
 		if(operator == BinaryOp.LOGIC_AND || operator == BinaryOp.LOGIC_OR)
 			return Options.typeTable.getType("bool");
-		if(left.type() != right.type())
+		*/
+		if(lType != rType)
 			throw new SemanticError(position(), "different types can not operate");
 
-		if(left.type() == typeBool)
+		if(lType == typeBool)
 		{
 			if(boolOps.containsKey(operator))
 				return boolOps.get(operator);
 			else
 				throw new SemanticError(position, "Operation not defined.");
 		}else
-		if(left.type() == typeInt)
+		if(lType == typeInt)
 		{
 			if(intOps.containsKey(operator))
 				return intOps.get(operator);
 			else
 				throw new SemanticError(position, "Operation " + operator + " not defined.");
 		}else
-		if(left.type() == typeString)
+		if(lType == typeString)
 		{
+
 			if(stringOps.containsKey(operator))
 				return stringOps.get(operator);
 			else

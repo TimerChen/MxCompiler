@@ -20,6 +20,14 @@ public class BlockNode extends StmtNode
 		this.scope = scope;
 	}
 
+	public BlockNode(StmtNode node)
+	{
+		super(node.position());
+		this.stmts = new ArrayList<>();
+		stmts.add(node);
+		scope = null;
+	}
+
 	public List<StmtNode> stmts()
 	{
 		return stmts;

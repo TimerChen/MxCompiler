@@ -38,7 +38,7 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 	}
 	public void visit(StmtNode node)
 	{
-		Debuger.printInfo("Info", "visit "+node.toString());
+		Debuger.printInfo("Info", "visit "+node.toString()+" at "+node.position());
 		node.accept(this);
 	}
 	@Override
@@ -51,7 +51,8 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 	@Override
 	public Void visit(ExprStmtNode node)
 	{
-		visit(node.expr);
+		if(node.expr!=null)
+			visit(node.expr);
 		return null;
 	}
 

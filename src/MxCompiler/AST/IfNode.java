@@ -6,17 +6,27 @@
 
 package MxCompiler.AST;
 
+import jdk.nashorn.internal.ir.Block;
+
 public class IfNode extends StmtNode
 {
 	private ExprNode Condi;
-	private StmtNode trueBody, falseBody;
+	private BlockNode trueBody, falseBody;
 
 	public IfNode(SourcePosition pos, ExprNode condi, StmtNode trueBody, StmtNode falseBody)
 	{
 		super(pos);
 		Condi = condi;
-		this.trueBody = trueBody;
-		this.falseBody = falseBody;
+		if(trueBody instanceof BlockNode)
+			this.trueBody = (BlockNode) trueBody;
+		else
+			this.trueBody = new BlockNode(trueBody);
+		if(falseBody == null)
+			this.falseBody = null;
+		else if(falseBody instanceof BlockNode)
+			this.falseBody = (BlockNode) falseBody;
+		else
+			this.falseBody = new BlockNode(falseBody);
 	}
 
 	public ExprNode condi()
@@ -24,12 +34,12 @@ public class IfNode extends StmtNode
 		return Condi;
 	}
 
-	public StmtNode trueBody()
+	public BlockNode trueBody()
 	{
 		return trueBody;
 	}
 
-	public StmtNode falseBody()
+	public BlockNode falseBody()
 	{
 		return falseBody;
 	}

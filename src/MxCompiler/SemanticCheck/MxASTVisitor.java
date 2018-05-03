@@ -411,7 +411,8 @@ public class MxASTVisitor extends MxBaseVisitor
 		Object ret = super.visitStatement(ctx);
 		if(ctx.children.size() > 1)
 			throw new RuntimeException("More than 1 child in statement.");
-		map.put(ctx, map.get(ctx.getChild(0)));
+		Object obj = map.get(ctx.getChild(0));
+		map.put(ctx, obj);
 		return ret;
 	}
 
@@ -461,7 +462,7 @@ public class MxASTVisitor extends MxBaseVisitor
 		IfNode node;
 		StmtNode elseBody = null;
 		if(ctx.statement().size() > 1)
-			elseBody =(BlockNode) map.get(ctx.statement(1));
+			elseBody = (StmtNode) map.get(ctx.statement(1));
 		node = new IfNode(new SourcePosition(ctx),
 				(ExprNode) map.get(ctx.expr()),
 				(StmtNode) map.get(ctx.statement(0)),
