@@ -12,7 +12,9 @@ externalDeclaration
     |   declaration
     ;
 classDefinition
-	:   'class' className '{' classDeclaration* '}'
+	:   'class' className '{' ( declaration
+                              |	functionDefinition
+                              |	constructorDefinition)* '}'
 //    |	className '::' constructedfunctionDefinition
 //    |	typeSpecifier className '::' declarator '(' parameterList? ')' compoundStatement
 	;
@@ -63,7 +65,7 @@ expr
 creator
 	:	typeSpecifier ('[' expr ']')+(arraySpecifier)+('[' expr ']')+	#errorCreator
 	|	typeSpecifier ('[' expr ']')+(arraySpecifier)*					#arrayCreator
-	| 	typeSpecifier													#singleCreator
+	| 	typeSpecifier ('('')')?											#singleCreator
 	;
 argumentExprList
     :   expr
@@ -93,12 +95,6 @@ typeSpecifier
     |	typeSpecifier arraySpecifier	#array
     ;
 
-
-classDeclaration
-    :   declaration
-    |	functionDefinition
-    |	constructorDefinition
-    ;
 
 
 declarator

@@ -18,6 +18,7 @@ import MxCompiler.Util.SemanticError;
 import MxCompiler.parser.MxBaseVisitor;
 import MxCompiler.parser.MxParser;
 import MxCompiler.tools.Debuger;
+import jdk.nashorn.internal.ir.FunctionNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
@@ -363,15 +364,6 @@ public class MxASTVisitor extends MxBaseVisitor
 	}
 
 	@Override
-	public Object visitClassDeclaration(MxParser.ClassDeclarationContext ctx)
-	{
-		Object ret = super.visitClassDeclaration(ctx);
-		//No more than 1
-		map.put(ctx, map.get(ctx.getChild(0)));
-		return ret;
-	}
-
-	@Override
 	public Object visitDeclarator(MxParser.DeclaratorContext ctx)
 	{
 		Object ret = super.visitDeclarator(ctx);
@@ -582,29 +574,26 @@ public class MxASTVisitor extends MxBaseVisitor
 		List<FunDefNode> funList = new ArrayList<FunDefNode>();
 		List<VarDecNode> varList = new ArrayList<VarDecNode>();
 		FunctionEntity constructor = null;
-		for(int i=0;i<ctx.children.size();++i)
-		if(ctx.getChild(i) instanceof MxParser.DeclarationContext)
+		for(MxParser.DeclarationContext i : ctx.declaration())
 		{
-			varList.add((VarDecNode) map.get(ctx.getChild(i)));
-		}else if(ctx.getChild(i) instanceof MxParser.FunctionDefinitionContext)
+			varList.add((VarDecNode) map.get(i));
+
+		}
+		for(MxParser.FunctionDefinitionContext i : ctx.functionDefinition())
 		{
-			funList.add((FunDefNode) map.get(ctx.getChild(i)));
-		}else if(ctx.getChild(i) instanceof MxParser.ConstStringExprContext)
+			funList.add((FunDefNode) map.get(i));
+		}
+		if(ctx.constructorDefinition().size() > 1)
+			throw new SemanticError(
+				new SourcePosition(ctx.constructorDefinition(1)),
+				"Multi constructor.");
+		for(MxParser.ConstructorDefinitionContext i : ctx.constructorDefinition())
 		{
-			//Constructor
-			if(constructor != null)
-				throw new SemanticError(
-						new SourcePosition((ParserRuleContext) ctx.getChild(i)),
-						"Multi constructor.");
-			constructor = (FunctionEntity) map.get(ctx.getChild(i));
+			constructor = ((FunDefNode) map.get(i)).entity();
 			if(constructor.params().size() > 0)
 				throw new SemanticError(
-						new SourcePosition((ParserRuleContext) ctx.getChild(i)),
+						new SourcePosition(i),
 						"Constructor can not have params.");
-		}else
-		{
-			Debuger.printInfo("tmp","index"+ctx.getChild(i).toStringTree());
-			throw new RuntimeException("Unknown ClassDefinition child type.");
 		}
 
 		ClassEntity entity;

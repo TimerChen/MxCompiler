@@ -1,8 +1,10 @@
 package MxCompiler.AST;
 
+import MxCompiler.Entities.VariableEntity;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Util.SemanticError;
+import jdk.nashorn.internal.ir.FunctionNode;
 
 import java.util.*;
 
@@ -29,7 +31,13 @@ public class FuncallNode extends ExprNode
 		Type re = function.type();
 		if(re != Options.typeFunction)
 			throw new SemanticError(function.position(), re + " found, but function excepted.");
-		return re;
+		if(function instanceof VariableNode)
+		{
+			return ((VariableNode)function).refEntity().type();
+		}else
+		{
+			throw new RuntimeException(function.getClass() + " found, but variable() excepted.");
+		}
 	}
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)

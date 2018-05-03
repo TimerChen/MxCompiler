@@ -12,9 +12,9 @@ import MxCompiler.Type.Type;
 
 public class VariableNode extends LHSNode
 {
-	private SourcePosition position;
-	private String name;
-	private Entity refEntity;
+	protected SourcePosition position;
+	protected String name;
+	protected Entity refEntity=null;
 
 	public VariableNode(String name, SourcePosition position)
 	{

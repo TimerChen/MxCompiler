@@ -15,34 +15,20 @@ import MxCompiler.Util.SemanticError;
 
 import java.util.OptionalInt;
 
-public class MemberNode extends LHSNode
+public class MemberNode extends VariableNode
 {
 	private ExprNode parent;
-	private String name;
-	private SourcePosition position;
-	private Entity refEntity=null;
 
 	public MemberNode(ExprNode parent, String name, SourcePosition position)
 	{
+		super(name, position);
 		this.parent = parent;
-		this.name = name;
-		this.position = position;
 	}
 
 
 	public ExprNode parent()
 	{
 		return parent;
-	}
-
-	public String name()
-	{
-		return name;
-	}
-
-	public void setRefEntity(Entity refEntity)
-	{
-		this.refEntity = refEntity;
 	}
 
 	@Override
@@ -66,9 +52,4 @@ public class MemberNode extends LHSNode
 		return visitor.visit(this);
 	}
 
-	@Override
-	public SourcePosition position()
-	{
-		return position;
-	}
 }

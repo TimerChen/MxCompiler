@@ -170,7 +170,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 				throw new SemanticError(node.position(), "Type error");
 		}else
 		if(node.lhs().type() != node.rhs().type())
-			throw new SemanticError(node.position(), node.lhs().type()+" found, but "+node.rhs().type()+" excepted.");
+			throw new SemanticError(node.position(), node.rhs().type()+" found, but "+node.lhs().type()+" excepted.");
 		return null;
 	}
 

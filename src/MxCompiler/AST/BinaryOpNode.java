@@ -24,8 +24,11 @@ public class BinaryOpNode extends ExprNode
 			typeBool,
 			typeInt,
 			typeString;
+	static boolean unInit = true;
 	static public void initOpCheck()
 	{
+		if(!unInit)
+			return;
 		typeBool = Options.typeBool;
 		typeInt = Options.typeInt;
 		typeString = Options.typeString;
@@ -57,8 +60,10 @@ public class BinaryOpNode extends ExprNode
 		stringOps.put(BinaryOp.GE, typeBool);
 		stringOps.put(BinaryOp.EQ, typeBool);
 		stringOps.put(BinaryOp.NE, typeBool);
+		unInit = false;
 		
 	}
+
 
 	private SourcePosition position;
 	private ExprNode left, right;
@@ -76,6 +81,7 @@ public class BinaryOpNode extends ExprNode
 
 	public BinaryOpNode(SourcePosition position, ExprNode left, ExprNode right, BinaryOp operator)
 	{
+		initOpCheck();
 		this.position = position;
 		this.left = left;
 		this.right = right;
@@ -105,7 +111,7 @@ public class BinaryOpNode extends ExprNode
 			if(intOps.containsKey(operator))
 				return intOps.get(operator);
 			else
-				throw new SemanticError(position, "Operation not defined.");
+				throw new SemanticError(position, "Operation " + operator + " not defined.");
 		}else
 		if(left.type() == typeString)
 		{

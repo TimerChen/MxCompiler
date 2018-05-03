@@ -100,6 +100,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		//this
 		currentScope.add(new VariableEntity("this", node.entity().type(), node.entity().position(), null));
 
+		Debuger.printInfo("tmp", "number of var in Class: "+node.entity().size());
 		for(VarDecNode i : node.entity().varList())
 		{
 			entity = currentScope.find(i.type().toRootString());
@@ -115,6 +116,8 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				if(j.init() != null)
 					throw new SemanticError(j.position(),
 							"variable member in class can not have initializer");
+
+				Debuger.printInfo("tmp", "var in Class: "+j.type()+j.name());
 				currentScope.add(j);
 			}
 		}
@@ -170,12 +173,14 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 
 		TypeClass type = (TypeClass)node.parent().type();
 		Entity entity;
-		ClassEntity cEntity;
-		entity=currentScope.find(type.name());
+		VariableEntity vEntity = (VariableEntity)((VariableNode)node.parent()).refEntity();
+		entity = currentScope.find(vEntity.type().toString());
+
 		if(entity == null)
 			throw new SemanticError(node.position(), "Type not find.");
 		if(!(entity instanceof ClassEntity))
-			throw new SemanticError(node.position(), "Type excepted.");
+			throw new SemanticError(node.position(), entity.name() + " found , but type excepted.");
+		Debuger.printInfo("tmp", "Class "+ entity.name());
 		entity = ((ClassEntity) entity).scope().findCurrent(node.name());
 		if(entity == null)
 			throw new SemanticError(node.position(), "No member "+node.name()+" existed.");
