@@ -10,6 +10,7 @@ import MxCompiler.AST.*;
 import MxCompiler.Entities.*;
 import MxCompiler.Options;
 import MxCompiler.Type.*;
+import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
 import sun.security.ssl.Debug;
 
@@ -46,6 +47,10 @@ public class ASTree extends Object
 			else if(i instanceof ClassDefNode)
 				visitor.preVisit((ClassDefNode) i);
 		}
+		Entity entity = mainScope.find("main");
+		if(!(entity instanceof FunctionEntity && entity != null))
+			throw new SemanticError(new SourcePosition(0,0), "No main function.");
+
 		Debuger.printInfo("Info","Start resolve");
 		for(ASTNode i : definitionNodes)
 		{
@@ -122,6 +127,7 @@ public class ASTree extends Object
 		//Interior type
 		List<FunDefNode> listF = new LinkedList<FunDefNode>();
 		List<VarDecNode> listV = new LinkedList<VarDecNode>();
+		//???
 		mainScope.add(new ClassEntity("void", typeInt, invalidPos, listF, listV, null, null, 0));
 		mainScope.add(new ClassEntity("bool", typeBool, invalidPos, listF, listV, null, null, 0));
 		mainScope.add(new ClassEntity("int", typeInt, invalidPos, listF, listV, null, null, 0));

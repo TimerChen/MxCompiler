@@ -67,7 +67,7 @@ public class TypeTable
 		//null
 		if(var instanceof TypeNull)
 		{
-			if(ref instanceof TypeClass)
+			if(ref instanceof TypeClass || ref instanceof TypeArray)
 				return true;
 			else
 				return false;

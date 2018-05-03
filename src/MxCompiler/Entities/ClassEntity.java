@@ -39,6 +39,7 @@ public class ClassEntity extends Entity
 		return constructor;
 	}
 
+
 	public Scope scope()
 	{
 		return scope;

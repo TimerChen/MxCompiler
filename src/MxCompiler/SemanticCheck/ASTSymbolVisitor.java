@@ -161,6 +161,8 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			if(!(entity instanceof ClassEntity))
 				throw new SemanticError(node.position(), "Type excepted.");
 		}
+
+		//Debuger.printInfo("tmp","VVVVVVVVVVVVVVVVVVVVVVVVVVV");
 		//visit
 		for(FunDefNode i : node.entity().funList())
 		{
@@ -174,7 +176,16 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				if(!(entity instanceof ClassEntity))
 					throw new SemanticError(node.position(), "Type excepted.");
 			}
+			//Debuger.printInfo("tmp","VVVVVVVVVVVVVVVVVVVVVVVVVVV");
 			visit(i.entity().body().stmts());
+			exitScope();
+		}
+		//constructor
+		entity = node.entity();
+		{
+			newScope();
+			entity = ((ClassEntity) entity).constructor();
+			visit(((FunctionEntity) entity).body().stmts());
 			exitScope();
 		}
 		exitScope();
@@ -203,7 +214,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 
 		Entity entity;
 		ExprNode pnode = node.parent();
-		if ((pnode instanceof VariableNode) || (pnode instanceof FuncallNode))
+		if ((pnode instanceof VariableNode) || (pnode instanceof FuncallNode) || (pnode instanceof ArefNode))
 		{
 			if(pnode instanceof VariableNode)
 			{
@@ -211,10 +222,13 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				VariableEntity vEntity = (VariableEntity)((VariableNode)pnode).refEntity();
 				//Debuger.printInfo("tmp", vEntity.type().toString());
 				entity = currentScope.find(vEntity.type().toString());
-			}else //if(pnode instanceof FuncallNode)
+			}else if(pnode instanceof FuncallNode)
 			{
 
 				entity = currentScope.find(((FuncallNode)pnode).type().toString());
+			}else //if(pnode instanceof ArefNode)
+			{
+				entity = currentScope.find(((ArefNode)pnode).type().toString());
 			}
 
 			if(entity == null)
@@ -253,6 +267,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 	@Override
 	public Void visit(VariableNode node)
 	{
+		Debuger.printInfo("tmp", "FFFFFFFFFFFFFFFFFFFFFFff");
 		Entity entity = currentScope.find(node.name());
 		if(entity == null)
 			throw new SemanticError(node.position(), "variable not find.");
@@ -268,8 +283,8 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		Entity entity = currentScope.find(node.type().toRootString());
 		if(entity == null)
 			throw new SemanticError(node.position(), "type not find.");
-		if(!(entity instanceof ClassEntity))
-			throw new SemanticError(node.position(), "Type excepted.");
+		if(!(node.type() instanceof TypeClass || node.type() instanceof TypeArray))
+			throw new SemanticError(node.position(), entity.type() + "Type excepted.");
 		return super.visit(node);
 	}
 	@Override
