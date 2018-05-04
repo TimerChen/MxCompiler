@@ -35,9 +35,11 @@ public class Compiler
 
 		tree = parser.compilationUnit();
 
+		/*
 		Debuger.printInfo("Output", "");
 		Debuger.print(tree.toStringTree(parser));
 		Debuger.println();
+		*/
 
 		Debuger.printLine("AST Building");
 		MxASTVisitor ASTBuilder = new MxASTVisitor();

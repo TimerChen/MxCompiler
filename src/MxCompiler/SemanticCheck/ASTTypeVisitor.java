@@ -99,14 +99,17 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	@Override
 	public Void visit(ReturnNode node)
 	{
-		Type type = node.ret().type();
-		if(currentReturn instanceof TypeClass || currentReturn instanceof TypeArray)
+		if(node.ret()!=null)
 		{
-			if(type != Options.typeNull && type != currentReturn)
-				throw new SemanticError(node.position(), type+" found, but "+currentReturn+" excepted.");
-		}else
-		if(node.ret().type() != currentReturn)
-			throw new SemanticError(node.position(), currentReturn+" excepted.");
+			Type type = node.ret().type();
+			if(currentReturn instanceof TypeClass || currentReturn instanceof TypeArray)
+			{
+				if(type != Options.typeNull && type != currentReturn)
+					throw new SemanticError(node.position(), type+" found, but "+currentReturn+" excepted.");
+			}else
+			if(node.ret().type() != currentReturn)
+				throw new SemanticError(node.position(), currentReturn+" excepted.");
+		}
 		return super.visit(node);
 	}
 
@@ -160,6 +163,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	@Override
 	public Void visit(AssignNode node)
 	{
+		super.visit(node);
 		if(!node.lhs().isLValue())
 			throw new SemanticError(node.lhs().position(), "LValue excepted");
 

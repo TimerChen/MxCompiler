@@ -15,6 +15,7 @@ import MxCompiler.Type.TypeNull;
 import MxCompiler.Type.TypeVoid;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
+import sun.security.ssl.Debug;
 
 import java.util.List;
 import java.util.Stack;
@@ -162,7 +163,6 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				throw new SemanticError(node.position(), "Type excepted.");
 		}
 
-		//Debuger.printInfo("tmp","VVVVVVVVVVVVVVVVVVVVVVVVVVV");
 		//visit
 		for(FunDefNode i : node.entity().funList())
 		{
@@ -171,12 +171,12 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			for(ParameterEntity j : i.entity().params())
 			{
 				entity = currentScope.find(j.type().toRootString());
+				Debuger.printInfo("tmp","type:" + j.type().getClass());
 				if(entity == null)
 					throw new SemanticError(j.position(), "type not find.");
 				if(!(entity instanceof ClassEntity))
 					throw new SemanticError(node.position(), "Type excepted.");
 			}
-			//Debuger.printInfo("tmp","VVVVVVVVVVVVVVVVVVVVVVVVVVV");
 			visit(i.entity().body().stmts());
 			exitScope();
 		}
@@ -187,7 +187,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			entity = ((ClassEntity) entity).constructor();
 			if(entity != null)
 			{
-				((ClassEntity)entity).setScope(currentScope);
+				((FunctionEntity)entity).body().setScope(currentScope);
 				visit(((FunctionEntity) entity).body().stmts());
 			}
 			exitScope();
@@ -271,7 +271,6 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 	@Override
 	public Void visit(VariableNode node)
 	{
-		Debuger.printInfo("tmp", "FFFFFFFFFFFFFFFFFFFFFFff");
 		Entity entity = currentScope.find(node.name());
 		if(entity == null)
 			throw new SemanticError(node.position(), "variable not find.");

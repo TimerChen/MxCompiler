@@ -2,6 +2,9 @@ package MxCompiler.AST;
 
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
+import MxCompiler.Type.TypeArray;
+import MxCompiler.Type.TypeClass;
+import MxCompiler.Type.TypeNull;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
 
@@ -104,7 +107,8 @@ public class BinaryOpNode extends ExprNode
 		if(operator == BinaryOp.LOGIC_AND || operator == BinaryOp.LOGIC_OR)
 			return Options.typeTable.getType("bool");
 		*/
-		if(lType != rType)
+
+		if(Options.typeTable.isEqual(lType, rType) == false)
 			throw new SemanticError(position(), "different types can not operate");
 
 		if(lType == typeBool)
@@ -131,9 +135,10 @@ public class BinaryOpNode extends ExprNode
 		}else
 		{
 			//maybe == to check addr???
-			//...
-			throw new SemanticError(position, "no-base type can not do operations.");
-
+			if(operator == BinaryOp.EQ || operator == BinaryOp.NE)
+				return Options.typeBool;
+			else
+				throw new SemanticError(position, "no-base type can not do operations.");
 		}
 		//return null;
 	}

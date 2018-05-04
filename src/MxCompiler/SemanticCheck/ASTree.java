@@ -50,7 +50,8 @@ public class ASTree extends Object
 		Entity entity = mainScope.find("main");
 		if(!(entity instanceof FunctionEntity && entity != null))
 			throw new SemanticError(new SourcePosition(0,0), "No main function.");
-
+		if(!(((FunctionEntity)entity).type() instanceof TypeInt))
+			throw new SemanticError(entity.position(), "Main function must return int.");
 		Debuger.printInfo("Info","Start resolve");
 		for(ASTNode i : definitionNodes)
 		{

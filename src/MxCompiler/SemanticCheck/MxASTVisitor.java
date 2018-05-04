@@ -397,9 +397,10 @@ public class MxASTVisitor extends MxBaseVisitor
 	public Object visitParameterDeclaration(MxParser.ParameterDeclarationContext ctx)
 	{
 		Object ret = super.visitParameterDeclaration(ctx);
+		Type type = (Type)map.get(ctx.typeSpecifier());
 		ParameterEntity entity =
 				new ParameterEntity(ctx.declarator().getText(),
-						typeTable.getType(ctx.typeSpecifier().getText()),
+						type,
 						new SourcePosition(ctx));
 		map.put(ctx, entity);
 		return ret;
