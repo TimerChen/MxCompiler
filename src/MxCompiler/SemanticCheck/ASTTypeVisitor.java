@@ -194,6 +194,10 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		super.visit(node);
 		node.type();
+		if((node.operator()==UnaryOpNode.UnaryOp.PRE_INC ||
+			node.operator()==UnaryOpNode.UnaryOp.PRE_DEC) &&
+			!node.expr().isLValue())
+			throw new SemanticError(node.expr().position(), "L-value excepted.");
 		return null;
 	}
 
@@ -202,6 +206,10 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		super.visit(node);
 		node.type();
+		if((node.operator()==UnaryOpNode.UnaryOp.SUF_INC ||
+			node.operator()==UnaryOpNode.UnaryOp.SUF_DEC) &&
+			!node.expr().isLValue())
+			throw new SemanticError(node.expr().position(), "L-value excepted.");
 		return null;
 	}
 

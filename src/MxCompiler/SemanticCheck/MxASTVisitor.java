@@ -21,6 +21,7 @@ import MxCompiler.tools.Debuger;
 import jdk.nashorn.internal.ir.FunctionNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
+import sun.security.ssl.Debug;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -631,7 +632,7 @@ public class MxASTVisitor extends MxBaseVisitor
 		Object ret = super.visitConstructorDefinition(ctx);
 		FunctionEntity entity;
 		Type type = typeTable.getType("void");
-		String name = "";
+		String name = ctx.className().getText();
 		BlockNode body = (BlockNode)map.get(ctx.compoundStatement());
 		List<ParameterEntity> params =
 				(LinkedList<ParameterEntity>) map.get(ctx.parameterList());

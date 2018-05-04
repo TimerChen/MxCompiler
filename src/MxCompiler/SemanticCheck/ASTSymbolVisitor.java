@@ -189,6 +189,8 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			{
 				((FunctionEntity)entity).body().setScope(currentScope);
 				visit(((FunctionEntity) entity).body().stmts());
+				if(!entity.name().equals(node.name()))
+					throw new SemanticError(entity.position(), "Constructor name error."+entity.name() + " "+node.name());
 			}
 			exitScope();
 		}
@@ -218,7 +220,10 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 
 		Entity entity;
 		ExprNode pnode = node.parent();
-		if ((pnode instanceof VariableNode) || (pnode instanceof FuncallNode) || (pnode instanceof ArefNode))
+		if ((pnode instanceof VariableNode) ||
+				(pnode instanceof FuncallNode) ||
+				(pnode instanceof ArefNode) ||
+				(pnode instanceof CreatorNode))
 		{
 			if(pnode instanceof VariableNode)
 			{
@@ -226,13 +231,9 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				VariableEntity vEntity = (VariableEntity)((VariableNode)pnode).refEntity();
 				//Debuger.printInfo("tmp", vEntity.type().toString());
 				entity = currentScope.find(vEntity.type().toString());
-			}else if(pnode instanceof FuncallNode)
+			}else
 			{
-
-				entity = currentScope.find(((FuncallNode)pnode).type().toString());
-			}else //if(pnode instanceof ArefNode)
-			{
-				entity = currentScope.find(((ArefNode)pnode).type().toString());
+				entity = currentScope.find(((ExprNode)pnode).type().toString());
 			}
 
 			if(entity == null)
