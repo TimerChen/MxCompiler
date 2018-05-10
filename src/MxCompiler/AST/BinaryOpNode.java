@@ -39,6 +39,8 @@ public class BinaryOpNode extends ExprNode
 
 		boolOps.put(BinaryOp.LOGIC_AND, typeBool);
 		boolOps.put(BinaryOp.LOGIC_OR, typeBool);
+		boolOps.put(BinaryOp.EQ, typeBool);
+		boolOps.put(BinaryOp.NE, typeBool);
 
 		intOps.put(BinaryOp.ADD, typeInt);
 		intOps.put(BinaryOp.SUB, typeInt);
@@ -113,6 +115,7 @@ public class BinaryOpNode extends ExprNode
 
 		if(lType == typeBool)
 		{
+			Debuger.printInfo("tmp","op"+operator);
 			if(boolOps.containsKey(operator))
 				return boolOps.get(operator);
 			else
