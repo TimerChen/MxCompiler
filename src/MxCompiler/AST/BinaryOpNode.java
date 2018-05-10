@@ -101,8 +101,8 @@ public class BinaryOpNode extends ExprNode
 		Type lType, rType;
 		lType = left.type();
 		rType = right.type();
-		Debuger.printInfo("tmp", "opeartor " + operator);
-		Debuger.printInfo("tmp", "lType " + lType);
+
+
 		/*
 		if(operator == BinaryOp.LOGIC_AND || operator == BinaryOp.LOGIC_OR)
 			return Options.typeTable.getType("bool");

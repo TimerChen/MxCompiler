@@ -25,7 +25,10 @@ public class Main
 
 		try
 		{
-			MxC.compile();
+			if(args.length > 0)
+				MxC.compile(args[0]);
+			else
+				MxC.compile();
 			Debuger.printInfo("Info", "Success compile.");
 		}catch (RuntimeException error){
 			Debuger.printInfo("Error", error.toString());

@@ -15,7 +15,6 @@ import MxCompiler.Type.TypeNull;
 import MxCompiler.Type.TypeVoid;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
-import sun.security.ssl.Debug;
 
 import java.util.List;
 import java.util.Stack;
@@ -53,7 +52,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		//this
 		currentScope.add(new VariableEntity("this", node.entity().type(), node.entity().position(), null));
 
-		//Debuger.printInfo("tmp", "number of var in Class: "+node.entity().size());
+
 		for(VarDecNode i : node.entity().varList())
 		{
 			for(VariableEntity j : i.entity())
@@ -133,7 +132,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		currentScope = node.entity().scope();
 		//this
 
-		//Debuger.printInfo("tmp", "number of var in Class: "+node.entity().size());
+
 		for(VarDecNode i : node.entity().varList())
 		{
 			entity = currentScope.find(i.type().toRootString());
@@ -150,7 +149,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 					throw new SemanticError(j.position(),
 							"variable member in class can not have initializer");
 
-				//Debuger.printInfo("tmp", "var in Class: "+j.type()+j.name());
+
 			}
 		}
 
@@ -171,7 +170,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			for(ParameterEntity j : i.entity().params())
 			{
 				entity = currentScope.find(j.type().toRootString());
-				Debuger.printInfo("tmp","type:" + j.type().getClass());
+
 				if(entity == null)
 					throw new SemanticError(j.position(), "type not find.");
 				if(!(entity instanceof ClassEntity))
@@ -214,7 +213,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				throw new SemanticError(node.position(), "No member "+node.name()+" existed.");
 			node.setRefEntity(Options.arrayScope.find("size"));
 			//if(node.refEntity() == null)
-				//Debuger.printInfo("tmp", "Fuck you" + node.refEntity());
+
 			return null;
 		}
 
@@ -223,13 +222,14 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		if ((pnode instanceof VariableNode) ||
 				(pnode instanceof FuncallNode) ||
 				(pnode instanceof ArefNode) ||
-				(pnode instanceof CreatorNode))
+				(pnode instanceof CreatorNode) ||
+				(pnode instanceof BinaryOpNode))
 		{
 			if(pnode instanceof VariableNode)
 			{
 
 				VariableEntity vEntity = (VariableEntity)((VariableNode)pnode).refEntity();
-				//Debuger.printInfo("tmp", vEntity.type().toString());
+
 				entity = currentScope.find(vEntity.type().toString());
 			}else
 			{
@@ -240,7 +240,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				throw new SemanticError(node.position(), "Type not find.");
 			if(!(entity instanceof ClassEntity))
 				throw new SemanticError(node.position(), entity.name() + " found , but type excepted.");
-			//Debuger.printInfo("tmp", "Class "+ entity.name());
+
 			entity = ((ClassEntity) entity).scope().findCurrent(node.name());
 			if(entity == null)
 				throw new SemanticError(node.position(), "No member "+node.name()+" existed.");

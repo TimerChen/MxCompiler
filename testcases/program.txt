@@ -1,4 +1,32 @@
-int main() {
-    int a;
-    a++++;
+class A
+{
+	int b;
+	void a()
+	{
+		this.b = 1;
+		this = null;
+	}
 }
+int main() {
+
+}
+
+/*!! metadata:
+=== comment ===
+刘予希 liuyuxi-success_compile
+=== is_public ===
+True
+=== assert ===
+success_compile
+=== timeout ===
+0.0
+=== input ===
+
+=== phase ===
+semantic pretest
+=== output ===
+
+=== exitcode ===
+0
+
+!!*/

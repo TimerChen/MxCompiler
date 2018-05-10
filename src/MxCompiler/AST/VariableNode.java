@@ -38,7 +38,15 @@ public class VariableNode extends LHSNode
 	{
 		return refEntity;
 	}
-
+	@Override
+	public boolean isLValue()
+	{
+		//??? this.val = 1
+		if(name.equals("this"))
+			return false;
+		else
+			return true;
+	}
 	@Override
 	public Type type()
 	{

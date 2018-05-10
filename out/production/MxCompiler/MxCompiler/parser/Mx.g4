@@ -12,7 +12,9 @@ externalDeclaration
     |   declaration
     ;
 classDefinition
-	:   'class' className '{' classDeclaration* '}'
+	:   'class' className '{' ( declaration
+                              |	functionDefinition
+                              |	constructorDefinition)* '}'
 //    |	className '::' constructedfunctionDefinition
 //    |	typeSpecifier className '::' declarator '(' parameterList? ')' compoundStatement
 	;
@@ -32,8 +34,8 @@ expr
     |	(True|False)							#constBoolExpr
     |   Const									#constIntExpr
     |   StringLiteral							#constStringExpr
-    |	'new' creator							#newExpr
     |   '(' expr ')'							#subExpr
+    |	'new' creator							#newExpr
     |   <assoc=right>
     	expr	'[' expr ']'					#arefExpr
     |   <assoc=right>
@@ -61,8 +63,9 @@ expr
     //|	expr ',' expr							#binaryExpr
 	;
 creator
-	:	typeSpecifier //'('parameterList?')'
-	| 	typeSpecifier ('['expr']')+(arraySpecifier)*
+	:	typeSpecifier ('[' expr ']')+(arraySpecifier)+('[' expr ']')+	#errorCreator
+	|	typeSpecifier ('[' expr ']')+(arraySpecifier)*					#arrayCreator
+	| 	typeSpecifier ('('')')?											#singleCreator
 	;
 argumentExprList
     :   expr
@@ -92,12 +95,6 @@ typeSpecifier
     |	typeSpecifier arraySpecifier	#array
     ;
 
-
-classDeclaration
-    :   declaration
-    |	functionDefinition
-    |	constructorDefinition
-    ;
 
 
 declarator

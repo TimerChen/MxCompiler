@@ -70,10 +70,13 @@ NotEqual : '!=';
 Dot : '.';
 
 Identifier:
-	Nondigit (Digit|Nondigit)*
+	FirstNondigit (Digit|Nondigit)*
 	;
 
-
+fragment
+FirstNondigit
+    :   [a-zA-Z]
+    ;
 fragment
 Nondigit
     :   [a-zA-Z_]

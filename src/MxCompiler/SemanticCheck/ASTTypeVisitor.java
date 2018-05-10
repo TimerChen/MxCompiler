@@ -238,7 +238,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 		Entity entity;
 		if(function instanceof VariableNode)
 		{
-			//Debuger.printInfo("tmp", "find " + ((VariableNode)function).refEntity().name());
+			//Debuger.printInfo(, "find " + ((VariableNode)function).refEntity().name());
 			entity = ((VariableNode)function).refEntity();
 			if(!(entity instanceof FunctionEntity))
 				throw new SemanticError(node.position(), entity.name() + "is not a function.");
