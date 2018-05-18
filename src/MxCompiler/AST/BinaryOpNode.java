@@ -94,8 +94,7 @@ public class BinaryOpNode extends ExprNode
 		this.operator = operator;
 	}
 
-	@Override
-	public Type type()
+	private Type getType()
 	{
 		Type typeBool = Options.typeTable.getType("bool"),
 				typeInt = Options.typeTable.getType("int"),
@@ -143,7 +142,14 @@ public class BinaryOpNode extends ExprNode
 			else
 				throw new SemanticError(position, "no-base type can not do operations.");
 		}
-		//return null;
+	}
+
+	@Override
+	public Type type()
+	{
+		if(type == null)
+			type = getType();
+		return super.type();
 	}
 
 	@Override

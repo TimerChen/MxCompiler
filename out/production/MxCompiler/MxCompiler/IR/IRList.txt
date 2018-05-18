@@ -1,0 +1,9 @@
+IR
+	UnaryOp
+	Jump
+	CJump
+	BinaryOp
+	Funcall
+	Return
+	Push
+	Load

@@ -24,7 +24,9 @@ public class AssignNode extends ExprNode
 
 	public Type type()
 	{
-		return lhs.type();
+		if(type == null)
+			type = lhs.type();
+		return super.type();
 	}
 	public SourcePosition position()
 	{

@@ -25,9 +25,13 @@ public class ArefNode extends LHSNode
 	@Override
 	public Type type()
 	{
-		if(!(ref.type() instanceof TypeArray))
-			throw new SemanticError(position(),"Array excepted.");
-		return ((TypeArray)ref.type()).base();
+		if(type == null)
+		{
+			if(!(ref.type() instanceof TypeArray))
+				throw new SemanticError(position(),"Array excepted.");
+			type = ((TypeArray)ref.type()).base();
+		}
+		return super.type();
 	}
 
 	@Override

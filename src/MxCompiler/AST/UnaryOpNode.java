@@ -40,8 +40,7 @@ abstract public class UnaryOpNode extends ExprNode
 		return expr;
 	}
 
-	@Override
-	public Type type()
+	private Type getType()
 	{
 		Type ret = expr.type();
 		if(ret == Options.typeBool)
@@ -58,6 +57,14 @@ abstract public class UnaryOpNode extends ExprNode
 			throw new SemanticError(position, "Operation not defined.");
 		}
 		return ret;
+	}
+
+	@Override
+	public Type type()
+	{
+		if(type == null)
+			type = getType();
+		return super.type();
 	}
 
 

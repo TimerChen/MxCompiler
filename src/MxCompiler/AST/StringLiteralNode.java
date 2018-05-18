@@ -16,7 +16,7 @@ public class StringLiteralNode extends LiteralNode
 
 	public StringLiteralNode(SourcePosition position, String val)
 	{
-		super(position);
+		super(Options.typeString, position);
 		this.val = val;
 	}
 
@@ -25,11 +25,6 @@ public class StringLiteralNode extends LiteralNode
 		return val;
 	}
 
-	@Override
-	public Type type()
-	{
-		return Options.typeString;
-	}
 
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)

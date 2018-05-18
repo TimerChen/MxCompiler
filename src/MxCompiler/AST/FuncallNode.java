@@ -25,8 +25,8 @@ public class FuncallNode extends ExprNode
 		return function.position();
 	}
 
-	@Override
-	public Type type()
+
+	private Type getType()
 	{
 		Type re = function.type();
 		if(re != Options.typeFunction)
@@ -38,6 +38,13 @@ public class FuncallNode extends ExprNode
 		{
 			throw new RuntimeException(function.getClass() + " found, but variable() excepted.");
 		}
+	}
+	@Override
+	public Type type()
+	{
+		if(type == null)
+			type = getType();
+		return super.type();
 	}
 
 	public ExprNode function()

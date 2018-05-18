@@ -14,14 +14,13 @@ import java.util.List;
 public class CreatorNode extends ExprNode
 {
 	private SourcePosition position;
-	private Type type;
 	private List<ExprNode> args;
 	private int dim;
 
 	public CreatorNode(SourcePosition position, Type type, List<ExprNode> args, int dim)
 	{
+		super(type);
 		this.position = position;
-		this.type = type;
 		this.args = args;
 		this.dim = dim;
 	}
@@ -34,12 +33,6 @@ public class CreatorNode extends ExprNode
 	public int dim()
 	{
 		return dim;
-	}
-
-	@Override
-	public Type type()
-	{
-		return type;
 	}
 
 	@Override

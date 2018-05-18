@@ -16,19 +16,13 @@ public class IntLiteralNode extends LiteralNode
 
 	public IntLiteralNode(SourcePosition position, int val)
 	{
-		super(position);
+		super(Options.typeInt, position);
 		this.val = val;
 	}
 
 	public int val()
 	{
 		return val;
-	}
-
-	@Override
-	public Type type()
-	{
-		return Options.typeInt;
 	}
 
 	@Override

@@ -31,8 +31,8 @@ public class MemberNode extends VariableNode
 		return parent;
 	}
 
-	@Override
-	public Type type()
+
+	private  Type getType()
 	{
 		if(refEntity instanceof VariableEntity)
 		{
@@ -45,6 +45,15 @@ public class MemberNode extends VariableNode
 		{
 			throw new SemanticError(position, "Type error"+refEntity);
 		}
+	}
+	@Override
+	public Type type()
+	{
+		if(type == null)
+		{
+			type = getType();
+		}
+		return super.type();
 	}
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)

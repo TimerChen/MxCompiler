@@ -6,12 +6,15 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.Type.Type;
+
 abstract public class LiteralNode extends ExprNode
 {
 	SourcePosition position;
 
-	public LiteralNode(SourcePosition position)
+	public LiteralNode(Type type, SourcePosition position)
 	{
+		super(type);
 		this.position = position;
 	}
 

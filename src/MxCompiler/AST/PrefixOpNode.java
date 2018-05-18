@@ -13,6 +13,7 @@ public class PrefixOpNode extends UnaryOpNode
 		super(position, operator, expr);
 	}
 
+
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)
 	{

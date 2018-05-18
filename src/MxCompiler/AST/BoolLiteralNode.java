@@ -16,19 +16,13 @@ public class BoolLiteralNode extends LiteralNode
 
 	public BoolLiteralNode(SourcePosition position, boolean val)
 	{
-		super(position);
+		super(Options.typeBool, position);
 		this.val = val;
 	}
 
 	public boolean val()
 	{
 		return val;
-	}
-
-	@Override
-	public Type type()
-	{
-		return Options.typeBool;
 	}
 
 	@Override

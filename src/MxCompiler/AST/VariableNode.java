@@ -47,13 +47,20 @@ public class VariableNode extends LHSNode
 		else
 			return true;
 	}
-	@Override
-	public Type type()
+	private Type getType()
 	{
+
 		if(refEntity instanceof FunctionEntity)
 			return Options.typeFunction;
 		else
 			return refEntity.type();
+	}
+	@Override
+	public Type type()
+	{
+		if(type == null)
+			type = getType();
+		return super.type();
 	}
 
 
