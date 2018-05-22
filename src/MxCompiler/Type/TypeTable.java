@@ -26,6 +26,10 @@ public class TypeTable
 		typeSet.put("bool", Options.typeBool = new TypeBool());
 		typeSet.put("int", Options.typeInt = new TypeInt());
 		typeSet.put("string", Options.typeString = new TypeString());
+		Options.typeBool.setSize(8);
+		Options.typeInt.setSize(8);
+		Options.typeString.setSize(8);
+
 		Options.typeFunction = new TypeFunction();
 	}
 

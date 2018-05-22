@@ -21,6 +21,7 @@ import java.util.List;
 public class ASTree extends Object
 {
 	private Scope mainScope;
+	private FunDefNode mainFunction;
 
 	private List<ASTNode> definitionNodes;
 //	private List<ClassEntity> classEntities;
@@ -28,10 +29,26 @@ public class ASTree extends Object
 //	private List<VariableEntity> variableEntities;
 
 
+	public List<ASTNode> definitionNodes()
+	{
+		return definitionNodes;
+	}
+
+	public FunDefNode mainFunction()
+	{
+		return mainFunction;
+	}
+
+	public Scope mainScope()
+	{
+		return mainScope;
+	}
+
 	public ASTree(List<ASTNode> definitionNodes)
 	{
 		this.mainScope = new Scope();
 		this.definitionNodes = definitionNodes;
+		this.mainFunction = null;
 	}
 
 	public void resolveSymbol()
@@ -43,7 +60,11 @@ public class ASTree extends Object
 		{
 			Debuger.printInfo("Info", "visit "+i.getClass());
 			if(i instanceof FunDefNode)
+			{
 				visitor.preVisit((FunDefNode) i);
+				if(((FunDefNode) i).name().equals("main"))
+					mainFunction = (FunDefNode) i;
+			}
 			else if(i instanceof ClassDefNode)
 				visitor.preVisit((ClassDefNode) i);
 		}
@@ -130,9 +151,9 @@ public class ASTree extends Object
 		List<VarDecNode> listV = new LinkedList<VarDecNode>();
 		//???
 		mainScope.add(new ClassEntity("void", typeInt, invalidPos, listF, listV, null, null, 0));
-		mainScope.add(new ClassEntity("bool", typeBool, invalidPos, listF, listV, null, null, 0));
-		mainScope.add(new ClassEntity("int", typeInt, invalidPos, listF, listV, null, null, 0));
-		mainScope.add(new ClassEntity("string", typeString, invalidPos, listF, listV, null, strScope, 0));
+		mainScope.add(new ClassEntity("bool", typeBool, invalidPos, listF, listV, null, null, 8));
+		mainScope.add(new ClassEntity("int", typeInt, invalidPos, listF, listV, null, null, 8));
+		mainScope.add(new ClassEntity("string", typeString, invalidPos, listF, listV, null, strScope, 8));
 		/*
 		Array:
 			int size()

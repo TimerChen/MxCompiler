@@ -46,6 +46,13 @@ public class MemberNode extends VariableNode
 			throw new SemanticError(position, "Type error"+refEntity);
 		}
 	}
+
+	@Override
+	public String funName()
+	{
+		return "__"+name+super.funName();
+	}
+
 	@Override
 	public Type type()
 	{

@@ -2,14 +2,38 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef void (*FUNC)(void*);
 
-void* __array_new(int size)
+
+void* __array_array(int size)
 {
 	void *ret = malloc(size + sizeof(int))+sizeof(int);
 	((int*)ret)[-1] = size;
 	return ret;
 }
-unsigned char* __string_new(int size)
+
+void** __array_new(int *aSize, int dim, int eSize, FUNC func)
+{
+	void** array = (void**)__array_array(eSize*aSize[0]);
+	for(int i=0;i<aSize[0];++i)
+	{
+		if(dim > 1)
+		{
+			array[i] = __array_new(aSize, dim, eSize, func);
+		}else
+		{
+			if(func!=NULL)
+			{
+				array[i] = malloc(eSize);
+				func(array[i]);
+			}
+		}
+	}
+	return array;
+}
+
+
+unsigned char* __string_string(int size)
 {
 	unsigned char *ret = malloc(size+1 + sizeof(int))+sizeof(int);
 	((int*)ret)[-1] = size;
@@ -32,7 +56,7 @@ unsigned char* _getString()
 	unsigned char* str = NULL, *ret;
 	int len;
 	getline(&str, &len, stdin);
-	ret = __string_new(len);
+	ret = __string_string(len);
 	strcpy(ret, str);
 	return ret;
 }
@@ -44,7 +68,7 @@ int __string_length(unsigned char* this)
 unsigned char* __string_substring(unsigned char *a, long low, long high)
 {
 	int l = high - low + 1;
-	unsigned char *ret = __string_new(l);
+	unsigned char *ret = __string_string(l);
 	a += low;
 	for (int i = 0; i < l; ++i)
 		ret[i] = a[i];
@@ -66,7 +90,7 @@ unsigned char* __string__plus(unsigned char* this, unsigned char* other)
 	int n0, n1;
 	n0 = ((int*)this)[-1];
 	n1 = ((int*)other)[-1];
-	str = __string_new(n0+n1+1);
+	str = __string_string(n0+n1+1);
 	strcpy(str, this);
 	strcpy(str+n1, other);
 	return str;
@@ -76,6 +100,12 @@ _Bool __string__less(unsigned char* this, unsigned char* other)
 {
 	return strcmp(this, other) == -1;
 }
+//string <= string
+_Bool __string__lessEqual(unsigned char* this, unsigned char* other)
+{
+	return strcmp(this, other) <= 0;
+}
+
 //string == string
 _Bool __string__equal(unsigned char* this, unsigned char* other)
 {

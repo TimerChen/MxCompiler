@@ -6,4 +6,4 @@ pwd
 ./c2nasm.sh library_noO3.c
 nasm -felf64 library.asm
 nasm -felf64 library_noO3.asm
-rm library.asm library_noO3.asm
+#rm library.asm library_noO3.asm

@@ -8,10 +8,20 @@ package MxCompiler.AST;
 
 public class ContinueNode extends StmtNode
 {
-	public LoopNode loop = null;
+	private LoopNode loop = null;
 	public ContinueNode(SourcePosition pos)
 	{
 		super(pos);
+	}
+
+	public LoopNode loop()
+	{
+		return loop;
+	}
+
+	public void setLoop(LoopNode loop)
+	{
+		this.loop = loop;
 	}
 
 	@Override

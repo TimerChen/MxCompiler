@@ -1,9 +1,13 @@
-IR
-	UnaryOp
-	Jump
-	CJump
-	BinaryOp
-	Funcall
-	Return
-	Push
-	Load
+InsIR
+	AlignIR
+	BinaryIR
+	CJumpIR
+	JumpIR
+	CallIR
+	LabelIR
+	ReturnIR
+	PushIR
+	PopIR
+	LoadIR
+	StoreIR
+	MoveIR

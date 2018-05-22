@@ -55,6 +55,12 @@ public class VariableNode extends LHSNode
 		else
 			return refEntity.type();
 	}
+	public String funName()
+	{
+		if(!(refEntity instanceof FunctionEntity))
+			throw new RuntimeException("Not function");
+		return "_" + name;
+	}
 	@Override
 	public Type type()
 	{

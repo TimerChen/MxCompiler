@@ -1,6 +1,6 @@
 /*
 	Coded by timemachine on 18-5-18
-	MxCompiler.IR.Register
+	MxCompiler.InsIR.Register
 */
 
 

@@ -1,6 +1,8 @@
 package MxCompiler.Entities;
 
 import MxCompiler.AST.*;
+import MxCompiler.IR.VarLabelIR;
+import MxCompiler.IR.VarRegIR;
 import MxCompiler.Type.*;
 
 import java.util.LinkedList;
@@ -20,6 +22,7 @@ public class FunctionEntity extends Entity
 			this.params = new LinkedList<>();
 		this.body = body;
 	}
+
 
 	public List<ParameterEntity> params()
 	{

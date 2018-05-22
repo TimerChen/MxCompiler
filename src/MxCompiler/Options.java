@@ -15,4 +15,6 @@ public class Options
 	//Global Variable
 	public static TypeTable typeTable;
 	public static Scope arrayScope;
+
+	public static Scope mainScope;
 }

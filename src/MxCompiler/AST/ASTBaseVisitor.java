@@ -51,8 +51,8 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 	@Override
 	public Void visit(ExprStmtNode node)
 	{
-		if(node.expr!=null)
-			visit(node.expr);
+		if(node.expr()!=null)
+			visit(node.expr());
 		return null;
 	}
 

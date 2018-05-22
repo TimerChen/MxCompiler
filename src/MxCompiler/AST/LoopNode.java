@@ -6,11 +6,14 @@
 
 package MxCompiler.AST;
 
+import MxCompiler.IR.VarLabelIR;
+
 import java.util.LinkedList;
 import java.util.List;
 
 abstract public class LoopNode extends StmtNode
 {
+	VarLabelIR continueLabel, exitLabel;
 	public LoopNode(SourcePosition pos, StmtNode body)
 	{
 		super(pos);
@@ -24,6 +27,22 @@ abstract public class LoopNode extends StmtNode
 			this.body = new BlockNode(pos, list, null);
 		}
 
+	}
+
+	public void setLabels(VarLabelIR continueLabel, VarLabelIR exitLabel)
+	{
+		this.continueLabel = continueLabel;
+		this.exitLabel = exitLabel;
+	}
+
+	public VarLabelIR continueLabel()
+	{
+		return continueLabel;
+	}
+
+	public VarLabelIR exitLabel()
+	{
+		return exitLabel;
 	}
 
 	protected BlockNode body;

@@ -7,6 +7,8 @@ public class TypeClass extends Type
 	private String name;
 	public SourcePosition defPosition;
 
+
+
 	public TypeClass(String name)
 	{
 		this.name = name;

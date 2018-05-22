@@ -85,6 +85,11 @@ public class BinaryOpNode extends ExprNode
 		return right;
 	}
 
+	public BinaryOp operator()
+	{
+		return operator;
+	}
+
 	public BinaryOpNode(SourcePosition position, ExprNode left, ExprNode right, BinaryOp operator)
 	{
 		initOpCheck();

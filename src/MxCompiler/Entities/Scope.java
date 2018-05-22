@@ -9,6 +9,8 @@ import java.util.*;
 
 public class Scope extends Object
 {
+	private int varNumber = 0;
+
 	private Scope parent = null;
 	private Map<String, Entity>vars = new HashMap<>();
 
@@ -27,6 +29,11 @@ public class Scope extends Object
 		this.vars = vars;
 	}
 
+	public int varNumber()
+	{
+		return varNumber;
+	}
+
 	public Scope parent()
 	{
 		return parent;
@@ -36,14 +43,15 @@ public class Scope extends Object
 	{
 		return vars;
 	}
+//	public void add(ParameterEntity entity)
+//	{
+//		add(new VariableEntity(entity));
+//	}
 	public void add(ParameterEntity entity)
-	{
-		add(new VariableEntity(entity));
-	}
-	public void add(VariableEntity entity)
 	{
 		if(vars.containsKey(entity.name))
 			throw new SemanticError(entity.position, "Repeated variable name:" + entity.name);
+		entity.setRank(varNumber++);
 		vars.put(entity.name, entity);
 	}
 	public void add(FunctionEntity entity)

@@ -6,6 +6,7 @@ public class TypeArray extends Type
 {
 	private int dim;
 	private Type base;
+	private Type rootType = null;
 	public TypeArray(Type Base)
 	{
 		this.size = TypeTable.AddressLength/8;
@@ -22,6 +23,17 @@ public class TypeArray extends Type
 	public Type base()
 	{
 		return base;
+	}
+	public Type rootType()
+	{
+		if(rootType == null)
+		{
+			if(base instanceof TypeArray)
+				rootType = ((TypeArray) base).rootType();
+			else
+				rootType = base;
+		}
+		return rootType;
 	}
 
 	@Override

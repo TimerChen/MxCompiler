@@ -22,6 +22,16 @@ public class ArefNode extends LHSNode
 		this.index = index;
 	}
 
+	public ExprNode ref()
+	{
+		return ref;
+	}
+
+	public ExprNode index()
+	{
+		return index;
+	}
+
 	@Override
 	public Type type()
 	{

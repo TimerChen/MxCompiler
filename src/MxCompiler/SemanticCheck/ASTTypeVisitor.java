@@ -23,7 +23,7 @@ import java.util.Stack;
 public class ASTTypeVisitor extends ASTBaseVisitor
 {
 	Scope scope;
-	private Type typeBool, typeInt, type;
+	private FunDefNode nowFunction = null;
 	private Type currentReturn = null;
 
 	private Stack<LoopNode> loops = new Stack<>();
@@ -61,7 +61,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		if(loops.peek() == null)
 			throw new SemanticError(node.position(), "Do not in a loop");
-		node.loop = loops.peek();
+		node.setLoop(loops.peek());
 		return super.visit(node);
 	}
 
@@ -110,6 +110,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 			if(node.ret().type() != currentReturn)
 				throw new SemanticError(node.position(), currentReturn+" excepted.");
 		}
+		node.setFunction(nowFunction);
 		return super.visit(node);
 	}
 
@@ -145,10 +146,12 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	public Void visit(FunDefNode node)
 	{
 		currentReturn = node.entity().type();
+		nowFunction = node;
 		//Debuger.printInfo("[Tmp]","currentReturn = "+currentReturn);
 		super.visit(node);
 		//Debuger.printInfo("[Tmp]","currentReturn = null;");
 		currentReturn = null;
+		nowFunction = null;
 		return null;
 	}
 
@@ -157,6 +160,8 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		//...
 		super.visit(node);
+		//set Size of it
+		node.entity().type().setSize(node.entity().scope().varNumber()*8);
 		return null;
 	}
 

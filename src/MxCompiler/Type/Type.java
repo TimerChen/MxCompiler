@@ -14,6 +14,17 @@ public class Type extends Object
 		size = 0;
 		next = null;
 	}
+
+	public int size()
+	{
+		return size;
+	}
+
+	public void setSize(int size)
+	{
+		this.size = size;
+	}
+
 	public Type next()
 	{
 		if(next == null)

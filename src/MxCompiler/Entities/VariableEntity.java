@@ -8,7 +8,7 @@ import MxCompiler.AST.ExprNode;
 import MxCompiler.AST.SourcePosition;
 import MxCompiler.Type.Type;
 
-public class VariableEntity extends Entity
+public class VariableEntity extends ParameterEntity
 {
 	ExprNode init;
 

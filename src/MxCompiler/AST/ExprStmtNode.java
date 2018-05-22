@@ -8,12 +8,17 @@ package MxCompiler.AST;
 
 public class ExprStmtNode extends StmtNode
 {
-	ExprNode expr;
+	private ExprNode expr;
 
 	public ExprStmtNode(SourcePosition pos, ExprNode expr)
 	{
 		super(pos);
 		this.expr = expr;
+	}
+
+	public ExprNode expr()
+	{
+		return expr;
 	}
 
 	@Override
