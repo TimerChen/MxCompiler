@@ -6,69 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="591d0fc4-2eaa-4e18-9f1e-1ea9a24058b6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/timemachine.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/a.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/a.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/b.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/b.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/c.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/c.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/library.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c2nasm/library_noO3.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/CodeGen/NASMTranslator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/AlignIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/CallIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/IRVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/InsIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/LabelIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/LoadIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/StoreIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/VarIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/VarIntIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/VarLabelIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/VarMemIR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MxCompiler/IR/VarRegIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c2nasm/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/c2nasm/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c2nasm/library.c" beforeDir="false" afterPath="$PROJECT_DIR$/c2nasm/library.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c2nasm/library.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MxCompiler/MxCompiler/IR/IRList.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MxCompiler/MxCompiler/IR/IRList.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/ASTBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/ASTBaseVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/ASTNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/ArefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/ArefNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/BinaryOpNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/BinaryOpNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/ContinueNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/ContinueNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/ExprStmtNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/ExprStmtNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/FunDefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/FunDefNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/LoopNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/LoopNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/MemberNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/MemberNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/ReturnNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/ReturnNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/AST/VariableNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/AST/VariableNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Entities/FunctionEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Entities/FunctionEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Entities/ParameterEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Entities/ParameterEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Entities/Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Entities/Scope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Entities/VariableEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Entities/VariableEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/BinaryIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/BinaryIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/CJumpIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/CJumpIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/IR.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/IRList.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/IRList.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/IntLitIR.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/JumpIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/JumpIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/MoveIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/MoveIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/PopIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/PopIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/PushIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/PushIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/Register.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/ReturnIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/ReturnIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/StringLitIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/StringLitIR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/SyscallIR.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTTypeVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Type/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Type/Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Type/TypeArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Type/TypeArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Type/TypeClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Type/TypeClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Type/TypeTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Type/TypeTable.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -79,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.23087719">
+    <splitter split-orientation="horizontal" split-proportion="0.11095506">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="NASMTranslator.java" pinned="false" current-in-tab="false">
@@ -200,8 +139,11 @@
           <file leaf-file-name="IRBuilder.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="191">
-                  <caret line="136" column="100" selection-start-line="136" selection-start-column="100" selection-end-line="136" selection-end-column="100" />
+                <state relative-caret-position="764">
+                  <caret line="467" column="8" selection-start-line="467" selection-start-column="8" selection-end-line="467" selection-end-column="8" />
+                  <folding>
+                    <marker date="1527044698164" expanded="true" signature="8660:8703" ph="..." />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -333,9 +275,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>([a-z0-9]+),</find>
-      <find>return ([a-zA-Z.]+\(ctx\));</find>
-      <find>public VarIR</find>
       <find>[A-Z_]*,</find>
       <find>([A-Z_]*),</find>
       <find>exprstmt</find>
@@ -363,6 +302,9 @@
       <find>ClassDef</find>
       <find>([A-Za-z]+)</find>
       <find>\n\t\{\n\t\}</find>
+      <find>PushIR</find>
+      <find>return</find>
+      <find>Return</find>
     </findStrings>
     <replaceStrings>
       <replace>MxParser</replace>
@@ -681,21 +623,21 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Tool Output" order="7" weight="0.14831461" />
-      <window_info active="true" anchor="bottom" id="Messages" order="12" visible="true" weight="0.32905984" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32905984" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5005208" side_tool="true" weight="0.32921347" />
       <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947917" weight="0.26436782" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947917" weight="0.2638889" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32905984" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7627388" visible="true" weight="0.2578125" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7638889" visible="true" weight="0.2578125" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
       <window_info anchor="bottom" id="ANTLR Preview" order="11" weight="0.47427294" />
-      <window_info id="Structure" order="1" sideWeight="0.23726115" side_tool="true" visible="true" weight="0.2578125" />
+      <window_info id="Structure" order="1" sideWeight="0.2361111" side_tool="true" visible="true" weight="0.2578125" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -1208,8 +1150,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="136" column="100" selection-start-line="136" selection-start-column="100" selection-end-line="136" selection-end-column="100" />
+        <state relative-caret-position="764">
+          <caret line="467" column="8" selection-start-line="467" selection-start-column="8" selection-end-line="467" selection-end-column="8" />
+          <folding>
+            <marker date="1527044698164" expanded="true" signature="8660:8703" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

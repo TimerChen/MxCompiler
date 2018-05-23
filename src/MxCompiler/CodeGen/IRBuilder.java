@@ -407,18 +407,27 @@ public class IRBuilder extends ASTBaseVisitor
 		for(int i=0;i<node.entity().params().size();++i)
 		{
 			ParameterEntity pi = node.entity().params().get(i);
-			VarRegIR r0 = getNewReg();
-			pi.setRegIR(r0);
+			VarRegIR r0;
+
 			if(i>=6)
 			{
+				r0 = getNewReg();
+				pi.setRegIR(r0);
 				plist.add(new LoadIR(new VarRegIR(r0.regIndex()), new VarRegIR(5), new VarIntIR(i-5)));
 			}else
 			{
+//				pi.setRegIR(new VarRegIR(pidx[i]));
+				//???
+				//this can let regs be re-alloc
+				r0 = getNewReg();
+				pi.setRegIR(r0);
 				plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
-
 			}
 		}
+		node.setExitLabel(new VarLabelIR("exit_"+node.name()));
+
 		super.visit(node);
+
 		List<InsIR> list = new LinkedList<>();
 		/*
 		Calle-saved:
@@ -432,12 +441,31 @@ public class IRBuilder extends ASTBaseVisitor
 		(ret)
 		 */
 		int[] idx = {5, 3, 12, 13, 14, 15};
+
+		//callee-save regs
 		for(int i=0;i<6;++i)
 		{
 			list.add(new PushIR(new VarRegIR(idx[i])));
 		}
+		//move rbp rsp
+		list.add(new MoveIR(new VarRegIR(5), new VarRegIR(4)));
+		//paramters to new regs
 		list.addAll(plist);
+
+		//function body
 		list.addAll((List<InsIR>) map.get(node.entity().body()));
+
+	//exitLabel:
+		list.add(new LabelIR(node.exitLabel().label()));
+
+		//move rsp rbp
+		list.add(new MoveIR(new VarRegIR(4), new VarRegIR(5)));
+		//recover callee-saved regs
+		for(int i=5;i>=0;--i)
+			list.add(new PopIR(new VarRegIR(idx[i])));
+		//ret
+		list.add(new ReturnIR());
+
 		map.put(node, list);
 		return null;
 	}
@@ -851,10 +879,15 @@ public class IRBuilder extends ASTBaseVisitor
 			{
 				r0 = params.get(i);
 				list.addAll(r0.irList());
+				list.add(new PushIR(new VarRegIR(idx[i])));
 				list.add(new MoveIR(new VarRegIR(idx[i]), r0));
 			}
 		//Call
 		list.add(new CallIR(funName));
+		for(int i=Math.min(5, params.size()); i>=0; --i)
+		{
+			list.add(new PopIR(new VarRegIR(idx[i])));
+		}
 		return list;
 	}
 	@Override
