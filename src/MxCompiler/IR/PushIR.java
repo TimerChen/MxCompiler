@@ -8,21 +8,21 @@ package MxCompiler.IR;
 
 public class PushIR extends InsIR
 {
-	private VarIR val;
+	private VarIR src;
 
-	public PushIR(VarIR val)
+	public PushIR(VarIR src)
 	{
-		this.val = val;
+		this.src = src;
 	}
 
-	public VarIR val()
+	public VarIR src()
 	{
-		return val;
+		return src;
 	}
 
-	public void setVal(VarIR val)
+	public void setSrc(VarIR src)
 	{
-		this.val = val;
+		this.src = src;
 	}
 	@Override
 	public void accept(IRVisitor visitor)

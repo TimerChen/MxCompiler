@@ -10,11 +10,11 @@ public class BinaryIR extends InsIR
 {
 	public enum Op
 	{
-		ADD, SUB, MUL, DIV, MOD, LSHIFT, RSHIFT,
-		LT, GT, LE, GE, EQ, NE, AND, XOR, OR, NEG, NOT
+		ADD, SUB, LSHIFT, RSHIFT,
+		AND, XOR, OR
 	}
-	Op operator;
-	VarIR lhs, rhs;
+	private Op operator;
+	private VarIR lhs, rhs;
 
 	public BinaryIR(Op operator, VarIR lhs, VarIR rhs)
 	{
@@ -22,6 +22,22 @@ public class BinaryIR extends InsIR
 		this.lhs = lhs;
 		this.rhs = rhs;
 	}
+
+	public Op operator()
+	{
+		return operator;
+	}
+
+	public VarIR lhs()
+	{
+		return lhs;
+	}
+
+	public VarIR rhs()
+	{
+		return rhs;
+	}
+
 	@Override
 	public void accept(IRVisitor visitor)
 	{

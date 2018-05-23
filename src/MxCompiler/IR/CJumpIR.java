@@ -8,16 +8,16 @@ package MxCompiler.IR;
 
 public class CJumpIR extends InsIR
 {
-	public enum LogicOp{AND, OR, LE, L, G, GE, EQ, NE};
+	public enum LogicOp{LE, LT, GT, GE, EQ, NE};
 	LogicOp operator;
 	VarIR lhs, rhs;
-	VarLabelIR label;
-	public CJumpIR(LogicOp operator, VarIR lhs, VarIR rhs, VarLabelIR label)
+	VarLabelIR aim;
+	public CJumpIR(LogicOp operator, VarIR lhs, VarIR rhs, VarLabelIR aim)
 	{
 		this.operator = operator;
 		this.lhs = lhs;
 		this.rhs = rhs;
-		this.label = label;
+		this.aim = aim;
 	}
 
 	public LogicOp operator()
@@ -35,9 +35,9 @@ public class CJumpIR extends InsIR
 		return rhs;
 	}
 
-	public VarLabelIR label()
+	public VarLabelIR aim()
 	{
-		return label;
+		return aim;
 	}
 
 	@Override

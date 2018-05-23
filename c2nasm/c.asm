@@ -6,8 +6,12 @@
 
 default rel
 
+global gc
 global add
+global val
 global main
+global ga
+global gb
 
 
 SECTION .text   
@@ -25,12 +29,26 @@ add:
         ret
 
 
+val:
+        push    rbp
+        mov     rbp, rsp
+        mov     eax, 233
+        pop     rbp
+        ret
+
+
 main:
         push    rbp
         mov     rbp, rsp
         sub     rsp, 32
         mov     dword [rbp-18H], 6
         mov     dword [rbp-14H], 7
+        mov     eax, dword [rbp-18H]
+        not     eax
+        mov     dword [rel gc], eax
+        mov     eax, dword [rbp-18H]
+        neg     eax
+        mov     dword [rel gc], eax
         lea     rax, [rel L_003]
         mov     qword [rbp-10H], rax
         lea     rax, [rel L_004]
@@ -38,13 +56,20 @@ main:
         mov     eax, dword [rbp-18H]
         mov     edi, eax
         call    add
+        mov     dword [rel ga], 233
+        mov     dword [rel gb], 244
         mov     eax, 0
         leave
         ret
 
 
 
-SECTION .data   
+SECTION .data   align=4
+
+ga:
+        dd 000000E9H
+
+gb:     dd 000000F4H
 
 
 SECTION .bss    

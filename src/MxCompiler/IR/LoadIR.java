@@ -9,13 +9,18 @@ package MxCompiler.IR;
 public class LoadIR extends InsIR
 {
 	//move dest [base + index*8]
-	VarIR dest, base, index;
+	VarIR dest, src;
 
 	public LoadIR(VarIR dest, VarIR base, VarIR index)
 	{
 		this.dest = dest;
-		this.base = base;
-		this.index = index;
+		this.src = new VarMemIR(base, index);
+	}
+
+	public LoadIR(VarIR dest, VarIR src)
+	{
+		this.dest = dest;
+		this.src = src;
 	}
 
 	public VarIR dest()
@@ -23,14 +28,9 @@ public class LoadIR extends InsIR
 		return dest;
 	}
 
-	public VarIR base()
+	public VarIR src()
 	{
-		return base;
-	}
-
-	public VarIR index()
-	{
-		return index;
+		return src;
 	}
 	@Override
 	public void accept(IRVisitor visitor)

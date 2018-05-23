@@ -1,5 +1,7 @@
 package MxCompiler;
-import MxCompiler.AST.AssignNode;
+import MxCompiler.CodeGen.IRBuilder;
+import MxCompiler.CodeGen.NASMTranslator;
+import MxCompiler.IR.*;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
@@ -8,6 +10,9 @@ import MxCompiler.tools.Debuger;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import MxCompiler.parser.*;
 
 
@@ -48,7 +53,7 @@ public class Compiler
 
 		return ASTBuilder.ast();
 	}
-	private void CheckOnAst(ASTree ast)
+	private void checkOnAst(ASTree ast)
 	{
 		Debuger.printLine("Resolve Symbol");
 		ast.resolveSymbol();
@@ -57,6 +62,49 @@ public class Compiler
 		Debuger.printLine("Type Checking");
 		ast.typeCheck();
 		Debuger.println();
+	}
+
+	private List<InsIR> irList;
+	private List<StringLitIR> irLitList;
+	private ASTree ast;
+	private List<String> codeStr, libraryStr;
+
+	private void irGenerate(ASTree ast)
+	{
+		Debuger.printLine("IR Generate");
+		IRBuilder irBuilder = new IRBuilder(ast);
+		irList = irBuilder.irList();
+		irLitList = irBuilder.constList();
+	}
+	private void codeTranslate(List<InsIR> irList, List<StringLitIR>irLitList)
+	{
+		Debuger.printLine("Code Translate");
+		NASMTranslator translator = new NASMTranslator(irList, irLitList);
+
+		codeStr = translator.codeStr();
+	}
+	private void outputCode(List<String> outputStr)
+	{
+		Debuger.printLine("All Finished");
+		for(String i: outputStr)
+		{
+			System.out.println(i);
+		}
+	}
+	private void Optimize()
+	{
+		Debuger.printLine("Code Optimize");
+	}
+	private void loadCLibrary()
+	{
+		Debuger.printLine("Load Library");
+	}
+	private List<String> mergeCodeStr(List<String> code, List<String> library)
+	{
+		List<String> list = new ArrayList<>();
+		list.addAll(code);
+		list.addAll(library);
+		return list;
 	}
 	public void compile( String fileName ) throws IOException, RuntimeException
 	{
@@ -70,16 +118,19 @@ public class Compiler
 			Debuger.printInfo("Info", "Input: "+fileName);
 			is = new FileInputStream(fileName);
 		}
-		ASTree ast = parse(is);
-		CheckOnAst(ast);
 
-		/*
-		Debuger.printLine("Lisener");
-		ParseTreeWalker walker = new ParseTreeWalker();
-		MxBaseListener evalByListener = new MxBaseListener();
-		walker.walk(evalByListener, tree);
-		*/
+		//Semantic Check
+		ast = parse(is);
+		checkOnAst(ast);
 
+		//Code Generate
+		irGenerate(ast);
+		Optimize();
+		codeTranslate(irList, irLitList);
+
+		loadCLibrary();
+
+		outputCode(mergeCodeStr(codeStr, libraryStr));
 	}
 
 }

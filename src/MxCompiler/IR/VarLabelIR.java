@@ -19,4 +19,10 @@ public class VarLabelIR extends VarIR
 	{
 		return label;
 	}
+
+	@Override
+	public String toCodeStr()
+	{
+		return label;
+	}
 }

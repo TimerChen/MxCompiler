@@ -8,5 +8,21 @@ package MxCompiler.IR;
 
 public class VarMemIR extends VarIR
 {
-	int address;
+	static final String MEM_PREFIX = "qword ";
+	private VarIR base, index;
+
+	public VarMemIR(VarIR base, VarIR index)
+	{
+		this.base = base;
+		this.index = index;
+	}
+
+	@Override
+	public String toCodeStr()
+	{
+		if(index == null)
+			return MEM_PREFIX + "[" + base.toCodeStr() + "]";
+		else
+			return MEM_PREFIX + "[" + base.toCodeStr() + index.toCodeStr() + "*8"+ "]";
+	}
 }

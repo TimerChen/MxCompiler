@@ -8,13 +8,20 @@ package MxCompiler.IR;
 
 public class StoreIR extends InsIR
 {
-	//move [base + index*8] dest
-	private VarIR base, index, src;
+	//move [base + index*8] src
+	private VarIR dest, src;
 
 	public StoreIR(VarIR base, VarIR index, VarIR src)
 	{
-		this.base = base;
-		this.index = index;
+		this.dest = new VarMemIR(base, index);
+		this.src = src;
+	}
+
+	public StoreIR(VarIR dest, VarIR src)
+	{
+		if(dest instanceof VarRegIR || dest instanceof VarLabelIR)
+			throw new RuntimeException("Address excepted.");
+		this.dest = dest;
 		this.src = src;
 	}
 
@@ -23,6 +30,12 @@ public class StoreIR extends InsIR
 		return src;
 	}
 
+	public VarIR dest()
+	{
+		return dest;
+	}
+
+	/*
 	public VarIR base()
 	{
 		return base;
@@ -32,6 +45,7 @@ public class StoreIR extends InsIR
 	{
 		return index;
 	}
+	*/
 	@Override
 	public void accept(IRVisitor visitor)
 	{

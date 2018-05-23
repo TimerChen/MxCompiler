@@ -76,6 +76,11 @@ public class IRBuilder extends ASTBaseVisitor
 	{
 		if(irList == null)
 		{
+			irList = new ArrayList<>();
+			irList.add(new LabelIR("main"));
+			irList.addAll(getGlobalVarList());
+			irList.addAll(mainIrList());
+			irList.addAll(getIRList());
 			irList = getIRList();
 		}
 		return irList;
@@ -441,7 +446,8 @@ public class IRBuilder extends ASTBaseVisitor
 		(ret)
 		 */
 		int[] idx = {5, 3, 12, 13, 14, 15};
-
+		if(!node.name().equals("main"))
+			list.add(new LabelIR(node.name()));
 		//callee-save regs
 		for(int i=0;i<6;++i)
 		{
@@ -573,7 +579,7 @@ public class IRBuilder extends ASTBaseVisitor
 				list.add(new MoveIR(r0, new VarRegIR(0)));
 				if(node.operator() == BinaryOpNode.BinaryOp.NE)
 				{
-					list.add(new BinaryIR(BinaryIR.Op.NOT, r0, r0));
+					list.add(new UnaryIR(UnaryIR.Op.NOT, r0));
 				}
 			}else if(node.operator() == BinaryOpNode.BinaryOp.ADD)
 			{
@@ -607,11 +613,96 @@ public class IRBuilder extends ASTBaseVisitor
 				if(node.operator() == BinaryOpNode.BinaryOp.GT ||
 						node.operator() == BinaryOpNode.BinaryOp.GE)
 				{
-					list.add(new BinaryIR(BinaryIR.Op.NOT, r0, r0));
+					list.add(new UnaryIR(UnaryIR.Op.NOT, r0));
 				}
 
 			}
 			map.put(node, new VarRegIR(list, r0.regIndex()));
+		}else if (node.operator() == BinaryOpNode.BinaryOp.MUL ||
+				node.operator() == BinaryOpNode.BinaryOp.MOD ||
+				node.operator() == BinaryOpNode.BinaryOp.DIV)
+		{
+			/*
+			<Result: r2>
+				[lhs]->r0
+				[rhs]->r1
+				mov reg0 r0
+				triOp (reg0:reg2) r1
+				mov r2 reg0/reg2
+			 */
+			r0 = (VarRegIR) lhs;
+			r1 = (VarRegIR) rhs;
+			r2 = getNewReg();
+
+			list.addAll(lhs.irList());
+			list.addAll(rhs.irList());
+			list.add(new MoveIR(new VarRegIR(0), r0));
+
+			UnaryIR.Op uOp;
+			switch (op)
+			{
+				case MUL:
+					uOp = UnaryIR.Op.MUL;break;
+				case MOD:
+					uOp = UnaryIR.Op.MUL;break;
+				case DIV:
+					uOp = UnaryIR.Op.MUL;break;
+				default:
+					throw new RuntimeException("Unkown operator");
+			}
+			list.add(new UnaryIR(uOp, r1));
+			switch (op)
+			{
+				case MUL:
+				case DIV:
+					list.add(new MoveIR(r2, new VarRegIR(0)));
+				case MOD:
+					list.add(new MoveIR(r2, new VarRegIR(2)));
+				default:
+
+			}
+			map.put(node, new VarRegIR(list, r2.regIndex()));
+
+		}else if(op == BinaryOpNode.BinaryOp.LT ||
+				op == BinaryOpNode.BinaryOp.GT ||
+				op == BinaryOpNode.BinaryOp.LE ||
+				op == BinaryOpNode.BinaryOp.GE ||
+				op == BinaryOpNode.BinaryOp.GT)
+		{
+			/*
+			<Result: r2>
+				[lhs]->r0
+				[rhs]->r1
+				op r2 (r0 r1)
+			 */
+
+			r0 = (VarRegIR) lhs;
+			r1 = (VarRegIR) rhs;
+			r2 = getNewReg();
+
+			list.addAll(lhs.irList());
+			list.addAll(rhs.irList());
+
+			TriIR.Op tOp;
+			switch (op)
+			{
+				case LT:
+					tOp = TriIR.Op.LT; break;
+				case GT:
+					tOp = TriIR.Op.GT; break;
+				case LE:
+					tOp = TriIR.Op.LE; break;
+				case GE:
+					tOp = TriIR.Op.GE; break;
+				case EQ:
+					tOp = TriIR.Op.EQ; break;
+				case NE:
+					tOp = TriIR.Op.NE; break;
+				default:
+					throw new RuntimeException("Op not find.");
+			}
+			list.add(new TriIR(tOp, r2, r0, r1));
+			map.put(node, new VarRegIR(list, r2.regIndex()));
 		}else
 		{
 			/*
@@ -634,28 +725,10 @@ public class IRBuilder extends ASTBaseVisitor
 					bOp = BinaryIR.Op.ADD; break;
 				case SUB:
 					bOp = BinaryIR.Op.SUB; break;
-				case MUL:
-					bOp = BinaryIR.Op.MUL; break;
-				case DIV:
-					bOp = BinaryIR.Op.DIV; break;
-				case MOD:
-					bOp = BinaryIR.Op.MOD; break;
 				case LSHIFT:
 					bOp = BinaryIR.Op.LSHIFT; break;
 				case RSHIFT:
 					bOp = BinaryIR.Op.RSHIFT; break;
-				case LT:
-					bOp = BinaryIR.Op.LT; break;
-				case GT:
-					bOp = BinaryIR.Op.GT; break;
-				case LE:
-					bOp = BinaryIR.Op.LE; break;
-				case GE:
-					bOp = BinaryIR.Op.GE; break;
-				case EQ:
-					bOp = BinaryIR.Op.EQ; break;
-				case NE:
-					bOp = BinaryIR.Op.NE; break;
 				case BIT_AND:
 				case LOGIC_AND:
 					bOp = BinaryIR.Op.AND; break;
@@ -773,13 +846,11 @@ public class IRBuilder extends ASTBaseVisitor
 			case ADD:
 				break;
 			case MINUS:
-				list.add(new BinaryIR(BinaryIR.Op.NEG, r0, new VarIntIR(1)));
+				list.add(new UnaryIR(UnaryIR.Op.NEG, r0));
 				break;
 			case BIT_NOT:
-				list.add(new BinaryIR(BinaryIR.Op.NOT, r0, new VarIntIR(1)));
-				break;
 			case LOGIC_NOT:
-				list.add(new BinaryIR(BinaryIR.Op.NOT, r0, new VarIntIR(1)));
+				list.add(new UnaryIR(UnaryIR.Op.NOT, r0));
 				break;
 			default:
 				throw new RuntimeException("Unknown type.");

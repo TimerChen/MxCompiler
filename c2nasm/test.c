@@ -30,9 +30,9 @@ void test_string()
 	((int*)s0)[0] = strlen(str0);
 	((int*)s1)[0] = strlen(str1);
 
-	printf("__string_new\n");
+	printf("__string_string\n");
 	int len = 3;
-	str2 = __string_new(len);
+	str2 = __string_string(len);
 	for(int i=0;i<len;++i)
 		str2[i] = '1';
 

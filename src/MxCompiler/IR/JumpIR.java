@@ -8,12 +8,18 @@ package MxCompiler.IR;
 
 public class JumpIR extends InsIR
 {
-	VarLabelIR aim;
+	private VarLabelIR aim;
 
 	public JumpIR(VarLabelIR aim)
 	{
 		this.aim = aim;
 	}
+
+	public VarLabelIR aim()
+	{
+		return aim;
+	}
+
 	@Override
 	public void accept(IRVisitor visitor)
 	{

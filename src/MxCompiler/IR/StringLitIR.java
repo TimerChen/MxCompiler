@@ -28,4 +28,13 @@ public class StringLitIR
 	{
 		return PREFIX + idx;
 	}
+
+	public String val()
+	{
+		return val;
+	}
+	public String toCodeStr()
+	{
+		return "\"" + val + "\"";
+	}
 }

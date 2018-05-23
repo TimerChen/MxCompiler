@@ -32,4 +32,12 @@ public class VarRegIR extends VarIR
 	{
 		this.regIndex = regIndex;
 	}
+
+	@Override
+	public String toCodeStr()
+	{
+		if(regIndex >= 16)
+			throw new RuntimeException("Register need alloc.");
+		return "r"+regIndex;
+	}
 }
