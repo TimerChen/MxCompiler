@@ -10,26 +10,26 @@ import MxCompiler.IR.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class BasicBlock extends Object
 {
-	private int number;
+	private int id;
 	private List<InsIR> irList;
 	private BasicBlock next0, next1;
-	public Map<Integer, Bool>varKill, ueVar, liveOut;
+	public Set<Integer>varKill, ueVar, liveOut;
 
-	public BasicBlock(int number)
+	public BasicBlock(int id)
 	{
 		irList = null;
 		next0 = null;
 		next1 = null;
-		this.number = number;
+		this.id = id;
 	}
 
-	public int number()
+	public int id()
 	{
-		return number;
+		return id;
 	}
 
 	public List<InsIR> irList()

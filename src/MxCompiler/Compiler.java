@@ -1,7 +1,5 @@
 package MxCompiler;
-import MxCompiler.CodeGen.IRBuilder;
-import MxCompiler.CodeGen.NASMTranslator;
-import MxCompiler.CodeGen.NaiveAllocator;
+import MxCompiler.CodeGen.*;
 import MxCompiler.IR.*;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
@@ -65,7 +63,7 @@ public class Compiler
 		Debuger.println();
 	}
 
-	private List<InsIR> irList;
+	private List<List<InsIR>> irLists;
 	private List<StringLitIR> irLitList;
 	private ASTree ast;
 	private List<String> codeStr, libraryStr;
@@ -74,7 +72,7 @@ public class Compiler
 	{
 		Debuger.printLine("IR Generate");
 		IRBuilder irBuilder = new IRBuilder(ast);
-		irList = irBuilder.irList();
+		irLists = irBuilder.irList();
 		irLitList = irBuilder.constList();
 	}
 	private void codeTranslate(List<InsIR> irList, List<StringLitIR>irLitList)
@@ -92,11 +90,16 @@ public class Compiler
 			System.out.println(i);
 		}
 	}
-	private void Optimize()
+	private void Optimize(List<List<InsIR>> irLists)
 	{
+		Debuger.printLine("Code Analyze");
+		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
+		List<BasicBlock> blkList = cfgBuilder.getCFG();
+		VarAnalyzer analyzer = new VarAnalyzer(blkList);
+
 		Debuger.printLine("Code Optimize");
-		NaiveAllocator allocator = new NaiveAllocator(irList);
-		irList = allocator.alloc();
+		NaiveAllocator allocator = new NaiveAllocator(irLists);
+		irLists = allocator.alloc();
 	}
 	private void loadCLibrary()
 	{
@@ -128,8 +131,8 @@ public class Compiler
 
 		//Code Generate
 		irGenerate(ast);
-		Optimize();
-		codeTranslate(irList, irLitList);
+		Optimize(irLists);
+		codeTranslate(irLists, irLitList);
 
 		loadCLibrary();
 

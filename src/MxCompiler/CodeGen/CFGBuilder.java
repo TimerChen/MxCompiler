@@ -14,66 +14,74 @@ import java.util.*;
 
 public class CFGBuilder extends Object
 {
-	private List<InsIR> irList;
+	private List<List<InsIR>> irLists;
 	private Map<String,BasicBlock> map;
-	public CFGBuilder(List<InsIR> irList)
+	public CFGBuilder(List<List<InsIR>> irLists)
 	{
-		this.irList = irList;
+		this.irLists = irLists;
 		this.map = new HashMap<>();
 	}
 
 	public List<BasicBlock> getCFG()
 	{
-		int n = irList.size();
-		BasicBlock nowBlock = null;
-		List<BasicBlock> funList = new ArrayList<>();
-		int start = 0, counter = 0;
-		for(int i=0;i<n;++i)
-		{
-			BasicBlock nextBlock;
-			InsIR ir = irList.get(i);
 
-			if(ir instanceof LabelIR)
+		BasicBlock nowBlock = null;
+		List<BasicBlock> funList = new ArrayList<>(irLists.size());
+		int ii = 0;
+		for(List<InsIR> irList: irLists)
+		{
+			int start = 0,
+				counter = 0,
+				n = irList.size();
+
+			for(int i=0;i<n;++i)
 			{
-				//still at last block
-				if(start <= i-1)
+				BasicBlock nextBlock;
+				InsIR ir = irList.get(i), pir = null;
+				if(i > 0)pir = irList.get(i-1);
+
+				if(ir instanceof LabelIR)
+				{
+					//still at last block
+					nextBlock = new BasicBlock(counter++);
+					if(i!=0)
+					{
+						nowBlock.setNext0(nextBlock);
+						nowBlock.setIrList(irList.subList(start, i-1));
+						start = i;
+					}else
+					{
+						funList.set(ii, nextBlock);
+					}
+					nowBlock = nextBlock;
+					map.put(((LabelIR) ir).label(), nowBlock);
+				}else if(pir instanceof JumpIR || pir instanceof CJumpIR)
 				{
 					nextBlock = new BasicBlock(counter++);
 					nowBlock.setNext0(nextBlock);
 					nowBlock.setIrList(irList.subList(start, i-1));
 					nowBlock = nextBlock;
 					start = i;
-				}else if(nowBlock == null)
-				{
-					nowBlock = new BasicBlock(counter++);
-					funList.add(nowBlock);
 				}
-				map.put(((LabelIR) ir).label(), nowBlock);
-			}else if(ir instanceof JumpIR || ir instanceof CJumpIR)
-			{
-				nextBlock = new BasicBlock(counter++);
-				nowBlock.setNext0(nextBlock);
-				nowBlock.setIrList(irList.subList(start, i));
-				nowBlock = nextBlock;
-				start = i+1;
-			}else if(ir instanceof ReturnIR)
-			{
-				nowBlock = null;
-				counter = 0;
-				start = i+1;
 			}
-		}
-		for(BasicBlock i: funList)
-		{
-			InsIR ir = i.irList().get(i.irList().size()-1);
-			if(ir instanceof JumpIR)
+			nowBlock.setIrList(irList.subList(start, n-1));
+
+			nowBlock = funList.get(ii);
+			while(nowBlock!=null)
 			{
-				i.setNext1(map.get(((JumpIR) ir).aim().label()));
-			}else if(ir instanceof CJumpIR)
-			{
-				i.setNext1(map.get(((CJumpIR) ir).aim().label()));
+				InsIR ir = nowBlock.irList().get(nowBlock.irList().size()-1);
+				if(ir instanceof JumpIR)
+				{
+					nowBlock.setNext1(map.get(((JumpIR) ir).aim().label()));
+				}else if(ir instanceof CJumpIR)
+				{
+					nowBlock.setNext1(map.get(((CJumpIR) ir).aim().label()));
+				}
+				nowBlock = nowBlock.next0();
 			}
+			ii++;
 		}
+
 
 		return funList;
 	}

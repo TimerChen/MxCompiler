@@ -577,6 +577,7 @@ public class MxASTVisitor extends MxBaseVisitor
 		List<FunDefNode> funList = new ArrayList<FunDefNode>();
 		List<VarDecNode> varList = new ArrayList<VarDecNode>();
 		FunctionEntity constructor = null;
+		FunDefNode constructorNode = null;
 		for(MxParser.DeclarationContext i : ctx.declaration())
 		{
 			varList.add((VarDecNode) map.get(i));
@@ -592,6 +593,7 @@ public class MxASTVisitor extends MxBaseVisitor
 				"Multi constructor.");
 		for(MxParser.ConstructorDefinitionContext i : ctx.constructorDefinition())
 		{
+			constructorNode = (FunDefNode) map.get(i);
 			constructor = ((FunDefNode) map.get(i)).entity();
 			if(constructor.params().size() > 0)
 				throw new SemanticError(
@@ -604,7 +606,7 @@ public class MxASTVisitor extends MxBaseVisitor
 		entity = new ClassEntity(name,
 				typeTable.getType(name),
 				new SourcePosition(ctx),
-				funList, varList, constructor,
+				funList, varList, constructorNode,
 				null, 0);
 		map.put(ctx, new ClassDefNode(new SourcePosition(ctx), entity));
 		return ret;

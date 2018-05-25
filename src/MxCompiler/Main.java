@@ -6,10 +6,7 @@ import sun.security.ssl.Debug;
 //import javax.swing.text.html.Option;
 import java.awt.print.PrinterGraphics;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Main
 {
@@ -29,23 +26,13 @@ public class Main
 		init();
 		MxCompiler.Compiler MxC = new MxCompiler.Compiler();
 
-		List<Integer> list = new LinkedList<>();
 		Debuger.printLine("LinkedList Test");
-		int n = 1000000;
-		for(int i=0;i<n;++i)
+		Set<Integer> set = new HashSet<>();
+		set.add(1);set.add(2);set.add(3);
+		Iterator<Integer>i = set.iterator();
+		while(i.hasNext())
 		{
-			list.add(i);
-		}
-		ListIterator<Integer> it = list.listIterator();
-		while(it.hasNext())
-		{
-			ListIterator<Integer> old_it = it;
-			it.next();
-			if(it==old_it)
-			{
-				Debuger.printLine("juckyou");
-				break;
-			}
+			Debuger.print(" "+i.next());
 		}
 		Debuger.printLine("End");
 

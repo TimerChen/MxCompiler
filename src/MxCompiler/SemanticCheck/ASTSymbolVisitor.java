@@ -65,6 +65,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		for(FunDefNode i : node.entity().funList())
 		{
 			currentScope.add(i.entity());
+			i.setClassEntity(node.entity());
 			newScope();
 			for(ParameterEntity j : i.entity().params())
 			{

@@ -16,5 +16,5 @@ public class Options
 	public static TypeTable typeTable;
 	public static Scope arrayScope;
 
-	public static Scope mainScope;
+
 }

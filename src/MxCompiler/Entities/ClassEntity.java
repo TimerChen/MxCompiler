@@ -11,15 +11,17 @@ public class ClassEntity extends Entity
 	private List<FunDefNode> funList;
 	private List<VarDecNode> varList;
 	private FunctionEntity constructor;
+	private FunDefNode constructorNode;
 	private Scope scope;
 	private int size;
 
-	public ClassEntity(String name, Type type, SourcePosition position, List<FunDefNode> funList, List<VarDecNode> varList, FunctionEntity constructor, Scope scope, int size)
+	public ClassEntity(String name, Type type, SourcePosition position, List<FunDefNode> funList, List<VarDecNode> varList, FunDefNode constructorNode, Scope scope, int size)
 	{
 		super(name, type, position);
 		this.funList = funList;
 		this.varList = varList;
-		this.constructor = constructor;
+		this.constructorNode = constructorNode;
+		this.constructor = constructorNode.entity();
 		this.scope = scope;
 		this.size = size;
 	}
@@ -39,6 +41,10 @@ public class ClassEntity extends Entity
 		return constructor;
 	}
 
+	public FunDefNode constructorNode()
+	{
+		return constructorNode;
+	}
 
 	public Scope scope()
 	{

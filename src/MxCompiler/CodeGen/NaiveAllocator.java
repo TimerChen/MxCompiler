@@ -13,7 +13,7 @@ import java.util.*;
 
 public class NaiveAllocator implements IRVisitor
 {
-	private List<InsIR> irList;
+	private List<List<InsIR>> irLists;
 	private Map<String,Integer> usePos;
 	private Map<Integer, Integer> nowDefPos;
 	private int nowLine;
@@ -24,16 +24,16 @@ public class NaiveAllocator implements IRVisitor
 	}
 	Phase nowPhase;
 
-	public NaiveAllocator(List<InsIR> irList)
+	public NaiveAllocator(List<List<InsIR>> irLists)
 	{
-		this.irList = irList;
+		this.irLists = irLists;
 		usePos = new HashMap<>();
 		nowDefPos = new HashMap<>();
 	}
 
 	public List<InsIR> alloc()
 	{
-		List<InsIR> irList = new ArrayList<>(this.irList);
+		List<InsIR> irList = new ArrayList<>(this.irLists);
 		int n = irList.size();
 
 		nowPhase = Phase.PreCollect;
