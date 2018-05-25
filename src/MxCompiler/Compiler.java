@@ -1,6 +1,7 @@
 package MxCompiler;
 import MxCompiler.CodeGen.IRBuilder;
 import MxCompiler.CodeGen.NASMTranslator;
+import MxCompiler.CodeGen.NaiveAllocator;
 import MxCompiler.IR.*;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
@@ -94,6 +95,8 @@ public class Compiler
 	private void Optimize()
 	{
 		Debuger.printLine("Code Optimize");
+		NaiveAllocator allocator = new NaiveAllocator(irList);
+		irList = allocator.alloc();
 	}
 	private void loadCLibrary()
 	{

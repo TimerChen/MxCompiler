@@ -17,6 +17,16 @@ public class VarMemIR extends VarIR
 		this.index = index;
 	}
 
+	public VarIR base()
+	{
+		return base;
+	}
+
+	public VarIR index()
+	{
+		return index;
+	}
+
 	@Override
 	public String toCodeStr()
 	{

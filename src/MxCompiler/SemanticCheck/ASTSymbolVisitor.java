@@ -57,6 +57,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		{
 			for(VariableEntity j : i.entity())
 			{
+
 				currentScope.add(j);
 			}
 		}

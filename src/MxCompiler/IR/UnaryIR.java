@@ -16,13 +16,22 @@ public class UnaryIR extends InsIR
 	}
 	private Op operator;
 	private VarRegIR src;
+	private boolean has2Dest;
+
 
 	public UnaryIR(Op operator, VarRegIR src)
 	{
 		this.operator = operator;
 		this.src = src;
+		if(operator == Op.NEG || operator == Op.NOT)
+			has2Dest = false;
+		else
+			has2Dest = true;
 	}
-
+	public boolean has2Dest()
+	{
+		return has2Dest;
+	}
 	public Op operator()
 	{
 		return operator;

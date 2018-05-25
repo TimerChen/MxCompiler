@@ -11,13 +11,26 @@ public class ParameterEntity extends Entity
 {
 	private VarRegIR regIR;
 	private int rank;
+
+	private boolean isMember;
 	public ParameterEntity(String name, Type type, SourcePosition position)
 	{
 		super(name, type, position);
 		regIR = null;
 		rank = -1;
+		isMember = false;
 	}
 
+
+	public boolean isMember()
+	{
+		return isMember;
+	}
+
+	public void setIsMember(boolean member)
+	{
+		isMember = true;
+	}
 	public VarRegIR regIR()
 	{
 		return regIR;

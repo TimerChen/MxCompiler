@@ -10,7 +10,7 @@ import MxCompiler.Type.Type;
 
 public class VariableEntity extends ParameterEntity
 {
-	ExprNode init;
+	private ExprNode init;
 
 	public VariableEntity(String name, Type type, SourcePosition position, ExprNode init)
 	{
@@ -22,6 +22,9 @@ public class VariableEntity extends ParameterEntity
 		super(pe.name, pe.type, pe.position);
 		this.init = null;
 	}
+
+
+
 	public void setType(Type type)
 	{
 		this.type = type;

@@ -78,7 +78,7 @@ public class IRBuilder extends ASTBaseVisitor
 		{
 			irList = new ArrayList<>();
 			irList.add(new LabelIR("main"));
-			irList.addAll(getGlobalVarList());
+			irList.addAll(globalVarList());
 			irList.addAll(mainIrList());
 			irList.addAll(getIRList());
 			irList = getIRList();
@@ -127,6 +127,30 @@ public class IRBuilder extends ASTBaseVisitor
 		StringLitIR str = new StringLitIR(val);
 		constList.add(str);
 		return new VarLabelIR(str.getLabel());
+	}
+
+	VarIR varTrans( VarIR var )
+	{
+		if(var instanceof VarMemIR)
+		{
+			List<InsIR> list = new LinkedList<>();
+			list.addAll(var.irList());
+			VarRegIR r0 = getNewReg();
+			list.add(new MoveIR(r0, var));
+			return new VarRegIR(list, r0.regIndex());
+		}else
+			return var;
+
+	}
+	VarRegIR regTrans( VarIR var )
+	{
+		if(var instanceof VarRegIR)
+			return (VarRegIR) var;
+		List<InsIR> list = new LinkedList<>();
+		list.addAll(var.irList());
+		VarRegIR r0 = getNewReg();
+		list.add(new MoveIR(r0, var));
+		return new VarRegIR(list, r0.regIndex());
 	}
 	@Override
 	public Void visit(BlockNode node)
@@ -993,13 +1017,11 @@ public class IRBuilder extends ASTBaseVisitor
 		return null;
 	}
 
-	@Override
-	public Void visit(VariableNode node)
+
+	void visitSimpleVar(VariableNode node)
 	{
-		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
 		VarRegIR r0, r1, r2;
-
 		if(!(node.type() instanceof TypeFunction))
 		{
 			if(node.name() == "null")
@@ -1024,6 +1046,50 @@ public class IRBuilder extends ASTBaseVisitor
 			nothing to do
 		 */
 			map.put(node, new VarRegIR(list, -1));
+
+		}
+	}
+	private void visitMemberVar(VariableNode node)
+	{
+		List<InsIR> list = new LinkedList<>();
+		VarIR parent = new VarRegIR(7);
+		VarRegIR r0, r1, r2;
+
+		r0 = (VarRegIR)parent;
+		if(!(node.type() instanceof TypeFunction))
+		{
+		/*
+		<Result: r1>
+			[parent]->r0
+			load r1 [r0+indexOfMember*8]
+		 */
+			r1 = getNewReg();
+			VarIntIR indexOfMember = new VarIntIR(((ParameterEntity)node.refEntity()).rank());
+			list.add(new LoadIR(r1 ,r0, indexOfMember));
+			map.put(node, new VarRegIR(list, r1.regIndex()));
+		}else
+		{
+		/*
+		<Result: r0>
+			[parent]->r0
+		 */
+			map.put(node, new VarRegIR(list, r0.regIndex()));
+		}
+	}
+	@Override
+	public Void visit(VariableNode node)
+	{
+		super.visit(node);
+		List<InsIR> list = new LinkedList<>();
+		VarRegIR r0, r1, r2;
+
+		if(node.refEntity() instanceof ParameterEntity &&
+				((ParameterEntity)node.refEntity()).isMember())
+		{
+			visitMemberVar(node);
+		}else
+		{
+			visitSimpleVar(node);
 		}
 		return null;
 	}
