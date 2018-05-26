@@ -21,9 +21,13 @@ public class ClassEntity extends Entity
 		this.funList = funList;
 		this.varList = varList;
 		this.constructorNode = constructorNode;
-		this.constructor = constructorNode.entity();
 		this.scope = scope;
 		this.size = size;
+
+		if(constructorNode == null)
+			this.constructor = null;
+		else
+			this.constructor = constructorNode.entity();
 	}
 
 	public List<FunDefNode> funList()

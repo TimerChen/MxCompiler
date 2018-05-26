@@ -31,7 +31,7 @@ public class NASMTranslator implements IRVisitor
 
 		//Prefix
 		list.add("default rel");
-		list.add("default main");
+		list.add("global main");
 
 		list.add("SECTION .text");
 		//visit(InsIR)
@@ -163,7 +163,7 @@ public class NASMTranslator implements IRVisitor
 	public void visit(JumpIR node)
 	{
 		List<String> list = new LinkedList<>();
-		list.add(CODE_PREFIX + "j"+"\t"+node.aim().label());
+		list.add(CODE_PREFIX + "jmp"+"\t"+node.aim().label());
 		map.put(node, list);
 	}
 
@@ -213,7 +213,7 @@ public class NASMTranslator implements IRVisitor
 	public void visit(LoadIR node)
 	{
 		List<String> list = new LinkedList<>();
-		list.add(CODE_PREFIX+"mov\t"+node.dest()+node.src());
+		list.add(CODE_PREFIX+"mov\t"+node.dest()+",\t"+node.src());
 		map.put(node, list);
 	}
 
@@ -221,7 +221,7 @@ public class NASMTranslator implements IRVisitor
 	public void visit(StoreIR node)
 	{
 		List<String> list = new LinkedList<>();
-		list.add(CODE_PREFIX+"mov\t"+node.dest()+node.src());
+		list.add(CODE_PREFIX+"mov\t"+node.dest()+",\t"+node.src());
 		map.put(node, list);
 	}
 
@@ -229,7 +229,7 @@ public class NASMTranslator implements IRVisitor
 	public void visit(MoveIR node)
 	{
 		List<String> list = new LinkedList<>();
-		list.add(CODE_PREFIX+"mov\t"+node.lhs()+node.rhs());
+		list.add(CODE_PREFIX+"mov\t"+node.lhs()+",\t"+node.rhs());
 		map.put(node, list);
 	}
 }

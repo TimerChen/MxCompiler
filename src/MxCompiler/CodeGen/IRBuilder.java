@@ -34,6 +34,8 @@ public class IRBuilder extends ASTBaseVisitor
 	private ASTree ast;
 	private Scope nowScope;
 	private int thisReg, savedRegNumber;
+
+
 	public IRBuilder(ASTree ast)
 	{
 		this.irList = null;
@@ -175,9 +177,9 @@ public class IRBuilder extends ASTBaseVisitor
 		List<InsIR> list = new LinkedList<>();
 		for(StmtNode i: node.stmts())
 		{
-			list.addAll((List<InsIR>) i);
+			list.addAll((List<InsIR>) map.get(i));
 		}
-		list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(node.scope().varNumber())));
+		//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(node.scope().varNumber())));
 		map.put(node, list);
 		nowScope = lastScope;
 		return null;
@@ -276,7 +278,9 @@ public class IRBuilder extends ASTBaseVisitor
 		exitLabel =  getNewLabel(block);
 		node.setLabels(contiueLabel, exitLabel);
 
+		Global.IRBuilder_loopDeepth++;
 		super.visit(node);
+		Global.IRBuilder_loopDeepth--;
 
 		VarRegIR condi = (VarRegIR) map.get(node.condi());
 		List<InsIR> body = (List<InsIR>) map.get(node.body());
@@ -294,6 +298,8 @@ public class IRBuilder extends ASTBaseVisitor
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(0), l1));
 //		.L2:
 		list.add(new LabelIR(l2.label()));
+
+		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
 //		.L0:
@@ -303,6 +309,8 @@ public class IRBuilder extends ASTBaseVisitor
 		r0 = condi;
 //		CJUMP .L2 (r0 == 1)?
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(0), l1));
+		Global.IRBuilder_loopDeepth--;
+
 //		.L1
 		list.add(new LabelIR(l1.label()));
 
@@ -331,7 +339,9 @@ public class IRBuilder extends ASTBaseVisitor
 		exitLabel =  getNewLabel(block);
 		node.setLabels(contiueLabel, exitLabel);
 
+		Global.IRBuilder_loopDeepth++;
 		super.visit(node);
+		Global.IRBuilder_loopDeepth--;
 
 		VarRegIR init = (VarRegIR) map.get(node.init()),
 				condi = (VarRegIR) map.get(node.condi()),
@@ -353,6 +363,8 @@ public class IRBuilder extends ASTBaseVisitor
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(0), l1));
 //		.L2:
 		list.add(new LabelIR(l2.label()));
+
+		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
 //		.L0:
@@ -364,6 +376,8 @@ public class IRBuilder extends ASTBaseVisitor
 		r0 = condi;
 //		CJUMP .L2 (r0 == 1)?
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(1), l2));
+		Global.IRBuilder_loopDeepth--;
+
 //		.L1:
 		list.add(new LabelIR(l1.label()));
 
@@ -497,6 +511,8 @@ public class IRBuilder extends ASTBaseVisitor
 		}
 		//move rbp rsp
 		list.add(new MoveIR(new VarRegIR(5), new VarRegIR(4)));
+		//tmp regs
+		list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
 		//paramters to new regs
 		list.addAll(plist);
 

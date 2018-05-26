@@ -33,6 +33,9 @@ public class VarMemIR extends VarIR
 		if(index == null)
 			return MEM_PREFIX + "[" + base.toCodeStr() + "]";
 		else
-			return MEM_PREFIX + "[" + base.toCodeStr() + index.toCodeStr() + "*8"+ "]";
+			if(index instanceof VarIntIR)
+				return MEM_PREFIX + "[" + base.toCodeStr() + " + " + ((VarIntIR) index).val()*8 + "]";
+			else
+				return MEM_PREFIX + "[" + base.toCodeStr() + " + " + index.toCodeStr() + "*8"+ "]";
 	}
 }

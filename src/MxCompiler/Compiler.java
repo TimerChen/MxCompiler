@@ -6,6 +6,7 @@ import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
 import MxCompiler.Type.TypeTable;
 import MxCompiler.tools.Debuger;
+import jdk.nashorn.internal.ir.Block;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.*;
@@ -64,6 +65,7 @@ public class Compiler
 	}
 
 	private List<List<InsIR>> irLists;
+	private List<BasicBlock> blkList;
 	private List<StringLitIR> irLitList;
 	private ASTree ast;
 	private List<String> codeStr, libraryStr;
@@ -74,10 +76,16 @@ public class Compiler
 		IRBuilder irBuilder = new IRBuilder(ast);
 		irLists = irBuilder.irList();
 		irLitList = irBuilder.constList();
+
+		Debuger.printLine("Code Analyze");
+		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
+		blkList = cfgBuilder.getCFG();
 	}
-	private void codeTranslate(List<InsIR> irList, List<StringLitIR>irLitList)
+	private void codeTranslate(List<BasicBlock> blkList, List<StringLitIR>irLitList)
 	{
 		Debuger.printLine("Code Translate");
+		BlockToList btl = new BlockToList(blkList);
+		List<InsIR> irList = btl.toList();
 		NASMTranslator translator = new NASMTranslator(irList, irLitList);
 
 		codeStr = translator.codeStr();
@@ -90,20 +98,22 @@ public class Compiler
 			System.out.println(i);
 		}
 	}
-	private void Optimize(List<List<InsIR>> irLists)
+	private void Optimize(List<BasicBlock> blkList)
 	{
-		Debuger.printLine("Code Analyze");
-		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
-		List<BasicBlock> blkList = cfgBuilder.getCFG();
 		VarAnalyzer analyzer = new VarAnalyzer(blkList);
+		List<ConflictGraph> cgs = analyzer.cGraphs();
 
 		Debuger.printLine("Code Optimize");
-		NaiveAllocator allocator = new NaiveAllocator(irLists);
-		irLists = allocator.alloc();
+		FakeAllocator allocator = new FakeAllocator(cgs);
+		IRRewriter regRewriter = new IRRewriter(allocator.colors(), blkList);
+		regRewriter.rewrite();
+
 	}
 	private void loadCLibrary()
 	{
 		Debuger.printLine("Load Library");
+		libraryStr = new ArrayList<String>();
+		return;
 	}
 	private List<String> mergeCodeStr(List<String> code, List<String> library)
 	{
@@ -131,8 +141,9 @@ public class Compiler
 
 		//Code Generate
 		irGenerate(ast);
-		Optimize(irLists);
-		codeTranslate(irLists, irLitList);
+		Optimize(blkList);
+
+		codeTranslate(blkList, irLitList);
 
 		loadCLibrary();
 

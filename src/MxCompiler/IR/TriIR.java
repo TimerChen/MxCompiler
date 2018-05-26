@@ -13,9 +13,9 @@ public class TriIR extends InsIR
 		LT, GT, LE, GE, EQ, NE
 	}
 	private Op operator;
-	private VarRegIR dest, src0, src1;
+	private VarIR dest, src0, src1;
 
-	public TriIR(Op operator, VarRegIR dest, VarRegIR src0, VarRegIR src1)
+	public TriIR(Op operator, VarIR dest, VarIR src0, VarIR src1)
 	{
 		this.operator = operator;
 		this.dest = dest;
@@ -28,19 +28,35 @@ public class TriIR extends InsIR
 		return operator;
 	}
 
-	public VarRegIR dest()
+	public VarIR dest()
 	{
 		return dest;
 	}
 
-	public VarRegIR src0()
+	public VarIR src0()
 	{
 		return src0;
 	}
 
-	public VarRegIR src1()
+	public VarIR src1()
 	{
 		return src1;
+	}
+
+
+	public void setDest(VarIR dest)
+	{
+		this.dest = dest;
+	}
+
+	public void setSrc0(VarIR src0)
+	{
+		this.src0 = src0;
+	}
+
+	public void setSrc1(VarIR src1)
+	{
+		this.src1 = src1;
 	}
 
 	@Override

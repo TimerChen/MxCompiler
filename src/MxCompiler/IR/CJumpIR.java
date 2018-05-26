@@ -35,6 +35,16 @@ public class CJumpIR extends InsIR
 		return rhs;
 	}
 
+	public void setLhs(VarIR lhs)
+	{
+		this.lhs = lhs;
+	}
+
+	public void setRhs(VarIR rhs)
+	{
+		this.rhs = rhs;
+	}
+
 	public VarLabelIR aim()
 	{
 		return aim;

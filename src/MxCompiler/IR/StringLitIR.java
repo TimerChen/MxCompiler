@@ -35,6 +35,10 @@ public class StringLitIR
 	}
 	public String toCodeStr()
 	{
-		return "\"" + val + "\"";
+		//???
+		String length = "dd " + val.length() + "\n",
+				content = "db "+ "\"" + val + "\", 0";
+
+		return length + content;
 	}
 }

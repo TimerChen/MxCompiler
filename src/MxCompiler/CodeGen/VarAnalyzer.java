@@ -9,6 +9,7 @@ package MxCompiler.CodeGen;
 import MxCompiler.Global;
 import MxCompiler.IR.*;
 import MxCompiler.Options;
+import MxCompiler.tools.Debuger;
 import org.antlr.runtime.misc.IntArray;
 
 import java.util.*;
@@ -26,13 +27,14 @@ public class VarAnalyzer implements IRVisitor
 	public VarAnalyzer(List<BasicBlock> startBlocks)
 	{
 		this.startBlocks = startBlocks;
-		this.cGraphs = new LinkedList<>();
+		this.cGraphs = null;
 	}
 
 	public List<ConflictGraph> cGraphs()
 	{
 		if(cGraphs == null)
 		{
+			this.cGraphs = new LinkedList<>();
 			analyze();
 		}
 		return cGraphs;
@@ -43,12 +45,14 @@ public class VarAnalyzer implements IRVisitor
 		ConcurrentLinkedDeque<BasicBlock> bQue;
 		for(BasicBlock start: startBlocks)
 		{
-			bQue = new ConcurrentLinkedDeque<>();
 			cGraphs.add(nowGraph = new ConflictGraph(Global.maxRegNumber));
 			size = 0;
 			BasicBlock nowBlock = start;
-			while(nowBlock.next0()!=null)nowBlock = nowBlock.next0();
-			size=nowBlock.id()+1;
+			while(nowBlock!=null)
+			{
+				size++;
+				nowBlock = nowBlock.next0();
+			}
 			du = new int[size];
 			for(int i=0;i<size;++i)du[i]=0;
 
@@ -57,7 +61,6 @@ public class VarAnalyzer implements IRVisitor
 			{
 				analyzeBlock(nowBlock);
 				BasicBlock b0, b1;
-				bQue.removeFirst();
 				b0 = nowBlock.next0();
 				b1 = nowBlock.next1();
 				if(b0 != null)
@@ -146,6 +149,7 @@ public class VarAnalyzer implements IRVisitor
 		if(!(oVar instanceof VarRegIR))
 			return;
 		VarRegIR var = (VarRegIR)oVar;
+		
 		currentBlock.ueVar.remove(var.regIndex());
 		addEdges(var.regIndex(), currentBlock.ueVar);
 		currentBlock.varKill.add(var.regIndex());

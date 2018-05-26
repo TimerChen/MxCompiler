@@ -26,16 +26,6 @@ public class Main
 		init();
 		MxCompiler.Compiler MxC = new MxCompiler.Compiler();
 
-		Debuger.printLine("LinkedList Test");
-		Set<Integer> set = new HashSet<>();
-		set.add(1);set.add(2);set.add(3);
-		Iterator<Integer>i = set.iterator();
-		while(i.hasNext())
-		{
-			Debuger.print(" "+i.next());
-		}
-		Debuger.printLine("End");
-
 		try
 		{
 			if(args.length > 0)

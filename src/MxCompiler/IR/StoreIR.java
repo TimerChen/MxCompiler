@@ -35,17 +35,27 @@ public class StoreIR extends InsIR
 		return dest;
 	}
 
-	/*
-	public VarIR base()
+	public void setDest(VarIR dest)
 	{
-		return base;
+		this.dest = dest;
 	}
 
-	public VarIR index()
+	public void setSrc(VarIR src)
 	{
-		return index;
+		this.src = src;
 	}
-	*/
+
+	/*
+		public VarIR base()
+		{
+			return base;
+		}
+
+		public VarIR index()
+		{
+			return index;
+		}
+		*/
 	@Override
 	public void accept(IRVisitor visitor)
 	{

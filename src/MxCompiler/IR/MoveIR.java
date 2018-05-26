@@ -26,6 +26,16 @@ public class MoveIR extends InsIR
 		return rhs;
 	}
 
+	public void setLhs(VarIR lhs)
+	{
+		this.lhs = lhs;
+	}
+
+	public void setRhs(VarIR rhs)
+	{
+		this.rhs = rhs;
+	}
+
 	@Override
 	public void accept(IRVisitor visitor)
 	{

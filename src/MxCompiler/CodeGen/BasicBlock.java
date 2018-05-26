@@ -9,6 +9,7 @@ package MxCompiler.CodeGen;
 import MxCompiler.IR.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class BasicBlock extends Object
 		next0 = null;
 		next1 = null;
 		this.id = id;
+		this.varKill = new HashSet<>();
+		this.ueVar = new HashSet<>();
+		this.liveOut = new HashSet<>();
 	}
 
 	public int id()

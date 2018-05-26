@@ -32,6 +32,17 @@ public class LoadIR extends InsIR
 	{
 		return src;
 	}
+
+	public void setDest(VarIR dest)
+	{
+		this.dest = dest;
+	}
+
+	public void setSrc(VarIR src)
+	{
+		this.src = src;
+	}
+
 	@Override
 	public void accept(IRVisitor visitor)
 	{

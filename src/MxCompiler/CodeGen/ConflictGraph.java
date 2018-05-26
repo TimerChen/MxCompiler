@@ -16,6 +16,9 @@ public class ConflictGraph
 	public ConflictGraph(int regNumber)
 	{
 		graph = new ArrayList<>(regNumber);
+		for(int i=0;i<regNumber;++i)
+			graph.add(i, null);
+
 	}
 	public void addEdge(int a, int b)
 	{

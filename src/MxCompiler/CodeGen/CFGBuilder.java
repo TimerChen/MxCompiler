@@ -8,7 +8,9 @@ package MxCompiler.CodeGen;
 
 import MxCompiler.AST.BlockNode;
 import MxCompiler.IR.*;
+import MxCompiler.tools.Debuger;
 import jdk.nashorn.internal.ir.Block;
+import sun.security.ssl.Debug;
 
 import java.util.*;
 
@@ -26,7 +28,7 @@ public class CFGBuilder extends Object
 	{
 
 		BasicBlock nowBlock = null;
-		List<BasicBlock> funList = new ArrayList<>(irLists.size());
+		List<BasicBlock> funList = new ArrayList<BasicBlock>(irLists.size());
 		int ii = 0;
 		for(List<InsIR> irList: irLists)
 		{
@@ -47,11 +49,11 @@ public class CFGBuilder extends Object
 					if(i!=0)
 					{
 						nowBlock.setNext0(nextBlock);
-						nowBlock.setIrList(irList.subList(start, i-1));
+						nowBlock.setIrList(irList.subList(start, i));
 						start = i;
 					}else
 					{
-						funList.set(ii, nextBlock);
+						funList.add(nextBlock);
 					}
 					nowBlock = nextBlock;
 					map.put(((LabelIR) ir).label(), nowBlock);
@@ -59,12 +61,13 @@ public class CFGBuilder extends Object
 				{
 					nextBlock = new BasicBlock(counter++);
 					nowBlock.setNext0(nextBlock);
-					nowBlock.setIrList(irList.subList(start, i-1));
+					nowBlock.setIrList(irList.subList(start, i));
+
 					nowBlock = nextBlock;
 					start = i;
 				}
 			}
-			nowBlock.setIrList(irList.subList(start, n-1));
+			nowBlock.setIrList(irList.subList(start, n));
 
 			nowBlock = funList.get(ii);
 			while(nowBlock!=null)

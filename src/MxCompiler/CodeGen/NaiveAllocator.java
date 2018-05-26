@@ -33,7 +33,7 @@ public class NaiveAllocator implements IRVisitor
 
 	public List<InsIR> alloc()
 	{
-		List<InsIR> irList = new ArrayList<>(this.irLists);
+		List<InsIR> irList=null;// = new ArrayList<InsIR>(this.irLists);
 		int n = irList.size();
 
 		nowPhase = Phase.PreCollect;

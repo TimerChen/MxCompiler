@@ -15,11 +15,11 @@ public class UnaryIR extends InsIR
 		MUL, DIV, MOD, NEG, NOT
 	}
 	private Op operator;
-	private VarRegIR src;
+	private VarIR src;
 	private boolean has2Dest;
 
 
-	public UnaryIR(Op operator, VarRegIR src)
+	public UnaryIR(Op operator, VarIR src)
 	{
 		this.operator = operator;
 		this.src = src;
@@ -37,12 +37,12 @@ public class UnaryIR extends InsIR
 		return operator;
 	}
 
-	public VarRegIR src()
+	public VarIR src()
 	{
 		return src;
 	}
 
-	public void setSrc(VarRegIR src)
+	public void setSrc(VarIR src)
 	{
 		this.src = src;
 	}
