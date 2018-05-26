@@ -9,4 +9,14 @@ cd "$(dirname "$0")"
 export CCHK="/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -classpath ./lib/*:./bin Main -i program.txt -o program.out"
 #cat > ./testcases/program.mx   # save everything in stdin to program.txt
 #$CCHK
-java -classpath ./lib/*:./bin MxCompiler.Main 
+
+echo "*************** Compile Mx ***************"
+/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -classpath ./lib/*:/home/timemachine/code/MxCompiler/out/production/MxCompiler MxCompiler.Main ./testcases/program.txt ./testcases/program.asm
+echo "*************** Compile NASM ***************"
+nasm -felf64 ./testcases/program.asm
+echo "*************** gcc ***************"
+gcc ./testcases/program.o -no-pie -o ./testcases/program
+echo "*************** Run ***************"
+./testcases/program
+
+

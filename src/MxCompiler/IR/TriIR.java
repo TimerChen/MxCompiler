@@ -8,17 +8,17 @@ package MxCompiler.IR;
 
 public class TriIR extends InsIR
 {
+	static final VarRegIR dest = new VarRegIR(0);
 	public enum Op
 	{
 		LT, GT, LE, GE, EQ, NE
 	}
 	private Op operator;
-	private VarIR dest, src0, src1;
+	private VarIR src0, src1;
 
-	public TriIR(Op operator, VarIR dest, VarIR src0, VarIR src1)
+	public TriIR(Op operator, VarIR src0, VarIR src1)
 	{
 		this.operator = operator;
-		this.dest = dest;
 		this.src0 = src0;
 		this.src1 = src1;
 	}
@@ -44,10 +44,6 @@ public class TriIR extends InsIR
 	}
 
 
-	public void setDest(VarIR dest)
-	{
-		this.dest = dest;
-	}
 
 	public void setSrc0(VarIR src0)
 	{

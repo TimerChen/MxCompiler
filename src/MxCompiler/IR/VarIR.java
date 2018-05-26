@@ -28,13 +28,15 @@ abstract public class VarIR extends Object
 		return insIrList;
 	}
 
-	abstract public String toCodeStr();
+	abstract public String toCodeStr8();
+	abstract public String toCodeStr1();
 
 	@Override
 	public String toString()
 	{
-		return toCodeStr();
+		return toCodeStr8();
 	}
+
 	public String toString_old()
 	{
 		return super.toString();

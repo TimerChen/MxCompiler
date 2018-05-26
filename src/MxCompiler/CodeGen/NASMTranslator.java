@@ -66,8 +66,7 @@ public class NASMTranslator implements IRVisitor
 		List<String> ret = new LinkedList<>();
 		for(StringLitIR i: list)
 		{
-			ret.add(i.getLabel()+":");
-			ret.add(CODE_PREFIX+i.toCodeStr());
+			ret.add(i.toCodeStr(i.getLabel()));
 		}
 		return ret;
 	}
@@ -84,18 +83,19 @@ public class NASMTranslator implements IRVisitor
 	{
 		List<String> list = new LinkedList<>();
 		list.add(CODE_PREFIX + "cmp\t"+node.src0()+",\t"+node.src1());
-		String op;
+		String op, rop;
 		switch (node.operator())
 		{
-			case LT: op="l"; break;
-			case GT: op="g"; break;
-			case LE: op="le"; break;
-			case GE: op="ge"; break;
-			case EQ: op="e"; break;
-			case NE: op="ne"; break;
+			case LT: op="l";rop="ge"; break;
+			case GT: op="g";rop="le"; break;
+			case LE: op="le";rop="g"; break;
+			case GE: op="ge";rop="l"; break;
+			case EQ: op="e";rop="ne"; break;
+			case NE: op="ne";rop="e"; break;
 			default:throw new RuntimeException("Op not find");
 		}
-		list.add(CODE_PREFIX + "set"+op+"\t"+node.dest());
+		list.add(CODE_PREFIX + "cmov"+op+"\t"+node.dest().toCodeStr1()+",\t"+"0");
+		list.add(CODE_PREFIX + "cmov"+op+"\t"+node.dest().toCodeStr1()+",\t"+"1");
 		map.put(node, list);
 	}
 
@@ -229,7 +229,10 @@ public class NASMTranslator implements IRVisitor
 	public void visit(MoveIR node)
 	{
 		List<String> list = new LinkedList<>();
-		list.add(CODE_PREFIX+"mov\t"+node.lhs()+",\t"+node.rhs());
+		if(node.isZX())
+			list.add(CODE_PREFIX+"movzx\t"+node.lhs()+",\t"+node.rhs().toCodeStr1());
+		else
+			list.add(CODE_PREFIX+"mov\t"+node.lhs()+",\t"+node.rhs());
 		map.put(node, list);
 	}
 }

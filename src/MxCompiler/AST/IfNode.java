@@ -6,7 +6,6 @@
 
 package MxCompiler.AST;
 
-import jdk.nashorn.internal.ir.Block;
 
 public class IfNode extends StmtNode
 {

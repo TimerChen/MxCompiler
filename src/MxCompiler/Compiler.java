@@ -5,8 +5,8 @@ import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
 import MxCompiler.Type.TypeTable;
+import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
-import jdk.nashorn.internal.ir.Block;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.*;
@@ -26,7 +26,7 @@ public class Compiler
 	}
 	public void compile() throws IOException, RuntimeException
 	{
-		compile("");
+		compile("", "");
 	}
 	private ASTree parse(InputStream is) throws IOException, RuntimeException
 	{
@@ -68,7 +68,8 @@ public class Compiler
 	private List<BasicBlock> blkList;
 	private List<StringLitIR> irLitList;
 	private ASTree ast;
-	private List<String> codeStr, libraryStr;
+	private List<String> codeStr;
+	private List<String> libraryStr;
 
 	private void irGenerate(ASTree ast)
 	{
@@ -90,13 +91,25 @@ public class Compiler
 
 		codeStr = translator.codeStr();
 	}
-	private void outputCode(List<String> outputStr)
+	private void outputCode(OutputStream os, List<String> outputStr)
 	{
 		Debuger.printLine("All Finished");
-		for(String i: outputStr)
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
+
+		try
 		{
-			System.out.println(i);
+			for (String i : outputStr)
+			{
+				//System.out.println(i);
+				bw.write(i+"\n");
+				//bw.newLine();
+			}
+			bw.close();
+		}catch (IOException error)
+		{
+
 		}
+
 	}
 	private void Optimize(List<BasicBlock> blkList)
 	{
@@ -112,31 +125,78 @@ public class Compiler
 	private void loadCLibrary()
 	{
 		Debuger.printLine("Load Library");
+		String fileName = this.getClass().getResource("").getPath() + "Util/cLibrary.asm";
+		Debuger.printInfo("Library PATH", fileName);
+		Debuger.printInfo("Info", "Library : "+fileName);
+		InputStream is;
+
+		try
+		{
+			is = new FileInputStream(fileName);
+		}catch (IOException error)
+		{
+			Debuger.printInfo("Error", "Library not found", 100);
+			Debuger.printInfo("PATH", this.getClass().getResource("").getPath(), 100);
+			throw new RuntimeException("Library not found");
+		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		libraryStr = new ArrayList<String>();
+		try
+		{
+			String str;
+			while(true)
+			{
+				str = reader.readLine();
+				if(str == null)
+					break;
+				libraryStr.add(str);
+			}
+			reader.close();
+			is.close();
+		}catch (IOException error)
+		{
+
+		}
 		return;
 	}
 	private List<String> mergeCodeStr(List<String> code, List<String> library)
 	{
 		List<String> list = new ArrayList<>();
 		list.addAll(code);
+		list.add("; ============Library============");
 		list.addAll(library);
+
+
 		return list;
 	}
-	public void compile( String fileName ) throws IOException, RuntimeException
+	public void compile( String fileInName, String fileOutName ) throws IOException, RuntimeException
 	{
 
 		InputStream is;
-		if(fileName == "")
+		OutputStream os;
+		if(fileInName == "")
 		{
 			Debuger.printInfo("Info", "Input: stdin");
 			is = System.in;
 		}else{
-			Debuger.printInfo("Info", "Input: "+fileName);
-			is = new FileInputStream(fileName);
+			Debuger.printInfo("Info", "Input: "+fileInName);
+			is = new FileInputStream(fileInName);
 		}
+
+		if(fileOutName == "")
+		{
+			Debuger.printInfo("Info", "Input: stdout");
+			os = System.out;
+		}else{
+			Debuger.printInfo("Info", "Input: "+fileOutName);
+			os = new FileOutputStream(fileOutName);
+		}
+
 
 		//Semantic Check
 		ast = parse(is);
+		is.close();
+
 		checkOnAst(ast);
 
 		//Code Generate
@@ -147,7 +207,7 @@ public class Compiler
 
 		loadCLibrary();
 
-		outputCode(mergeCodeStr(codeStr, libraryStr));
+		outputCode(os, mergeCodeStr(codeStr, libraryStr));
 	}
 
 }

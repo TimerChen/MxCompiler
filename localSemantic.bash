@@ -9,4 +9,4 @@ cd "$(dirname "$0")"
 export CCHK="/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -classpath ./lib/*:./bin Main -i program.txt -o program.out"
 #cat > ./testcases/program.mx   # save everything in stdin to program.txt
 #$CCHK
-/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -classpath ./lib/*:./bin MxCompiler.Main -i ./testcases/program.mx 
+/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -classpath ./lib/*:./bin MxCompiler.Main 

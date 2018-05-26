@@ -13,10 +13,15 @@ import java.util.*;
 
 public class IRRewriter implements IRVisitor
 {
+	//use 13, 14, 15
+	static final private VarRegIR []reg=
+			{new VarRegIR(13), new VarRegIR(14), new VarRegIR(15)};
 	private List<List<Integer>> colors;
 	private List<BasicBlock> blkLists;
 
 	private List<Integer> nowColor;
+
+	private List<InsIR> newIRList;
 
 	public IRRewriter(List<List<Integer>> colors, List<BasicBlock> irs)
 	{
@@ -28,10 +33,12 @@ public class IRRewriter implements IRVisitor
 		for(int i=0; i<blkLists.size(); ++i)
 		{
 			BasicBlock now = blkLists.get(i);
-			Debuger.printInfo("size","");
+
 			nowColor = colors.get(i);
 			while(now != null)
 			{
+				newIRList = new ArrayList<InsIR>();
+				Debuger.printInfo("now",""+now);
 				List<InsIR> irList = now.irList();
 				int n = irList.size();
 				for(int j=0; j<n; ++j)
@@ -39,14 +46,26 @@ public class IRRewriter implements IRVisitor
 					InsIR ir = irList.get(j);
 					ir.accept(this);
 				}
+				now.setIrList(newIRList);
 				now = now.next0();
 			}
 
 		}
 	}
 
-
-	VarIR colorIR(VarIR oVar)
+	VarIR colorDIR(VarIR oVar, VarRegIR r0, VarRegIR r1)
+	{
+		return colorIR(oVar, r0, r1, false, false);
+	}
+	VarIR colorS0IR(VarIR oVar, VarRegIR r0, VarRegIR r1)
+	{
+		return colorIR(oVar, r0, r1, true, false);
+	}
+	VarIR colorSIR(VarIR oVar, VarRegIR r0, VarRegIR r1)
+	{
+		return colorIR(oVar, r0, r1, true, true);
+	}
+	VarIR colorIR(VarIR oVar, VarRegIR r0, VarRegIR r1, boolean isSrc, boolean canInt)
 	{
 		if(oVar instanceof VarRegIR)
 		{
@@ -54,11 +73,66 @@ public class IRRewriter implements IRVisitor
 			int i = var.regIndex();
 			if(nowColor.get(i) == -1)
 			{
-				return new VarMemIR(new VarRegIR(4), new VarIntIR(i));
+				i = i-16;
+				if(isSrc)
+				{
+					VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+					newIRList.add(new MoveIR(r0, mem));
+					return r0;
+				}else
+				{
+					VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+					//newIRList.add(new MoveIR(mem, r0));
+					return mem;
+				}
 			}else
 			{
 				return new VarRegIR(nowColor.get(i));
 			}
+		}else if(oVar instanceof VarIntIR)
+		{
+			VarIntIR var = (VarIntIR)oVar;
+			if(!isSrc)
+				throw new RuntimeException("dest is imm");
+			if(!canInt)
+			{
+				newIRList.add(new MoveIR(r0, var));
+				return r0;
+			}else
+				return oVar;
+
+		}else if(oVar instanceof VarMemIR)
+		{
+			VarMemIR var = (VarMemIR)oVar;
+			VarIR tmp0, tmp1;
+			if(isSrc)
+			{
+				if(var.index() instanceof VarIntIR)
+				{
+					tmp0 = colorIR(var.base(), r0, null, true, false);
+					newIRList.add(new MoveIR(r0, new VarMemIR(tmp0, var.index())));
+					return r0;
+				}else
+				{
+					tmp0 = colorIR(var.base(), r0, null, true, false);
+					tmp1 = colorIR(var.index(), r1, null, true, false);
+					newIRList.add(new MoveIR(r0, new VarMemIR(tmp0, tmp1)));
+					return r0;
+				}
+			}else
+			{
+				if(var.index() instanceof VarIntIR)
+				{
+					tmp0 = colorIR(var.base(), r0, null, true, false);
+					tmp1 = var.index();
+				}else
+				{
+					tmp0 = colorIR(var.base(), r0, null, true, false);
+					tmp1 = colorIR(var.index(), r1, null, true, false);
+				}
+				return new VarMemIR(tmp0, tmp1);
+			}
+
 		}else
 			return oVar;
 	}
@@ -66,88 +140,175 @@ public class IRRewriter implements IRVisitor
 	public void visit(AlignIR node)
 	{
 		//Nothing
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(TriIR node)
 	{
-		node.setDest(colorIR(node.dest()));
-		node.setSrc0(colorIR(node.src0()));
-		node.setSrc1(colorIR(node.src1()));
+		//o<=[a,b]
+		node.setSrc0(colorS0IR(node.src0(), reg[0], reg[1]));
+		node.setSrc1(colorSIR(node.src1(), reg[1], reg[2]));
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(BinaryIR node)
 	{
-		node.setLhs(colorIR(node.lhs()));
-		node.setRhs(colorIR(node.rhs()));
+		//o<=o+o
+
+		node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
+		//node.setLhs(colorS0IR(node.lhs(), reg[0], reg[1]));
+		VarRegIR var = (VarRegIR)node.lhs();
+		int i = var.regIndex();
+		if(nowColor.get(i) == -1)
+		{
+			i = i-16;
+			VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+			newIRList.add(new MoveIR(reg[1], mem));
+			node.setLhs(reg[1]);
+			newIRList.add(node);
+			newIRList.add(new MoveIR(mem, reg[1]));
+		}else
+		{
+			newIRList.add(node);
+		}
 	}
 
 	@Override
 	public void visit(UnaryIR node)
 	{
-		node.setSrc(colorIR(node.src()));
+		if(node.has2Dest())
+		{
+			//o<=o
+			VarRegIR var = (VarRegIR)node.src();
+			int i = var.regIndex();
+			if(nowColor.get(i) == -1)
+			{
+				i = i-16;
+				VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+				newIRList.add(new MoveIR(reg[0], mem));
+				node.setSrc(reg[0]);
+				newIRList.add(node);
+				newIRList.add(new MoveIR(mem, reg[0]));
+			}else
+			{
+				newIRList.add(node);
+			}
+		}else
+		{
+			//?<=o
+			node.setSrc(colorS0IR(node.src(),reg[0], reg[1]));
+		}
+
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(CJumpIR node)
 	{
-		node.setLhs(colorIR(node.lhs()));
-		node.setRhs(colorIR(node.rhs()));
+		node.setLhs(colorS0IR(node.lhs(), reg[0], reg[1]));
+		node.setRhs(colorSIR(node.rhs(), reg[1], reg[2]));
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(JumpIR node)
 	{
 		//Nothing
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(CallIR node)
 	{
 		//Nothing
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(LabelIR node)
 	{
 		//Nothing
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(ReturnIR node)
 	{
 		//Nothing
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(PushIR node)
 	{
-		node.setSrc(colorIR(node.src()));
+		node.setSrc(colorS0IR(node.src(),reg[0], reg[1]));
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(PopIR node)
 	{
-		node.setDest(colorIR(node.dest()));
+		node.setDest(node.dest());
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(LoadIR node)
 	{
-		node.setDest(colorIR(node.dest()));
+		/*
+		o<=[o,o]
+			a<=[]
+			b<=[]
+			a<=[a,b]
+			[]<=a
+		*/
+		node.setSrc(colorSIR(node.src(), reg[0], reg[1]));
+		newIRList.add(node);
+		node.setDest(colorDIR(node.dest(), reg[0], reg[1]));
 	}
 
 	@Override
 	public void visit(StoreIR node)
 	{
-		node.setSrc(colorIR(node.src()));
+		/*
+		[o,o]<=o
+			a<=[]
+			b<=[]
+			c<=[]
+			[a,b] <= c
+			mov [a,b] c
+		 */
+		node.setSrc(colorSIR(node.src(), reg[2], reg[2]));
+		node.setDest(colorDIR(node.dest(), reg[0], reg[1]));
+		newIRList.add(node);
 	}
 
 	@Override
 	public void visit(MoveIR node)
 	{
-		node.setLhs(colorIR(node.lhs()));
-		node.setRhs(colorIR(node.rhs()));
+		//[o,o]<=o
+		//o<=[o,o]
+		//o<=o
+		if(node.lhs() instanceof VarMemIR)
+		{
+			node.setLhs(colorSIR(node.lhs(), reg[2], reg[2]));
+			node.setRhs(colorDIR(node.rhs(), reg[0], reg[1]));
+			newIRList.add(node);
+		}else if(node.rhs() instanceof VarMemIR)
+		{
+			node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
+			newIRList.add(node);
+			node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
+		}else
+		{
+			node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
+			newIRList.add(node);
+			node.setLhs(colorDIR(node.lhs(), reg[1], reg[2]));
+		}
+
+
+
 	}
 }

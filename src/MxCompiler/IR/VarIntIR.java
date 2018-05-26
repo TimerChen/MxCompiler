@@ -29,8 +29,14 @@ public class VarIntIR extends VarIR
 	}
 
 	@Override
-	public String toCodeStr()
+	public String toCodeStr8()
 	{
 		return "" + val;
+	}
+
+	@Override
+	public String toCodeStr1()
+	{
+		return ""+val;
 	}
 }

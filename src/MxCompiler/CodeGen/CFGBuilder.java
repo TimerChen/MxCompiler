@@ -9,9 +9,6 @@ package MxCompiler.CodeGen;
 import MxCompiler.AST.BlockNode;
 import MxCompiler.IR.*;
 import MxCompiler.tools.Debuger;
-import jdk.nashorn.internal.ir.Block;
-import sun.security.ssl.Debug;
-
 import java.util.*;
 
 public class CFGBuilder extends Object

@@ -34,7 +34,7 @@ public class VarRegIR extends VarIR
 	}
 
 	@Override
-	public String toCodeStr()
+	public String toCodeStr8()
 	{
 		String name;
 		switch (regIndex)
@@ -51,6 +51,29 @@ public class VarRegIR extends VarIR
 			default:
 				if(regIndex < 16)
 					name = "r"+regIndex;
+				else
+					throw new RuntimeException("Register need alloc.");
+		}
+		return name;
+	}
+	@Override
+	public String toCodeStr1()
+	{
+		String name;
+		switch (regIndex)
+		{
+			case 0: name = "al"; break;
+			case 1: name = "cl"; break;
+			case 2: name = "dl"; break;
+			case 3: name = "bl"; break;
+			case 4: name = "spl"; break;
+			case 5: name = "bpl"; break;
+			case 6: name = "sil"; break;
+			case 7: name = "dil"; break;
+
+			default:
+				if(regIndex < 16)
+					name = "r"+regIndex+"b";
 				else
 					throw new RuntimeException("Register need alloc.");
 		}

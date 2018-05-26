@@ -18,22 +18,21 @@ import MxCompiler.Type.Type;
 import MxCompiler.Type.TypeArray;
 import MxCompiler.Type.TypeClass;
 import MxCompiler.Type.TypeFunction;
-import sun.awt.image.ImageWatched;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class IRBuilder extends ASTBaseVisitor
 {
-	private HashMap<ASTNode, Object>map = new HashMap();
+	private HashMap<ASTNode, Object>map = new HashMap<>();
+	private HashSet<ASTNode>llMap = new HashSet<>();
 	private List<InsIR> mainIrList, globalVarList;
 	private List<List<InsIR>> irList;
 	private List<StringLitIR> constList;
 	private ASTree ast;
 	private Scope nowScope;
 	private int thisReg, savedRegNumber;
+
+	private boolean isLeftValue = false;
 
 
 	public IRBuilder(ASTree ast)
@@ -130,7 +129,7 @@ public class IRBuilder extends ASTBaseVisitor
 	private int blockNumber = 0;
 	VarLabelIR getNewLabel(int block)
 	{
-		return new VarLabelIR(".L" + block + "_" + (labelNumber++));
+		return new VarLabelIR("_L" + block + "_" + (labelNumber++));
 	}
 	VarRegIR getNewReg()
 	{
@@ -189,7 +188,7 @@ public class IRBuilder extends ASTBaseVisitor
 	public Void visit(ExprStmtNode node)
 	{
 		super.visit(node);
-		map.put(node, ((VarRegIR)map.get(node.expr())).irList());
+		map.put(node, ((VarIR)map.get(node.expr())).irList());
 		return null;
 	}
 
@@ -211,12 +210,12 @@ public class IRBuilder extends ASTBaseVisitor
 		}
 		 */
 		int block = blockNumber++;
-		VarRegIR condi = (VarRegIR) map.get(node.condi()),
-				ifIR = (VarRegIR) map.get(node.trueBody()),
+		VarIR condi = (VarIR) map.get(node.condi()),
+				ifIR = (VarIR) map.get(node.trueBody()),
 				elseIR = null;
 		if(node.falseBody()!=null)
-			elseIR = (VarRegIR) map.get(node.falseBody());
-		VarRegIR r0;
+			elseIR = (VarIR) map.get(node.falseBody());
+		//VarRegIR r0;
 		VarLabelIR l0, l1;
 		List<InsIR> list = new LinkedList<>();
 		l0 = getNewLabel(block);
@@ -225,10 +224,10 @@ public class IRBuilder extends ASTBaseVisitor
 
 		//[condi]->r0
 		list.addAll(condi.irList());
-		r0 = condi;
+		//r0 = condi;
 
 		//CJUMP .L0 (r0==0)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(1), l0));
+		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l0));
 
 		//[if]
 		list.addAll(ifIR.irList());
@@ -282,9 +281,9 @@ public class IRBuilder extends ASTBaseVisitor
 		super.visit(node);
 		Global.IRBuilder_loopDeepth--;
 
-		VarRegIR condi = (VarRegIR) map.get(node.condi());
+		VarIR condi = (VarIR) map.get(node.condi());
 		List<InsIR> body = (List<InsIR>) map.get(node.body());
-		VarRegIR r0;
+		//VarRegIR r0;
 		VarLabelIR l0, l1, l2;
 		List<InsIR> list = new LinkedList<>();
 		l2 = getNewLabel(block);
@@ -293,9 +292,9 @@ public class IRBuilder extends ASTBaseVisitor
 
 //		[condi]->r0
 		list.addAll(condi.irList());
-		r0 = condi;
+		//r0 = condi;
 //		CJUMP .L1 (r0 == 0)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(0), l1));
+		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l1));
 //		.L2:
 		list.add(new LabelIR(l2.label()));
 
@@ -306,9 +305,9 @@ public class IRBuilder extends ASTBaseVisitor
 		list.add(new LabelIR(l0.label()));
 //			[condi]->r0
 		list.addAll(condi.irList());
-		r0 = condi;
+		//r0 = condi;
 //		CJUMP .L2 (r0 == 1)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(0), l1));
+		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(1), l1));
 		Global.IRBuilder_loopDeepth--;
 
 //		.L1
@@ -343,11 +342,11 @@ public class IRBuilder extends ASTBaseVisitor
 		super.visit(node);
 		Global.IRBuilder_loopDeepth--;
 
-		VarRegIR init = (VarRegIR) map.get(node.init()),
-				condi = (VarRegIR) map.get(node.condi()),
-				step = (VarRegIR) map.get(node.step());
+		VarIR init = (VarIR) map.get(node.init()),
+				condi = (VarIR) map.get(node.condi()),
+				step = (VarIR) map.get(node.step());
 		List<InsIR> body = (List<InsIR>) map.get(node.body());
-		VarRegIR r0;
+		VarIR r0;
 		VarLabelIR l0, l1, l2;
 		List<InsIR> list = new LinkedList<>();
 		l2 = getNewLabel(block);
@@ -358,9 +357,10 @@ public class IRBuilder extends ASTBaseVisitor
 		list.addAll(init.irList());
 //			[condi]->r0
 		list.addAll(condi.irList());
+		//r0 = regTrans(condi);
 		r0 = condi;
 //		CJUMP .L1 (r0 == 0)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(0), l1));
+		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l1));
 //		.L2:
 		list.add(new LabelIR(l2.label()));
 
@@ -373,7 +373,6 @@ public class IRBuilder extends ASTBaseVisitor
 		list.addAll(step.irList());
 //			[condi]->r0
 		list.addAll(condi.irList());
-		r0 = condi;
 //		CJUMP .L2 (r0 == 1)?
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(1), l2));
 		Global.IRBuilder_loopDeepth--;
@@ -443,8 +442,8 @@ public class IRBuilder extends ASTBaseVisitor
 			if(i.init()!=null){
 				VarIR init = (VarIR)map.get(i.init());
 				list.addAll(init.irList());
-				r0 = (VarRegIR)init;
-				list.add(new MoveIR(r1, r0));
+				//r0 = (VarRegIR)init;
+				list.add(new MoveIR(r1, init));
 			}
 		}
 
@@ -485,7 +484,7 @@ public class IRBuilder extends ASTBaseVisitor
 				plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
 			}
 		}
-		node.setExitLabel(new VarLabelIR("exit_"+node.labelName()));
+		node.setExitLabel(new VarLabelIR("___exit"+node.labelName()));
 
 		super.visit(node);
 
@@ -563,6 +562,7 @@ public class IRBuilder extends ASTBaseVisitor
 		List<InsIR> list = new LinkedList<>();
 		VarIR lhs, rhs;
 		VarRegIR r0;
+		llMap.add(node.lhs());
 		lhs = (VarIR) map.get(node.lhs());
 		rhs = (VarIR) map.get(node.rhs());
 		list.addAll(lhs.irList());
@@ -773,7 +773,8 @@ public class IRBuilder extends ASTBaseVisitor
 				default:
 					throw new RuntimeException("Op not find.");
 			}
-			list.add(new TriIR(tOp, r2, r0, r1));
+			list.add(new TriIR(tOp, r0, r1));
+			list.add(new MoveIR(r2, new VarRegIR(0), true));
 			map.put(node, new VarRegIR(list, r2.regIndex()));
 		}else
 		{
@@ -980,13 +981,22 @@ public class IRBuilder extends ASTBaseVisitor
 		VarRegIR r0, r1, r2;
 		r0 = (VarRegIR) ref;
 		r1 = (VarRegIR) index;
-		r2 = getNewReg();
+
 
 		list.addAll(ref.irList());
 		list.addAll(index.irList());
-		list.add(new LoadIR(r2, r0, r1));
+		if(llMap.contains(node))
+		{
+			r2 = getNewReg();
+			list.add(new LoadIR(r2, r0, r1));
+			map.put(node, new VarRegIR(list, r2.regIndex()));
+		}else
+		{
+			map.put(node, new VarMemIR(list, r0, r1));
+		}
 
-		map.put(node, new VarRegIR(list, r2.regIndex()));
+
+
 
 		return null;
 	}
@@ -1111,10 +1121,18 @@ public class IRBuilder extends ASTBaseVisitor
 			[parent]->r0
 			load r1 [r0+indexOfMember*8]
 		 */
-			r1 = getNewReg();
 			VarIntIR indexOfMember = new VarIntIR(((ParameterEntity)node.refEntity()).rank());
-			list.add(new LoadIR(r1 ,r0, indexOfMember));
-			map.put(node, new VarRegIR(list, r1.regIndex()));
+			if(llMap.contains(node))
+			{
+				r1 = getNewReg();
+				list.add(new LoadIR(r1 ,r0, indexOfMember));
+				map.put(node, new VarRegIR(list, r1.regIndex()));
+			}else
+			{
+				map.put(node, new VarMemIR(list, r0, indexOfMember));
+			}
+
+
 		}else
 		{
 		/*
@@ -1159,10 +1177,15 @@ public class IRBuilder extends ASTBaseVisitor
 			[parent]->r0
 			load r1 [r0+indexOfMember*8]
 		 */
-			r1 = getNewReg();
+
 			VarIntIR indexOfMember = new VarIntIR(((ParameterEntity)node.refEntity()).rank());
-			list.add(new LoadIR(r1 ,r0, indexOfMember));
-			map.put(node, new VarRegIR(list, r1.regIndex()));
+			if(llMap.contains(node))
+			{
+				r1 = getNewReg();
+				list.add(new LoadIR(r1 ,r0, indexOfMember));
+				map.put(node, new VarRegIR(list, r1.regIndex()));
+			}else
+				map.put(node, new VarMemIR(list, r0, indexOfMember));
 		}else
 		{
 		/*

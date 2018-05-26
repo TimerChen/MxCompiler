@@ -6,10 +6,18 @@
 
 package MxCompiler.IR;
 
+import java.util.List;
+
 public class VarMemIR extends VarIR
 {
-	static final String MEM_PREFIX = "qword ";
 	private VarIR base, index;
+
+	public VarMemIR(List<InsIR> insIrList, VarIR base, VarIR index)
+	{
+		super(insIrList);
+		this.base = base;
+		this.index = index;
+	}
 
 	public VarMemIR(VarIR base, VarIR index)
 	{
@@ -28,14 +36,27 @@ public class VarMemIR extends VarIR
 	}
 
 	@Override
-	public String toCodeStr()
+	public String toCodeStr8()
 	{
+		final String MEM_PREFIX = "qword ";
 		if(index == null)
-			return MEM_PREFIX + "[" + base.toCodeStr() + "]";
+			return MEM_PREFIX + "[" + base.toCodeStr8() + "]";
 		else
 			if(index instanceof VarIntIR)
-				return MEM_PREFIX + "[" + base.toCodeStr() + " + " + ((VarIntIR) index).val()*8 + "]";
+				return MEM_PREFIX + "[" + base.toCodeStr8() + " + " + ((VarIntIR) index).val()*8 + "]";
 			else
-				return MEM_PREFIX + "[" + base.toCodeStr() + " + " + index.toCodeStr() + "*8"+ "]";
+				return MEM_PREFIX + "[" + base.toCodeStr8() + " + " + index.toCodeStr8() + "*8"+ "]";
+	}
+	@Override
+	public String toCodeStr1()
+	{
+		final String MEM_PREFIX = "byte ";
+		if(index == null)
+			return MEM_PREFIX + "[" + base.toCodeStr8() + "]";
+		else
+		if(index instanceof VarIntIR)
+			return MEM_PREFIX + "[" + base.toCodeStr8() + " + " + ((VarIntIR) index).val()*8 + "]";
+		else
+			return MEM_PREFIX + "[" + base.toCodeStr8() + " + " + index.toCodeStr8() + "*8"+ "]";
 	}
 }

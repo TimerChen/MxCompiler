@@ -15,8 +15,6 @@ import MxCompiler.Type.TypeClass;
 import MxCompiler.Type.TypeNull;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
-import sun.security.ssl.Debug;
-
 import java.util.List;
 import java.util.Stack;
 

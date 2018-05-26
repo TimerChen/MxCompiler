@@ -1,10 +1,8 @@
 package MxCompiler.AST;
 
-import MxCompiler.Entities.VariableEntity;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Util.SemanticError;
-import jdk.nashorn.internal.ir.FunctionNode;
 
 import java.util.*;
 

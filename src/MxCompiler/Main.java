@@ -2,7 +2,6 @@ package MxCompiler;
 import MxCompiler.*;
 import MxCompiler.AST.BlockNode;
 import MxCompiler.tools.*;
-import sun.security.ssl.Debug;
 //import javax.swing.text.html.Option;
 import java.awt.print.PrinterGraphics;
 import java.io.IOException;
@@ -29,7 +28,13 @@ public class Main
 		try
 		{
 			if(args.length > 0)
-				MxC.compile(args[0]);
+			{
+				if(args.length > 1)
+					MxC.compile(args[0],args[1]);
+				else
+					MxC.compile(args[0],"");
+
+			}
 			else
 				MxC.compile();
 			Debuger.printInfo("Info", "Success compile.");

@@ -1,7 +1,18 @@
 int main()
 {
-	int i,j;
-	i = 1;
-	j = 2;
+	int i=1,j=2;
 	return i+j;
 }
+
+/*
+int main()
+{
+	int []a = new int[10];
+	int i=1, j=2;
+	if(i<j)
+	{
+		a[i] = j;
+	}
+	return 0;
+}
+*/

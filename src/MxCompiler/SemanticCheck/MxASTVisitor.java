@@ -18,10 +18,7 @@ import MxCompiler.Util.SemanticError;
 import MxCompiler.parser.MxBaseVisitor;
 import MxCompiler.parser.MxParser;
 import MxCompiler.tools.Debuger;
-import jdk.nashorn.internal.ir.FunctionNode;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
-import sun.security.ssl.Debug;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -21,7 +21,12 @@ public class VarLabelIR extends VarIR
 	}
 
 	@Override
-	public String toCodeStr()
+	public String toCodeStr8()
+	{
+		return label;
+	}
+	@Override
+	public String toCodeStr1()
 	{
 		return label;
 	}

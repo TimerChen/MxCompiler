@@ -33,12 +33,12 @@ public class StringLitIR
 	{
 		return val;
 	}
-	public String toCodeStr()
+	public String toCodeStr(String label)
 	{
 		//???
-		String length = "dd " + val.length() + "\n",
-				content = "db "+ "\"" + val + "\", 0";
+		String length = "\tdd " + val.length() + "\n",
+				content = "\tdb "+ "\"" + val + "\", 0";
 
-		return length + content;
+		return length + label +":\n" +  content;
 	}
 }
