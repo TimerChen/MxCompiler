@@ -36,6 +36,12 @@ public class VarMemIR extends VarIR
 	}
 
 	@Override
+	public VarIR clone(List<InsIR> irList)
+	{
+		return new VarMemIR(irList, base, index);
+	}
+
+	@Override
 	public String toCodeStr8()
 	{
 		final String MEM_PREFIX = "qword ";

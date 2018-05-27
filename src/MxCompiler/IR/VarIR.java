@@ -28,6 +28,7 @@ abstract public class VarIR extends Object
 		return insIrList;
 	}
 
+	abstract public VarIR clone(List<InsIR> irList);
 	abstract public String toCodeStr8();
 	abstract public String toCodeStr1();
 

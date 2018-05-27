@@ -19,8 +19,8 @@ main:
         mov     eax, dword [rbp-8H]
         cmp     eax, dword [rbp-4H]
         setl    al
-        movzx   eax, al
-        mov     dword [rbp-8H], eax
+        movzx   rax, al
+        mov   	byte [rbp-8H], al
         mov     eax, 0
         pop     rbp
         ret

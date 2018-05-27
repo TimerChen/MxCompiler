@@ -115,6 +115,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		for(ParameterEntity i : node.entity().params())
 		{
 			entity = currentScope.find(i.type().toRootString());
+			Debuger.printInfo("Tmp","visit(params\1111);");
 			if(entity == null)
 				throw new SemanticError(i.position(), "type not find.");
 			if(!(entity instanceof ClassEntity))
@@ -277,7 +278,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		Entity entity = currentScope.find(node.name());
 		if(entity == null)
 			throw new SemanticError(node.position(), "variable not find.");
-		if(!((entity instanceof VariableEntity)||(entity instanceof FunctionEntity)))
+		if(!((entity instanceof ParameterEntity)||(entity instanceof FunctionEntity)))
 			throw new SemanticError(node.position(), "Variable or Function excepted.");
 		node.setRefEntity(entity);
 		return super.visit(node);

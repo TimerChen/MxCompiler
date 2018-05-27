@@ -34,6 +34,11 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 
 	public void visit(ExprNode node)
 	{
+
+		if(node instanceof StringLiteralNode)
+		{
+			Debuger.printInfo("visit", "SLN");
+		}
 		node.accept(this);
 	}
 	public void visit(StmtNode node)
@@ -207,7 +212,11 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 	{
 		visit(node.function);
 		for(ExprNode i : node.params)
+		{
 			visit(i);
+
+		}
+
 		return null;
 	}
 

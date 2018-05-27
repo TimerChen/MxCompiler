@@ -34,6 +34,12 @@ public class VarRegIR extends VarIR
 	}
 
 	@Override
+	public VarIR clone(List<InsIR> irList)
+	{
+		return new VarRegIR(irList, regIndex);
+	}
+
+	@Override
 	public String toCodeStr8()
 	{
 		String name;

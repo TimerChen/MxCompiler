@@ -18,6 +18,8 @@ import MxCompiler.Type.Type;
 import MxCompiler.Type.TypeArray;
 import MxCompiler.Type.TypeClass;
 import MxCompiler.Type.TypeFunction;
+import MxCompiler.tools.Debuger;
+import sun.security.ssl.Debug;
 
 import java.util.*;
 
@@ -210,11 +212,12 @@ public class IRBuilder extends ASTBaseVisitor
 		}
 		 */
 		int block = blockNumber++;
-		VarIR condi = (VarIR) map.get(node.condi()),
-				ifIR = (VarIR) map.get(node.trueBody()),
+		VarIR condi = (VarIR) map.get(node.condi());
+		List<InsIR>
+				ifIR = (List<InsIR>) map.get(node.trueBody()),
 				elseIR = null;
 		if(node.falseBody()!=null)
-			elseIR = (VarIR) map.get(node.falseBody());
+			elseIR = (List<InsIR>) map.get(node.falseBody());
 		//VarRegIR r0;
 		VarLabelIR l0, l1;
 		List<InsIR> list = new LinkedList<>();
@@ -230,7 +233,7 @@ public class IRBuilder extends ASTBaseVisitor
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l0));
 
 		//[if]
-		list.addAll(ifIR.irList());
+		list.addAll(ifIR);
 
 
 		if(elseIR != null)
@@ -247,7 +250,7 @@ public class IRBuilder extends ASTBaseVisitor
 		{
 
 		//[else]
-			list.addAll(elseIR.irList());
+			list.addAll(elseIR);
 
 		//.L1
 			list.add(new LabelIR(l1.label()));
@@ -408,9 +411,9 @@ public class IRBuilder extends ASTBaseVisitor
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
 		VarIR ret = (VarIR) map.get(node.ret());
-		VarRegIR r0;
+		VarIR r0;
 		VarRegIR rax;
-		r0 = (VarRegIR)ret;
+		r0 = (VarIR)ret;
 		/*
 			[ret]->r0
 			mov rax r0
@@ -511,7 +514,7 @@ public class IRBuilder extends ASTBaseVisitor
 		//move rbp rsp
 		list.add(new MoveIR(new VarRegIR(5), new VarRegIR(4)));
 		//tmp regs
-		list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
+		list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
 		//paramters to new regs
 		list.addAll(plist);
 
@@ -568,9 +571,8 @@ public class IRBuilder extends ASTBaseVisitor
 		list.addAll(lhs.irList());
 		list.addAll(rhs.irList());
 		list.add(new MoveIR(lhs, rhs));
-		r0 = (VarRegIR) lhs;
 
-		map.put(node, new VarRegIR(list, r0.regIndex()));
+		map.put(node, rhs.clone(list));
 		return null;
 	}
 
@@ -581,7 +583,6 @@ public class IRBuilder extends ASTBaseVisitor
 		int block = blockNumber++;
 		BinaryOpNode.BinaryOp op = node.operator();
 		VarIR lhs, rhs;
-		VarRegIR r0, r1, r2;
 		VarLabelIR l0;
 		InsIR tmp;
 		List<InsIR> list = new LinkedList<>();
@@ -590,6 +591,8 @@ public class IRBuilder extends ASTBaseVisitor
 		if( node.operator() == BinaryOpNode.BinaryOp.LOGIC_AND ||
 			node.operator() == BinaryOpNode.BinaryOp.LOGIC_OR)
 		{
+			VarIR r0, r2;
+			VarRegIR r1;
 			/*
 			<Result: r1>
 				[lhs]->r0
@@ -602,7 +605,7 @@ public class IRBuilder extends ASTBaseVisitor
 
 			 */
 			l0 = getNewLabel(block);
-			r0 = (VarRegIR) lhs;
+			r0 = lhs;
 			r1 = getNewReg();
 
 			list.addAll(r0.irList());
@@ -618,7 +621,7 @@ public class IRBuilder extends ASTBaseVisitor
 				list.add(new CJumpIR(CJumpIR.LogicOp.EQ, lhs, new VarIntIR(1), l0));
 			}
 			list.addAll(rhs.irList());
-			r2 = (VarRegIR) rhs;
+			r2 = rhs;
 			//r1 = r2
 			list.add(new MoveIR(r1, r2));
 
@@ -639,6 +642,7 @@ public class IRBuilder extends ASTBaseVisitor
 			map.put(node, new VarRegIR(list, r1.regIndex()));
 		}else if (node.type() == Options.typeString)
 		{
+			VarRegIR r0;
 			//use funcall
 			List<VarIR> plist = new LinkedList();
 			r0 = getNewReg();
@@ -694,6 +698,8 @@ public class IRBuilder extends ASTBaseVisitor
 				node.operator() == BinaryOpNode.BinaryOp.MOD ||
 				node.operator() == BinaryOpNode.BinaryOp.DIV)
 		{
+			VarIR r0, r1;
+			VarRegIR r2;
 			/*
 			<Result: r2>
 				[lhs]->r0
@@ -702,8 +708,8 @@ public class IRBuilder extends ASTBaseVisitor
 				triOp (reg0:reg2) r1
 				mov r2 reg0/reg2
 			 */
-			r0 = (VarRegIR) lhs;
-			r1 = (VarRegIR) rhs;
+			r0 = lhs;
+			r1 = rhs;
 			r2 = getNewReg();
 
 			list.addAll(lhs.irList());
@@ -739,7 +745,9 @@ public class IRBuilder extends ASTBaseVisitor
 				op == BinaryOpNode.BinaryOp.GT ||
 				op == BinaryOpNode.BinaryOp.LE ||
 				op == BinaryOpNode.BinaryOp.GE ||
-				op == BinaryOpNode.BinaryOp.GT)
+				op == BinaryOpNode.BinaryOp.GT ||
+				op == BinaryOpNode.BinaryOp.EQ ||
+				op == BinaryOpNode.BinaryOp.NE)
 		{
 			/*
 			<Result: r2>
@@ -748,8 +756,10 @@ public class IRBuilder extends ASTBaseVisitor
 				op r2 (r0 r1)
 			 */
 
-			r0 = (VarRegIR) lhs;
-			r1 = (VarRegIR) rhs;
+			VarIR r0, r1;
+			VarRegIR r2;
+			r0 = lhs;
+			r1 = rhs;
 			r2 = getNewReg();
 
 			list.addAll(lhs.irList());
@@ -785,8 +795,11 @@ public class IRBuilder extends ASTBaseVisitor
 				mov r2 r0
 				op r2 r1
 			 */
-			r0 = (VarRegIR) lhs;
-			r1 = (VarRegIR) rhs;
+
+			VarIR r0, r1;
+			VarRegIR r2;
+			r0 = lhs;
+			r1 = rhs;
 			r2 = getNewReg();
 
 			list.addAll(lhs.irList());
@@ -811,6 +824,7 @@ public class IRBuilder extends ASTBaseVisitor
 				case LOGIC_OR:
 					bOp = BinaryIR.Op.OR; break;
 				default:
+					Debuger.printInfo("Operator",op.toString());
 					throw new RuntimeException("Op not find.");
 			}
 			list.add(new MoveIR(r2, r0));
@@ -898,10 +912,17 @@ public class IRBuilder extends ASTBaseVisitor
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
 		VarIR lhs = (VarIR) map.get(node.expr());
-		VarRegIR r0, r1;
+		VarIR r0;
+		VarRegIR r1;
 
-		r0 = (VarRegIR)lhs;
+		r0 = (VarIR)lhs;
 		list.addAll(lhs.irList());
+		if(node.operator()!=UnaryOpNode.UnaryOp.PRE_INC && node.operator()!=UnaryOpNode.UnaryOp.PRE_DEC)
+		{
+			r1 = getNewReg();
+			list.add(new MoveIR(r1, r0));
+		}else
+			r1 = null;
 		switch (node.operator())
 		{
 			//++a
@@ -919,16 +940,23 @@ public class IRBuilder extends ASTBaseVisitor
 			case ADD:
 				break;
 			case MINUS:
-				list.add(new UnaryIR(UnaryIR.Op.NEG, r0));
+				list.add(new UnaryIR(UnaryIR.Op.NEG, r1));
 				break;
 			case BIT_NOT:
 			case LOGIC_NOT:
-				list.add(new UnaryIR(UnaryIR.Op.NOT, r0));
+				list.add(new UnaryIR(UnaryIR.Op.NOT, r1));
 				break;
 			default:
 				throw new RuntimeException("Unknown type.");
 		}
-		map.put(node, new VarRegIR(list, r0.regIndex()));
+		if(node.operator()!=UnaryOpNode.UnaryOp.PRE_INC && node.operator()!=UnaryOpNode.UnaryOp.PRE_DEC)
+		{
+			map.put(node, r1.clone(list));
+		}else
+		{
+			map.put(node, r0.clone(list));
+		}
+
 		return null;
 	}
 
@@ -944,12 +972,13 @@ public class IRBuilder extends ASTBaseVisitor
 		 */
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
-		VarIR lhs = (VarIR) map.get(node.expr());
-		VarRegIR r0, r1;
-
-		r0 = (VarRegIR)lhs;
+		VarIR ref = (VarIR) map.get(node.expr());
+		VarIR r0;
+		VarRegIR r1;
+		//r0 maybe VarMemIR
+		r0 = (VarIR)ref;
 		r1 = getNewReg();
-		list.addAll(lhs.irList());
+		list.addAll(ref.irList());
 		list.add(new MoveIR(r1, r0));
 		switch (node.operator())
 		{
@@ -960,7 +989,7 @@ public class IRBuilder extends ASTBaseVisitor
 				list.add(new BinaryIR(BinaryIR.Op.ADD, r0, new VarIntIR(1)));
 				break;
 		}
-		map.put(node, new VarRegIR(list, r1.regIndex()));
+		map.put(node, r1.clone(list));
 		return null;
 	}
 
@@ -978,9 +1007,10 @@ public class IRBuilder extends ASTBaseVisitor
 		List<InsIR> list = new LinkedList<>();
 		VarIR ref = (VarIR) map.get(node.ref()),
 			index = (VarIR) map.get(node.index());
-		VarRegIR r0, r1, r2;
-		r0 = (VarRegIR) ref;
-		r1 = (VarRegIR) index;
+		VarIR r0, r1;
+		VarRegIR r2;
+		r0 = ref;
+		r1 = index;
 
 
 		list.addAll(ref.irList());
@@ -1037,7 +1067,7 @@ public class IRBuilder extends ASTBaseVisitor
 			}
 		//Call
 		list.add(new CallIR(funName));
-		for(int i=Math.min(5, params.size()); i>=0; --i)
+		for(int i=Math.min(5, params.size()-1); i>=0; --i)
 		{
 			list.add(new PopIR(new VarRegIR(idx[i])));
 		}
@@ -1065,6 +1095,7 @@ public class IRBuilder extends ASTBaseVisitor
 		for(int i=0;i<node.params().size(); ++i)
 		{
 			plist.add((VarIR) map.get(node.params().get(i)));
+			Debuger.printInfo("param0", ""+node.params().get(0));
 		}
 		funName = ((VariableNode) node.function()).funName();
 		list.addAll(makeCall(funName, plist));
@@ -1094,7 +1125,7 @@ public class IRBuilder extends ASTBaseVisitor
 					load r0 [???]
 				 */
 				//((LinkedList<InsIR>) list).push();
-				r0 = ((VariableEntity)node.refEntity()).regIR();
+				r0 = ((ParameterEntity)node.refEntity()).regIR();
 				map.put(node, new VarRegIR(list, r0.regIndex()));
 			}
 
@@ -1111,9 +1142,10 @@ public class IRBuilder extends ASTBaseVisitor
 	{
 		List<InsIR> list = new LinkedList<>();
 		VarIR parent = new VarRegIR(thisReg);
-		VarRegIR r0, r1, r2;
+		VarIR r0;
+		VarRegIR r1;
 
-		r0 = (VarRegIR)parent;
+		r0 = parent;
 		if(!(node.type() instanceof TypeFunction))
 		{
 		/*
@@ -1139,7 +1171,7 @@ public class IRBuilder extends ASTBaseVisitor
 		<Result: r0>
 			[parent]->r0
 		 */
-			map.put(node, new VarRegIR(list, r0.regIndex()));
+			map.put(node, r0.clone(list));
 		}
 	}
 	@Override
@@ -1209,6 +1241,7 @@ public class IRBuilder extends ASTBaseVisitor
 		//Require Static Memory Space
 		//!!!
 		//VarLabelIR
+		Debuger.printInfo("visit", "String lit");
 		map.put(node, getStaticString(node.val()));
 		return null;
 	}

@@ -7,6 +7,7 @@
 package MxCompiler.IR;
 
 import MxCompiler.Entities.Entity;
+import MxCompiler.tools.Debuger;
 
 public class StringLitIR
 {
@@ -17,6 +18,7 @@ public class StringLitIR
 	private String val;
 	public StringLitIR(String val)
 	{
+		Debuger.printInfo("val", val);;
 		val = val.replaceAll("\\\\" + "\"" , "\"");
 		val = val.replaceAll("\\\\" + "n" , "\n");
 		val = val.replaceAll("\\\\" + "\\\\" , "\\\\");
@@ -37,7 +39,7 @@ public class StringLitIR
 	{
 		//???
 		String length = "\tdd " + val.length() + "\n",
-				content = "\tdb "+ "\"" + val + "\", 0";
+				content = "\tdb "+ val + ", 0";
 
 		return length + label +":\n" +  content;
 	}

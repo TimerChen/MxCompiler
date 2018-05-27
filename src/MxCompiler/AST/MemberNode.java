@@ -8,6 +8,7 @@ package MxCompiler.AST;
 
 import MxCompiler.Entities.Entity;
 import MxCompiler.Entities.FunctionEntity;
+import MxCompiler.Entities.ParameterEntity;
 import MxCompiler.Entities.VariableEntity;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
@@ -34,7 +35,7 @@ public class MemberNode extends VariableNode
 
 	private  Type getType()
 	{
-		if(refEntity instanceof VariableEntity)
+		if(refEntity instanceof ParameterEntity)
 		{
 			return refEntity.type();
 		}else

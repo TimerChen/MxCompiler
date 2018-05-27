@@ -6,18 +6,27 @@
 
 package MxCompiler.IR;
 
+import java.util.List;
+
 public class VarLabelIR extends VarIR
 {
 	String label;
 
 	public VarLabelIR(String label)
 	{
+
 		this.label = label;
 	}
 
 	public String label()
 	{
 		return label;
+	}
+
+	@Override
+	public VarIR clone(List<InsIR> irList)
+	{
+		return new VarLabelIR(label);
 	}
 
 	@Override

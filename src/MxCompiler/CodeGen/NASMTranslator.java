@@ -94,8 +94,8 @@ public class NASMTranslator implements IRVisitor
 			case NE: op="ne";rop="e"; break;
 			default:throw new RuntimeException("Op not find");
 		}
-		list.add(CODE_PREFIX + "cmov"+op+"\t"+node.dest().toCodeStr1()+",\t"+"0");
-		list.add(CODE_PREFIX + "cmov"+op+"\t"+node.dest().toCodeStr1()+",\t"+"1");
+		list.add(CODE_PREFIX + "set"+op+"\t"+node.dest().toCodeStr1());
+		//list.add(CODE_PREFIX + "cmov"+op+"\t"+node.dest().toCodeStr1()+",\t"+"1");
 		map.put(node, list);
 	}
 
@@ -171,7 +171,7 @@ public class NASMTranslator implements IRVisitor
 	public void visit(CallIR node)
 	{
 		List<String> list = new LinkedList<>();
-		list.add(CODE_PREFIX + "j"+"\t"+node.label());
+		list.add(CODE_PREFIX + "call"+"\t"+node.label());
 		map.put(node, list);
 	}
 

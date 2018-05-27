@@ -29,6 +29,6 @@ public class StringLiteralNode extends LiteralNode
 	@Override
 	public <S, E> E accept(ASTVisitor<S, E> visitor)
 	{
-		return null;
+		return visitor.visit(this);
 	}
 }

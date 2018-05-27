@@ -29,6 +29,12 @@ public class VarIntIR extends VarIR
 	}
 
 	@Override
+	public VarIR clone(List<InsIR> irList)
+	{
+		return new VarIntIR(irList, val);
+	}
+
+	@Override
 	public String toCodeStr8()
 	{
 		return "" + val;

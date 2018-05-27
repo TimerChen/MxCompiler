@@ -53,7 +53,7 @@ public class IRRewriter implements IRVisitor
 		}
 	}
 
-	VarIR colorDIR(VarIR oVar, VarRegIR r0, VarRegIR r1)
+	VarIR   colorDIR(VarIR oVar, VarRegIR r0, VarRegIR r1)
 	{
 		return colorIR(oVar, r0, r1, false, false);
 	}
@@ -76,12 +76,12 @@ public class IRRewriter implements IRVisitor
 				i = i-16;
 				if(isSrc)
 				{
-					VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
 					newIRList.add(new MoveIR(r0, mem));
 					return r0;
 				}else
 				{
-					VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
 					//newIRList.add(new MoveIR(mem, r0));
 					return mem;
 				}
@@ -164,7 +164,7 @@ public class IRRewriter implements IRVisitor
 		if(nowColor.get(i) == -1)
 		{
 			i = i-16;
-			VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+			VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
 			newIRList.add(new MoveIR(reg[1], mem));
 			node.setLhs(reg[1]);
 			newIRList.add(node);
@@ -186,7 +186,7 @@ public class IRRewriter implements IRVisitor
 			if(nowColor.get(i) == -1)
 			{
 				i = i-16;
-				VarMemIR mem = new VarMemIR(new VarRegIR(4), new VarIntIR(-i));
+				VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
 				newIRList.add(new MoveIR(reg[0], mem));
 				node.setSrc(reg[0]);
 				newIRList.add(node);
@@ -288,25 +288,46 @@ public class IRRewriter implements IRVisitor
 	@Override
 	public void visit(MoveIR node)
 	{
-		//[o,o]<=o
-		//o<=[o,o]
-		//o<=o
-		if(node.lhs() instanceof VarMemIR)
+		if(node.isZX())
 		{
-			node.setLhs(colorSIR(node.lhs(), reg[2], reg[2]));
-			node.setRhs(colorDIR(node.rhs(), reg[0], reg[1]));
-			newIRList.add(node);
-		}else if(node.rhs() instanceof VarMemIR)
-		{
-			node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
-			newIRList.add(node);
-			node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
+			//[o,o]<=o
+			//o<=o
+			if(node.lhs() instanceof VarMemIR)
+			{
+				node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
+				newIRList.add(node);
+				newIRList.add(new MoveIR(node.lhs(), reg[2]));
+				node.setLhs(reg[2]);
+			}else
+			{
+				newIRList.add(node);
+				node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
+				newIRList.add(new MoveIR(node.lhs(), reg[2]));
+				node.setLhs(reg[2]);
+			}
 		}else
 		{
-			node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
-			newIRList.add(node);
-			node.setLhs(colorDIR(node.lhs(), reg[1], reg[2]));
+			//[o,o]<=o
+			//o<=[o,o]
+			//o<=o
+			if(node.lhs() instanceof VarMemIR)
+			{
+				node.setRhs(colorSIR(node.rhs(), reg[2], reg[2]));
+				node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
+				newIRList.add(node);
+			}else if(node.rhs() instanceof VarMemIR)
+			{
+				node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
+				newIRList.add(node);
+				node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
+			}else
+			{
+				node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
+				newIRList.add(node);
+				node.setLhs(colorDIR(node.lhs(), reg[1], reg[2]));
+			}
 		}
+
 
 
 
