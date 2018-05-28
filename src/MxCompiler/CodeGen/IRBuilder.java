@@ -715,16 +715,16 @@ public class IRBuilder extends ASTBaseVisitor
 			list.addAll(lhs.irList());
 			list.addAll(rhs.irList());
 			list.add(new MoveIR(new VarRegIR(0), r0));
-
+			Debuger.printInfo("div", ""+node.operator());
 			UnaryIR.Op uOp;
 			switch (op)
 			{
 				case MUL:
 					uOp = UnaryIR.Op.MUL;break;
 				case MOD:
-					uOp = UnaryIR.Op.MUL;break;
+					uOp = UnaryIR.Op.MOD;break;
 				case DIV:
-					uOp = UnaryIR.Op.MUL;break;
+					uOp = UnaryIR.Op.DIV;break;
 				default:
 					throw new RuntimeException("Unkown operator");
 			}
@@ -733,11 +733,14 @@ public class IRBuilder extends ASTBaseVisitor
 			{
 				case MUL:
 				case DIV:
-					list.add(new MoveIR(r2, new VarRegIR(0)));
+					list.add(new MoveIR(r2, new VarRegIR(0)));break;
 				case MOD:
-					list.add(new MoveIR(r2, new VarRegIR(2)));
+					list.add(new MoveIR(r2, new VarRegIR(2)));break;
 				default:
 
+			}
+			for(InsIR i: list){
+				Debuger.printInfo("check",i+"");
 			}
 			map.put(node, new VarRegIR(list, r2.regIndex()));
 
@@ -1094,8 +1097,8 @@ public class IRBuilder extends ASTBaseVisitor
 			plist.add(preVar);
 		for(int i=0;i<node.params().size(); ++i)
 		{
-			plist.add((VarIR) map.get(node.params().get(i)));
-			Debuger.printInfo("param0", ""+node.params().get(0));
+			VarIR tmp;
+			plist.add(tmp = (VarIR) map.get(node.params().get(i)));
 		}
 		funName = ((VariableNode) node.function()).funName();
 		list.addAll(makeCall(funName, plist));

@@ -7,6 +7,7 @@
 package MxCompiler.CodeGen;
 
 import MxCompiler.IR.*;
+import MxCompiler.tools.Debuger;
 
 import java.util.*;
 
@@ -127,9 +128,12 @@ public class NASMTranslator implements IRVisitor
 		String op;
 		switch (node.operator())
 		{
-			case MUL: op="mul"; break;
-			case DIV: op="div"; break;
-			case MOD: op="div"; break;
+			case MUL: op="imul"; break;
+			case DIV:
+			case MOD:
+				op="idiv";
+				list.add(CODE_PREFIX + "cqo");
+				break;
 			case NEG: op="neg"; break;
 			case NOT: op="not"; break;
 			default:throw new RuntimeException("Op not find");

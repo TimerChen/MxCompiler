@@ -1,11 +1,4 @@
-/*int main()
-{
-	int i=1,j=2;
-	println(toString(i+j));
-	println(toString(233));
-	println("Hello world!");
-	return 0;
-}*/
+
 
 
 int gcd(int x, int y) {
@@ -51,6 +44,8 @@ int main() {
 
     return 0;
 }
+
+
 
 /*
 int main()

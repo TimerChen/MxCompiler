@@ -199,9 +199,9 @@ public class IRRewriter implements IRVisitor
 		{
 			//?<=o
 			node.setSrc(colorS0IR(node.src(),reg[0], reg[1]));
+			newIRList.add(node);
 		}
 
-		newIRList.add(node);
 	}
 
 	@Override

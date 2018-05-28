@@ -96,9 +96,9 @@ _gcd:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -24],	rdx
 	mov	r13,	qword [rbp + -24]
 	cmp	r13,	0
@@ -119,9 +119,9 @@ _L3_0:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -40],	rdx
 	push	rsi
 	mov	r13,	qword [rbp + -40]
@@ -157,9 +157,9 @@ _gcd1:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -24],	rdx
 	mov	r13,	qword [rbp + -24]
 	cmp	r13,	0
@@ -180,9 +180,9 @@ _L7_2:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -40],	rdx
 	push	rsi
 	mov	r13,	qword [rbp + -40]
@@ -218,9 +218,9 @@ _gcd2:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -24],	rdx
 	mov	r13,	qword [rbp + -24]
 	cmp	r13,	0
@@ -241,9 +241,9 @@ _L11_4:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -40],	rdx
 	push	rsi
 	mov	r13,	qword [rbp + -40]
@@ -279,9 +279,9 @@ _gcd3:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -24],	rdx
 	mov	r13,	qword [rbp + -24]
 	cmp	r13,	0
@@ -302,9 +302,9 @@ _L15_6:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -40],	rdx
 	push	rsi
 	mov	r13,	qword [rbp + -40]
@@ -340,9 +340,9 @@ _gcd4:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -24],	rdx
 	mov	r13,	qword [rbp + -24]
 	cmp	r13,	0
@@ -363,9 +363,9 @@ _L19_8:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -40],	rdx
 	push	rsi
 	mov	r13,	qword [rbp + -40]
@@ -401,9 +401,9 @@ _gcd5:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -24],	rdx
 	mov	r13,	qword [rbp + -24]
 	cmp	r13,	0
@@ -424,9 +424,9 @@ _L23_10:
 	mov	r13,	qword [rbp + -8]
 	mov	rax,	r13
 	mov	r13,	qword [rbp + -16]
-	mul	r13
+	cqo
+	idiv	r13
 	mov	qword [rbp + -16],	r13
-	mul	r13
 	mov	qword [rbp + -40],	rdx
 	push	rsi
 	mov	r13,	qword [rbp + -40]

@@ -81,6 +81,8 @@ public class Compiler
 		Debuger.printLine("Code Analyze");
 		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
 		blkList = cfgBuilder.getCFG();
+
+
 	}
 	private void codeTranslate(List<BasicBlock> blkList, List<StringLitIR>irLitList)
 	{
@@ -118,6 +120,18 @@ public class Compiler
 
 		Debuger.printLine("Code Optimize");
 		FakeAllocator allocator = new FakeAllocator(cgs);
+
+		for(BasicBlock i: blkList)
+		{
+			while(i!=null)
+			{
+				for(InsIR j: i.irList())
+				{
+					Debuger.printInfo("irlist",j.toString());
+				}
+				i = i.next0();
+			}
+		}
 		IRRewriter regRewriter = new IRRewriter(allocator.colors(), blkList);
 		regRewriter.rewrite();
 
@@ -202,7 +216,6 @@ public class Compiler
 		//Code Generate
 		irGenerate(ast);
 		Optimize(blkList);
-
 		codeTranslate(blkList, irLitList);
 
 		loadCLibrary();

@@ -34,16 +34,10 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 
 	public void visit(ExprNode node)
 	{
-
-		if(node instanceof StringLiteralNode)
-		{
-			Debuger.printInfo("visit", "SLN");
-		}
 		node.accept(this);
 	}
 	public void visit(StmtNode node)
 	{
-		Debuger.printInfo("Info", "visit "+node.toString()+" at "+node.position());
 		node.accept(this);
 	}
 	@Override
