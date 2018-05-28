@@ -12,8 +12,8 @@ public class Main
 
 	static void preSetting()
 	{
-		Debuger.setDebugOptions();
-		//Debuger.setDefaultOptions();
+		//Debuger.setDebugOptions();
+		Debuger.setDefaultOptions();
 	}
 
 	static void init()
