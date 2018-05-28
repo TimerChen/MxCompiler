@@ -121,6 +121,7 @@ public class Compiler
 		Debuger.printLine("Code Optimize");
 		FakeAllocator allocator = new FakeAllocator(cgs);
 
+		/*
 		for(BasicBlock i: blkList)
 		{
 			while(i!=null)
@@ -132,6 +133,7 @@ public class Compiler
 				i = i.next0();
 			}
 		}
+		 */
 		IRRewriter regRewriter = new IRRewriter(allocator.colors(), blkList);
 		regRewriter.rewrite();
 
@@ -140,7 +142,7 @@ public class Compiler
 	{
 		Debuger.printLine("Load Library");
 		String fileName = this.getClass().getResource("").getPath() + "Util/cLibrary.asm";
-		Debuger.printInfo("Library PATH", fileName);
+		//Debuger.printInfo("Library PATH", fileName);
 		Debuger.printInfo("Info", "Library : "+fileName);
 		InputStream is;
 

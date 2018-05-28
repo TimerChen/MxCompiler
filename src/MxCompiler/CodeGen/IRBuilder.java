@@ -714,7 +714,6 @@ public class IRBuilder extends ASTBaseVisitor
 			list.addAll(lhs.irList());
 			list.addAll(rhs.irList());
 			list.add(new MoveIR(new VarRegIR(0), r0));
-			Debuger.printInfo("div", ""+node.operator());
 			UnaryIR.Op uOp;
 			switch (op)
 			{
@@ -737,9 +736,6 @@ public class IRBuilder extends ASTBaseVisitor
 					list.add(new MoveIR(r2, new VarRegIR(2)));break;
 				default:
 
-			}
-			for(InsIR i: list){
-				Debuger.printInfo("check",i+"");
 			}
 			map.put(node, new VarRegIR(list, r2.regIndex()));
 

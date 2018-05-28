@@ -119,7 +119,6 @@ public class BinaryOpNode extends ExprNode
 
 		if(lType == typeBool)
 		{
-			Debuger.printInfo("tmp","op"+operator);
 			if(boolOps.containsKey(operator))
 				return boolOps.get(operator);
 			else

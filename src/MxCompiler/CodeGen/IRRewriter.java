@@ -38,7 +38,6 @@ public class IRRewriter implements IRVisitor
 			while(now != null)
 			{
 				newIRList = new ArrayList<InsIR>();
-				Debuger.printInfo("now",""+now);
 				List<InsIR> irList = now.irList();
 				int n = irList.size();
 				for(int j=0; j<n; ++j)

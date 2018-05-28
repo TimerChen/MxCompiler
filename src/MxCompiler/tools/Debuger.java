@@ -40,7 +40,7 @@ public class Debuger
 	}
 	static public void printLine(String str)
 	{
-		printlnRaw("============================"+str+"============================", INFO_LEVEL_DEFAULT);
+		printlnRaw("\t================= "+str+" =================", INFO_LEVEL_DEFAULT);
 	}
 	static public void printInfo(String head, String str, int level)
 	{

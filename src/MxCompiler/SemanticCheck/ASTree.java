@@ -57,7 +57,7 @@ public class ASTree extends Object
 		Debuger.printInfo("Info","Pre setting");
 		for(ASTNode i : definitionNodes)
 		{
-			Debuger.printInfo("Info", "visit "+i.getClass());
+			Debuger.printInfo("Info", "visit "+i.getClass(), 2);
 			if(i instanceof FunDefNode)
 			{
 				visitor.preVisit((FunDefNode) i);
@@ -75,7 +75,7 @@ public class ASTree extends Object
 		Debuger.printInfo("Info","Start resolve");
 		for(ASTNode i : definitionNodes)
 		{
-			Debuger.printInfo("Info", "visit "+i.getClass());
+			Debuger.printInfo("Info", "visit "+i.getClass(),2);
 			visitor.visit((StmtNode) i);
 		}
 	}

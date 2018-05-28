@@ -25,11 +25,11 @@ public class FakeAllocator extends Object
 	{
 		int nFun = cGraphs.size();
 		List<List<Integer>> colors = new ArrayList<>(nFun);
-		Debuger.printInfo("nFun", ""+nFun);
+		//Debuger.printInfo("nFun", ""+nFun);
 		for(int i=0; i<nFun; ++i)
 		{
 			List<Integer> color = new ArrayList<Integer>(Global.regNumber.size());
-			Debuger.printInfo("size", ""+Global.regNumber.size());
+			//Debuger.printInfo("size", ""+Global.regNumber.size());
 			for(int j=0; j<Global.regNumber.get(i); ++j)
 			if(j<16){
 				color.add(j);

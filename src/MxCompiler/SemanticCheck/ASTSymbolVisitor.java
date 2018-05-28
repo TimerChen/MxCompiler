@@ -115,7 +115,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		for(ParameterEntity i : node.entity().params())
 		{
 			entity = currentScope.find(i.type().toRootString());
-			Debuger.printInfo("Tmp","visit(params\1111);");
+			//Debuger.printInfo("Tmp","visit(params\1111);");
 			if(entity == null)
 				throw new SemanticError(i.position(), "type not find.");
 			if(!(entity instanceof ClassEntity))
