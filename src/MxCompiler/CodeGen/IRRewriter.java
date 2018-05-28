@@ -75,12 +75,12 @@ public class IRRewriter implements IRVisitor
 				i = i-16;
 				if(isSrc)
 				{
-					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
+					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
 					newIRList.add(new MoveIR(r0, mem));
 					return r0;
 				}else
 				{
-					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
+					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
 					//newIRList.add(new MoveIR(mem, r0));
 					return mem;
 				}
@@ -158,12 +158,13 @@ public class IRRewriter implements IRVisitor
 
 		node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
 		//node.setLhs(colorS0IR(node.lhs(), reg[0], reg[1]));
+		//lhs cannot be a varmemir
 		VarRegIR var = (VarRegIR)node.lhs();
 		int i = var.regIndex();
 		if(nowColor.get(i) == -1)
 		{
 			i = i-16;
-			VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
+			VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
 			newIRList.add(new MoveIR(reg[1], mem));
 			node.setLhs(reg[1]);
 			newIRList.add(node);
@@ -185,7 +186,7 @@ public class IRRewriter implements IRVisitor
 			if(nowColor.get(i) == -1)
 			{
 				i = i-16;
-				VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1));
+				VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
 				newIRList.add(new MoveIR(reg[0], mem));
 				node.setSrc(reg[0]);
 				newIRList.add(node);
@@ -197,8 +198,32 @@ public class IRRewriter implements IRVisitor
 		}else
 		{
 			//?<=o
-			node.setSrc(colorS0IR(node.src(),reg[0], reg[1]));
-			newIRList.add(node);
+			//node.setSrc(colorS0IR(node.src(),reg[0], reg[1]));
+			VarIR oVar= (VarIR)node.src();
+			if(oVar instanceof VarMemIR)
+			{
+				node.setSrc(colorS0IR(node.src(), reg[0], reg[1]));
+				newIRList.add(node);
+			}else if(oVar instanceof VarRegIR)
+			{
+				VarRegIR var = (VarRegIR)oVar;
+				int i = var.regIndex();
+				if(nowColor.get(i) == -1)
+				{
+					i = i-16;
+					VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
+					newIRList.add(new MoveIR(reg[0], mem));
+					node.setSrc(reg[0]);
+					newIRList.add(node);
+					newIRList.add(new MoveIR(mem, reg[0]));
+				}else
+				{
+					newIRList.add(node);
+				}
+			}else
+				throw new RuntimeException("Unknown var type");
+
+
 		}
 
 	}

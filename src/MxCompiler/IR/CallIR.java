@@ -6,13 +6,22 @@
 
 package MxCompiler.IR;
 
+import MxCompiler.Entities.FunctionEntity;
+
 public class CallIR extends InsIR
 {
 	private String label;
+	private int pNum;
 
-	public CallIR(String label)
+	public CallIR(String label, int pNum)
 	{
 		this.label = label;
+		this.pNum = pNum;
+	}
+
+	public int pNum()
+	{
+		return pNum;
 	}
 
 	public String label()

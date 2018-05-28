@@ -223,6 +223,12 @@ public class VarAnalyzer implements IRVisitor
 	public void visit(CallIR node)
 	{
 		//Nothing
+		int []idx = {7, 6, 2, 1, 8, 9};
+		for(int i=0;i<6&&i<node.pNum();++i)
+		{
+			destVisit(new VarRegIR(idx[i]));
+		}
+
 	}
 
 	@Override

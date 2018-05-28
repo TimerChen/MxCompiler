@@ -4,77 +4,53 @@ SECTION .text
 main:
 _main:
 	push	rbp
+	mov	rbp,	rsp
+	add	rbp,	8
 	push	rbx
 	push	r12
 	push	r13
 	push	r14
 	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	72
-	push	rdi
-	mov	rdi,	10
-	push	rsi
-	mov	rsi,	1
-	call	_gcd
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -8],	rax
-	push	rdi
-	mov	r13,	qword [rbp + -8]
-	mov	rdi,	r13
-	call	_toString
-	pop	rdi
-	mov	qword [rbp + -16],	rax
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	call	_println
-	pop	rdi
-	mov	qword [rbp + -24],	rax
-	push	rdi
-	mov	rdi,	34986
-	push	rsi
-	mov	rsi,	3087
-	call	_gcd
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -32],	rax
-	push	rdi
-	mov	r13,	qword [rbp + -32]
-	mov	rdi,	r13
-	call	_toString
-	pop	rdi
-	mov	qword [rbp + -40],	rax
-	push	rdi
-	mov	r13,	qword [rbp + -40]
-	mov	rdi,	r13
-	call	_println
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	push	rdi
-	mov	rdi,	2907
-	push	rsi
-	mov	rsi,	1539
-	call	_gcd
-	pop	rsi
-	pop	rdi
+	sub	rsp,	24
+	mov	r13,	15
+	push	r13
+	mov	r13,	14
+	push	r13
+	mov	r13,	13
+	push	r13
+	mov	r13,	12
+	push	r13
+	mov	r13,	11
+	push	r13
+	mov	r13,	10
+	push	r13
+	mov	r13,	9
+	push	r13
+	mov	r13,	8
+	push	r13
+	mov	r13,	7
+	push	r13
+	mov	rdi,	1
+	mov	rsi,	2
+	mov	rdx,	3
+	mov	rcx,	4
+	mov	r8,	5
+	mov	r9,	6
+	call	_a
+	add	rsp,	72
 	mov	qword [rbp + -56],	rax
-	push	rdi
 	mov	r13,	qword [rbp + -56]
 	mov	rdi,	r13
 	call	_toString
-	pop	rdi
 	mov	qword [rbp + -64],	rax
-	push	rdi
 	mov	r13,	qword [rbp + -64]
 	mov	rdi,	r13
 	call	_println
-	pop	rdi
 	mov	qword [rbp + -72],	rax
 	mov	rax,	0
 	jmp	___exit_main
 ___exit_main:
-	mov	rsp,	rbp
+	add	rsp,	24
 	pop	r15
 	pop	r14
 	pop	r13
@@ -82,365 +58,129 @@ ___exit_main:
 	pop	rbx
 	pop	rbp
 	ret
-_gcd:
+_a:
 	push	rbp
+	mov	rbp,	rsp
+	add	rbp,	8
 	push	rbx
 	push	r12
 	push	r13
 	push	r14
 	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	48
-	mov	qword [rbp + -8],	rdi
-	mov	qword [rbp + -16],	rsi
-	mov	r13,	qword [rbp + -8]
+	sub	rsp,	232
+	mov	qword [rbp + -56],	rdi
+	mov	qword [rbp + -64],	rsi
+	mov	qword [rbp + -72],	rdx
+	mov	qword [rbp + -80],	rcx
+	mov	qword [rbp + -88],	r8
+	mov	qword [rbp + -96],	r9
+	mov	r13,	qword [rbp + 8]
+	mov	qword [rbp + -104],	r13
+	mov	r13,	qword [rbp + 16]
+	mov	qword [rbp + -112],	r13
+	mov	r13,	qword [rbp + 24]
+	mov	qword [rbp + -120],	r13
+	mov	r13,	qword [rbp + 32]
+	mov	qword [rbp + -128],	r13
+	mov	r13,	qword [rbp + 40]
+	mov	qword [rbp + -136],	r13
+	mov	r13,	qword [rbp + 48]
+	mov	qword [rbp + -144],	r13
+	mov	r13,	qword [rbp + 56]
+	mov	qword [rbp + -152],	r13
+	mov	r13,	qword [rbp + 64]
+	mov	qword [rbp + -160],	r13
+	mov	r13,	qword [rbp + 72]
+	mov	qword [rbp + -168],	r13
+	mov	r13,	qword [rbp + -56]
+	mov	qword [rbp + -176],	r13
+	mov	r13,	qword [rbp + -64]
+	mov	r14,	qword [rbp + -176]
+	add	r14,	r13
+	mov	qword [rbp + -176],	r14
+	mov	r13,	qword [rbp + -176]
+	mov	qword [rbp + -184],	r13
+	mov	r13,	qword [rbp + -72]
+	mov	r14,	qword [rbp + -184]
+	add	r14,	r13
+	mov	qword [rbp + -184],	r14
+	mov	r13,	qword [rbp + -184]
+	mov	qword [rbp + -192],	r13
+	mov	r13,	qword [rbp + -80]
+	mov	r14,	qword [rbp + -192]
+	add	r14,	r13
+	mov	qword [rbp + -192],	r14
+	mov	r13,	qword [rbp + -192]
+	mov	qword [rbp + -200],	r13
+	mov	r13,	qword [rbp + -88]
+	mov	r14,	qword [rbp + -200]
+	add	r14,	r13
+	mov	qword [rbp + -200],	r14
+	mov	r13,	qword [rbp + -200]
+	mov	qword [rbp + -208],	r13
+	mov	r13,	qword [rbp + -96]
+	mov	r14,	qword [rbp + -208]
+	add	r14,	r13
+	mov	qword [rbp + -208],	r14
+	mov	r13,	qword [rbp + -208]
+	mov	qword [rbp + -216],	r13
+	mov	r13,	qword [rbp + -104]
+	mov	r14,	qword [rbp + -216]
+	add	r14,	r13
+	mov	qword [rbp + -216],	r14
+	mov	r13,	qword [rbp + -216]
+	mov	qword [rbp + -224],	r13
+	mov	r13,	qword [rbp + -112]
+	mov	r14,	qword [rbp + -224]
+	add	r14,	r13
+	mov	qword [rbp + -224],	r14
+	mov	r13,	qword [rbp + -224]
+	mov	qword [rbp + -232],	r13
+	mov	r13,	qword [rbp + -120]
+	mov	r14,	qword [rbp + -232]
+	add	r14,	r13
+	mov	qword [rbp + -232],	r14
+	mov	r13,	qword [rbp + -232]
+	mov	qword [rbp + -240],	r13
+	mov	r13,	qword [rbp + -128]
+	mov	r14,	qword [rbp + -240]
+	add	r14,	r13
+	mov	qword [rbp + -240],	r14
+	mov	r13,	qword [rbp + -240]
+	mov	qword [rbp + -248],	r13
+	mov	r13,	qword [rbp + -136]
+	mov	r14,	qword [rbp + -248]
+	add	r14,	r13
+	mov	qword [rbp + -248],	r14
+	mov	r13,	qword [rbp + -248]
+	mov	qword [rbp + -256],	r13
+	mov	r13,	qword [rbp + -144]
+	mov	r14,	qword [rbp + -256]
+	add	r14,	r13
+	mov	qword [rbp + -256],	r14
+	mov	r13,	qword [rbp + -256]
+	mov	qword [rbp + -264],	r13
+	mov	r13,	qword [rbp + -152]
+	mov	r14,	qword [rbp + -264]
+	add	r14,	r13
+	mov	qword [rbp + -264],	r14
+	mov	r13,	qword [rbp + -264]
+	mov	qword [rbp + -272],	r13
+	mov	r13,	qword [rbp + -160]
+	mov	r14,	qword [rbp + -272]
+	add	r14,	r13
+	mov	qword [rbp + -272],	r14
+	mov	r13,	qword [rbp + -272]
+	mov	qword [rbp + -280],	r13
+	mov	r13,	qword [rbp + -168]
+	mov	r14,	qword [rbp + -280]
+	add	r14,	r13
+	mov	qword [rbp + -280],	r14
+	mov	r13,	qword [rbp + -280]
 	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -24],	rdx
-	mov	r13,	qword [rbp + -24]
-	cmp	r13,	0
-	sete	al
-	movzx	r15,	al
-	mov	qword [rbp + -32],	r15
-	mov	r13,	qword [rbp + -32]
-	cmp	r13,	0
-	je	_L3_0
-	mov	r13,	qword [rbp + -16]
-	mov	rax,	r13
-	jmp	___exit_gcd
-	jmp	_L3_1
-_L3_0:
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -40],	rdx
-	push	rsi
-	mov	r13,	qword [rbp + -40]
-	mov	rsi,	r13
-	call	_gcd5
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	mov	r13,	qword [rbp + -48]
-	mov	rax,	r13
-	jmp	___exit_gcd
-_L3_1:
-___exit_gcd:
-	mov	rsp,	rbp
-	pop	r15
-	pop	r14
-	pop	r13
-	pop	r12
-	pop	rbx
-	pop	rbp
-	ret
-_gcd1:
-	push	rbp
-	push	rbx
-	push	r12
-	push	r13
-	push	r14
-	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	48
-	mov	qword [rbp + -8],	rdi
-	mov	qword [rbp + -16],	rsi
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -24],	rdx
-	mov	r13,	qword [rbp + -24]
-	cmp	r13,	0
-	sete	al
-	movzx	r15,	al
-	mov	qword [rbp + -32],	r15
-	mov	r13,	qword [rbp + -32]
-	cmp	r13,	0
-	je	_L7_2
-	mov	r13,	qword [rbp + -16]
-	mov	rax,	r13
-	jmp	___exit_gcd1
-	jmp	_L7_3
-_L7_2:
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -40],	rdx
-	push	rsi
-	mov	r13,	qword [rbp + -40]
-	mov	rsi,	r13
-	call	_gcd
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	mov	r13,	qword [rbp + -48]
-	mov	rax,	r13
-	jmp	___exit_gcd1
-_L7_3:
-___exit_gcd1:
-	mov	rsp,	rbp
-	pop	r15
-	pop	r14
-	pop	r13
-	pop	r12
-	pop	rbx
-	pop	rbp
-	ret
-_gcd2:
-	push	rbp
-	push	rbx
-	push	r12
-	push	r13
-	push	r14
-	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	48
-	mov	qword [rbp + -8],	rdi
-	mov	qword [rbp + -16],	rsi
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -24],	rdx
-	mov	r13,	qword [rbp + -24]
-	cmp	r13,	0
-	sete	al
-	movzx	r15,	al
-	mov	qword [rbp + -32],	r15
-	mov	r13,	qword [rbp + -32]
-	cmp	r13,	0
-	je	_L11_4
-	mov	r13,	qword [rbp + -16]
-	mov	rax,	r13
-	jmp	___exit_gcd2
-	jmp	_L11_5
-_L11_4:
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -40],	rdx
-	push	rsi
-	mov	r13,	qword [rbp + -40]
-	mov	rsi,	r13
-	call	_gcd1
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	mov	r13,	qword [rbp + -48]
-	mov	rax,	r13
-	jmp	___exit_gcd2
-_L11_5:
-___exit_gcd2:
-	mov	rsp,	rbp
-	pop	r15
-	pop	r14
-	pop	r13
-	pop	r12
-	pop	rbx
-	pop	rbp
-	ret
-_gcd3:
-	push	rbp
-	push	rbx
-	push	r12
-	push	r13
-	push	r14
-	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	48
-	mov	qword [rbp + -8],	rdi
-	mov	qword [rbp + -16],	rsi
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -24],	rdx
-	mov	r13,	qword [rbp + -24]
-	cmp	r13,	0
-	sete	al
-	movzx	r15,	al
-	mov	qword [rbp + -32],	r15
-	mov	r13,	qword [rbp + -32]
-	cmp	r13,	0
-	je	_L15_6
-	mov	r13,	qword [rbp + -16]
-	mov	rax,	r13
-	jmp	___exit_gcd3
-	jmp	_L15_7
-_L15_6:
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -40],	rdx
-	push	rsi
-	mov	r13,	qword [rbp + -40]
-	mov	rsi,	r13
-	call	_gcd2
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	mov	r13,	qword [rbp + -48]
-	mov	rax,	r13
-	jmp	___exit_gcd3
-_L15_7:
-___exit_gcd3:
-	mov	rsp,	rbp
-	pop	r15
-	pop	r14
-	pop	r13
-	pop	r12
-	pop	rbx
-	pop	rbp
-	ret
-_gcd4:
-	push	rbp
-	push	rbx
-	push	r12
-	push	r13
-	push	r14
-	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	48
-	mov	qword [rbp + -8],	rdi
-	mov	qword [rbp + -16],	rsi
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -24],	rdx
-	mov	r13,	qword [rbp + -24]
-	cmp	r13,	0
-	sete	al
-	movzx	r15,	al
-	mov	qword [rbp + -32],	r15
-	mov	r13,	qword [rbp + -32]
-	cmp	r13,	0
-	je	_L19_8
-	mov	r13,	qword [rbp + -16]
-	mov	rax,	r13
-	jmp	___exit_gcd4
-	jmp	_L19_9
-_L19_8:
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -40],	rdx
-	push	rsi
-	mov	r13,	qword [rbp + -40]
-	mov	rsi,	r13
-	call	_gcd
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	mov	r13,	qword [rbp + -48]
-	mov	rax,	r13
-	jmp	___exit_gcd4
-_L19_9:
-___exit_gcd4:
-	mov	rsp,	rbp
-	pop	r15
-	pop	r14
-	pop	r13
-	pop	r12
-	pop	rbx
-	pop	rbp
-	ret
-_gcd5:
-	push	rbp
-	push	rbx
-	push	r12
-	push	r13
-	push	r14
-	push	r15
-	mov	rbp,	rsp
-	sub	rsp,	48
-	mov	qword [rbp + -8],	rdi
-	mov	qword [rbp + -16],	rsi
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -24],	rdx
-	mov	r13,	qword [rbp + -24]
-	cmp	r13,	0
-	sete	al
-	movzx	r15,	al
-	mov	qword [rbp + -32],	r15
-	mov	r13,	qword [rbp + -32]
-	cmp	r13,	0
-	je	_L23_10
-	mov	r13,	qword [rbp + -16]
-	mov	rax,	r13
-	jmp	___exit_gcd5
-	jmp	_L23_11
-_L23_10:
-	push	rdi
-	mov	r13,	qword [rbp + -16]
-	mov	rdi,	r13
-	mov	r13,	qword [rbp + -8]
-	mov	rax,	r13
-	mov	r13,	qword [rbp + -16]
-	cqo
-	idiv	r13
-	mov	qword [rbp + -16],	r13
-	mov	qword [rbp + -40],	rdx
-	push	rsi
-	mov	r13,	qword [rbp + -40]
-	mov	rsi,	r13
-	call	_gcd2
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -48],	rax
-	mov	r13,	qword [rbp + -48]
-	mov	rax,	r13
-	jmp	___exit_gcd5
-_L23_11:
-___exit_gcd5:
-	mov	rsp,	rbp
+	jmp	___exit_a
+___exit_a:
+	add	rsp,	232
 	pop	r15
 	pop	r14
 	pop	r13
