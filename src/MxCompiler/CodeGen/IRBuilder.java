@@ -66,10 +66,7 @@ public class IRBuilder extends ASTBaseVisitor
 	{
 		List<List<InsIR>> list = new ArrayList<List<InsIR>>();
 		for(ASTNode i: ast.definitionNodes())
-		if(i instanceof ClassDefNode){
-			visit((ClassDefNode) i);
-			list.add((List<InsIR>) map.get(i));
-		}else if(i instanceof FunDefNode)
+		if(i instanceof FunDefNode)
 		{
 			if(!((FunDefNode) i).name().equals("main"))
 			{
@@ -265,13 +262,12 @@ public class IRBuilder extends ASTBaseVisitor
 	public Void visit(WhileNode node)
 	{
 		/*
+		.L0:
 			[condi]->r0
 			CJUMP .L1 (r0 == 0)?
 		.L2:
 			[body]
-		.L0:
-			[condi]->r0
-			CJUMP .L2 (r0 == 1)?
+			JUMP .L0
 		.L1:
 		 */
 		int block = blockNumber++;
@@ -293,6 +289,8 @@ public class IRBuilder extends ASTBaseVisitor
 		l0 = contiueLabel;
 		l1 = exitLabel;
 
+//		.L0:
+		list.add(new LabelIR(l0.label()));
 //		[condi]->r0
 		list.addAll(condi.irList());
 		//r0 = condi;
@@ -304,13 +302,9 @@ public class IRBuilder extends ASTBaseVisitor
 		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
-//		.L0:
-		list.add(new LabelIR(l0.label()));
-//			[condi]->r0
-		list.addAll(condi.irList());
 		//r0 = condi;
 //		CJUMP .L2 (r0 == 1)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(1), l1));
+		list.add(new JumpIR(new VarLabelIR(l0.label())));
 		Global.IRBuilder_loopDeepth--;
 
 //		.L1
@@ -325,14 +319,13 @@ public class IRBuilder extends ASTBaseVisitor
 	{
 		/*
 			[init]
+		.L0
 			[condi]->r0
 			CJUMP .L1 (r0 == 0)?
 		.L2:
 			[body]
-		.L0:
 			[step]
-			[condi]->r0
-			CJUMP .L2 (r0 == 1)?
+			JUMP .L0
 		.L1:
 		 */
 		int block = blockNumber++;
@@ -358,6 +351,8 @@ public class IRBuilder extends ASTBaseVisitor
 
 //			[init]
 		list.addAll(init.irList());
+//		.L0:
+		list.add(new LabelIR(l0.label()));
 //			[condi]->r0
 		list.addAll(condi.irList());
 		//r0 = regTrans(condi);
@@ -370,14 +365,10 @@ public class IRBuilder extends ASTBaseVisitor
 		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
-//		.L0:
-		list.add(new LabelIR(l0.label()));
 //			[step]
 		list.addAll(step.irList());
-//			[condi]->r0
-		list.addAll(condi.irList());
-//		CJUMP .L2 (r0 == 1)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, r0, new VarIntIR(1), l2));
+//      JUMP .L0
+		list.add(new JumpIR(new VarLabelIR(l0.label())));
 		Global.IRBuilder_loopDeepth--;
 
 //		.L1:
@@ -560,8 +551,11 @@ public class IRBuilder extends ASTBaseVisitor
 			lList.add((List<InsIR>) map.get(i));
 		}
 		FunDefNode cons = node.entity().constructorNode();
-		visit(cons);
-		lList.add((List<InsIR>) map.get(cons));
+		if(cons!=null)
+		{
+			visit(cons);
+			lList.add((List<InsIR>) map.get(cons));
+		}
 
 		map.put(node, lList);
 		return null;
@@ -578,6 +572,7 @@ public class IRBuilder extends ASTBaseVisitor
 		VarRegIR r0;
 		llMap.add(node.lhs());
 		lhs = (VarIR) map.get(node.lhs());
+		Debuger.printInfo("rhs",node.rhs().toString());
 		rhs = (VarIR) map.get(node.rhs());
 		list.addAll(lhs.irList());
 		list.addAll(rhs.irList());
@@ -737,7 +732,7 @@ public class IRBuilder extends ASTBaseVisitor
 				case DIV:
 					uOp = UnaryIR.Op.DIV;break;
 				default:
-					throw new RuntimeException("Unkown operator");
+					throw new RuntimeException("Unknown operator");
 			}
 			list.add(new UnaryIR(uOp, r1));
 			switch (op)
@@ -853,13 +848,13 @@ public class IRBuilder extends ASTBaseVisitor
 		super.visit(node);
 		List<VarIR> plist = new LinkedList<>();
 		List<InsIR> list = new LinkedList<>();
-		VarRegIR r0;
+		VarRegIR r0, r1;
 		if(node.type() instanceof TypeArray)
 		{
 			Type rootType = ((TypeArray) node.type()).rootType();
 			r0 = getNewReg();
 			//Array
-			plist.add(new VarIntIR(node.args().size()*8));
+			plist.add(new VarIntIR(node.args().size()));
 			list.addAll(makeCall("__.array_.array",plist));
 
 			//fill the *aSize
@@ -876,7 +871,7 @@ public class IRBuilder extends ASTBaseVisitor
 			//int *aSize
 			plist.add(new VarRegIR(r0.regIndex()));
 			//int dim
-			plist.add(new VarIntIR(node.dim()));
+			plist.add(new VarIntIR(node.args().size()));
 			if(node.args().size() < node.dim())
 			{
 				//int eSize
@@ -900,7 +895,9 @@ public class IRBuilder extends ASTBaseVisitor
 			//void* __array_new(int *aSize, int dim, int eSize, FUNC func)
 			list.addAll(makeCall("__.array_new", plist));
 
-
+			r1 = getNewReg();
+			list.add(new MoveIR(r1, new VarRegIR(0)));
+			map.put(node, r1.clone(list));
 		}else
 		{
 			r0 = getNewReg();
@@ -909,11 +906,15 @@ public class IRBuilder extends ASTBaseVisitor
 			list.addAll(makeCall("malloc", plist));
 
 			list.add(new MoveIR(r0, new VarRegIR(0)));
+			if(node.type() instanceof TypeClass && ((TypeClass) node.type()).refEntity().constructorNode()!=null)
+			{
+				plist.set(0, new VarRegIR(r0.regIndex()));
+				list.addAll(makeCall("__"+node.type()+"_"+node.type(), plist));
+			}
 
-			plist.set(0, new VarRegIR(r0.regIndex()));
-			list.addAll(makeCall("__"+node.type()+"_"+node.type(), plist));
+			map.put(node, r0.clone(list));
 		}
-		map.put(node, list);
+
 		return null;
 	}
 

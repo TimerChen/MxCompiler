@@ -8,14 +8,14 @@ typedef void (*FUNC)(void*);
 
 void* __array_array(int size)
 {
-	void *ret = malloc(size + sizeof(int))+sizeof(int);
+	void *ret = malloc(size*8 + sizeof(int))+sizeof(int);
 	((int*)ret)[-1] = size;
 	return ret;
 }
 
-void** __array_new(int *aSize, int dim, int eSize, FUNC func)
+void** __array_new(long int *aSize, int dim, int eSize, FUNC func)
 {
-	void** array = (void**)__array_array(eSize*aSize[0]);
+	void** array = (void**)__array_array(aSize[0]);
 	for(int i=0;i<aSize[0];++i)
 	{
 		if(dim > 1)
@@ -112,7 +112,7 @@ _Bool __string__equal(unsigned char* this, unsigned char* other)
 {
 	return strcmp(this, other) == 0;
 }
-int __array_length(void *this)
+int __array_size(void *this)
 {
 	return ((int*)this)[-1];
 }

@@ -18,6 +18,12 @@ public class VarLabelIR extends VarIR
 		this.label = label;
 	}
 
+	public VarLabelIR(List<InsIR> insIrList, String label)
+	{
+		super(insIrList);
+		this.label = label;
+	}
+
 	public String label()
 	{
 		return label;
@@ -26,7 +32,7 @@ public class VarLabelIR extends VarIR
 	@Override
 	public VarIR clone(List<InsIR> irList)
 	{
-		return new VarLabelIR(label);
+		return new VarLabelIR(irList, label);
 	}
 
 	@Override

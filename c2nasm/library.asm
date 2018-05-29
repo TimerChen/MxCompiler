@@ -20,7 +20,7 @@ global __string__plus
 global __string__less
 global __string__lessEqual
 global __string__equal
-global __array_length
+global __array_size
 
 extern strcmp
 extern strtol
@@ -39,8 +39,9 @@ SECTION .text   6
 
 __array_array:
         push    rbx
+        mov     ebx, edi
+        lea     edi, [rdi*8]
         movsxd  rdi, edi
-        mov     rbx, rdi
         add     rdi, 4
         call    malloc
         mov     dword [rax], ebx
@@ -53,48 +54,47 @@ __array_array:
 
 
 
-ALIGN   16
+ALIGN   8
 
 __array_new:
         push    r15
         push    r14
-        mov     r14, rdi
+        mov     r14d, edx
         push    r13
         push    r12
-        mov     r13d, edx
+        mov     r13d, esi
         push    rbp
         push    rbx
-        mov     r12d, esi
-        mov     rbp, rcx
+        mov     rbx, rdi
+        mov     r12, rcx
         sub     rsp, 24
-        mov     r15d, dword [rdi]
-        imul    r15d, edx
-        movsxd  rdi, r15d
+        mov     r15, qword [rdi]
+        lea     edi, [r15*8]
+        movsxd  rdi, edi
         add     rdi, 4
         call    malloc
-        mov     rbx, rax
+        mov     rbp, rax
         add     rax, 4
+        test    r15, r15
         mov     qword [rsp], rax
-        mov     eax, dword [r14]
-        mov     dword [rbx], r15d
-        test    eax, eax
+        mov     dword [rbp], r15d
         jle     L_003
-        movsxd  rax, r13d
+        movsxd  rax, r14d
         mov     r15d, 1
         mov     qword [rsp+8H], rax
-L_001:  cmp     r12d, 1
+L_001:  cmp     r13d, 1
         jg      L_004
-        test    rbp, rbp
+        test    r12, r12
         jz      L_002
         mov     rdi, qword [rsp+8H]
         call    malloc
-        mov     qword [rbx+r15*8-4H], rax
+        mov     qword [rbp+r15*8-4H], rax
         mov     rdi, rax
-        call    rbp
-L_002:  mov     eax, r15d
+        call    r12
+L_002:  mov     rax, r15
         add     r15, 1
-        cmp     dword [r14], eax
-        jg      L_001
+        cmp     rax, qword [rbx]
+        jl      L_001
 L_003:  mov     rax, qword [rsp]
         add     rsp, 24
         pop     rbx
@@ -110,20 +110,14 @@ L_003:  mov     rax, qword [rsp]
 
 
 ALIGN   8
-L_004:  mov     rcx, rbp
-        mov     edx, r13d
-        mov     esi, r12d
-        mov     rdi, r14
+L_004:  mov     rcx, r12
+        mov     edx, r14d
+        mov     esi, r13d
+        mov     rdi, rbx
         call    __array_new
-        mov     qword [rbx+r15*8-4H], rax
+        mov     qword [rbp+r15*8-4H], rax
         jmp     L_002
 
-
-
-
-
-
-ALIGN   16
 
 __string_string:
         push    rbx
@@ -406,7 +400,7 @@ __string__equal:
 
 ALIGN   16
 
-__array_length:
+__array_size:
         mov     eax, dword [rdi-4H]
         ret
 

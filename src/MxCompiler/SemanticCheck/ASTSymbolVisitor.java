@@ -16,6 +16,7 @@ import MxCompiler.Type.TypeVoid;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
 
+import java.sql.ParameterMetaData;
 import java.util.List;
 import java.util.Stack;
 
@@ -135,7 +136,6 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		currentScope = node.entity().scope();
 		//this
 
-
 		for(VarDecNode i : node.entity().varList())
 		{
 			entity = currentScope.find(i.type().toRootString());
@@ -231,7 +231,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			if(pnode instanceof VariableNode)
 			{
 
-				VariableEntity vEntity = (VariableEntity)((VariableNode)pnode).refEntity();
+				ParameterEntity vEntity = (ParameterEntity)((VariableNode)pnode).refEntity();
 
 				entity = currentScope.find(vEntity.type().toString());
 			}else

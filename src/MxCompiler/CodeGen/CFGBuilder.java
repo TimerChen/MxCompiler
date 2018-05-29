@@ -9,6 +9,7 @@ package MxCompiler.CodeGen;
 import MxCompiler.AST.BlockNode;
 import MxCompiler.IR.*;
 import MxCompiler.tools.Debuger;
+
 import java.util.*;
 
 public class CFGBuilder extends Object
@@ -64,7 +65,9 @@ public class CFGBuilder extends Object
 					start = i;
 				}
 			}
-			nowBlock.setIrList(irList.subList(start, n));
+			Debuger.printInfo("start, n",start + ", "+n);
+			if(start<n)
+				nowBlock.setIrList(irList.subList(start, n));
 
 			nowBlock = funList.get(ii);
 			while(nowBlock!=null)

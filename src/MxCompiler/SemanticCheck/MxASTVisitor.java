@@ -13,6 +13,7 @@ import MxCompiler.Entities.ParameterEntity;
 import MxCompiler.Entities.VariableEntity;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
+import MxCompiler.Type.TypeClass;
 import MxCompiler.Type.TypeTable;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.parser.MxBaseVisitor;
@@ -605,6 +606,7 @@ public class MxASTVisitor extends MxBaseVisitor
 				new SourcePosition(ctx),
 				funList, varList, constructorNode,
 				null, 0);
+		((TypeClass)entity.type()).setRefEntity(entity);
 		map.put(ctx, new ClassDefNode(new SourcePosition(ctx), entity));
 		return ret;
 	}

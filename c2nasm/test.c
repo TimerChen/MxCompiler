@@ -69,13 +69,26 @@ void test_string()
 
 	printf("Pass.\n");
 }
+void test_array()
+{
+
+	printf("__array_array\n");
+	long int* array = __array_array(1), *a0;
+	((long int*)array)[0] = 10;
+	printf("__string_new\n");
+	a0 = __array_new(array, 1, 8, 0);
+	printf("__string_length\n");
+	printf("%d\n", __array_size(a0));
+	assert(__array_size(a0) == 10);
+}
 int main()
 {
 	// unsigned char oStr[100]="0000_toString(12)";
 	// unsigned char *str = oStr + sizeof(int);
 	// ((int*)str)[-1] = strlen(str);
 	// _println(_toString(__string_length(str)));
-	test_output();
-	test_input();
-	test_string();
+	// test_output();
+	// test_input();
+	// test_string();
+	test_array();
 }

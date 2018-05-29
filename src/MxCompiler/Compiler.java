@@ -78,6 +78,10 @@ public class Compiler
 		irLists = irBuilder.irList();
 		irLitList = irBuilder.constList();
 
+		for(List<InsIR> i : irLists)
+		{
+			Debuger.printInfo("size", i.size()+"");
+		}
 		Debuger.printLine("Code Analyze");
 		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
 		blkList = cfgBuilder.getCFG();
@@ -121,19 +125,19 @@ public class Compiler
 		Debuger.printLine("Code Optimize");
 		FakeAllocator allocator = new FakeAllocator(cgs);
 
-/*
+
 		for(BasicBlock i: blkList)
 		{
 			while(i!=null)
 			{
 				for(InsIR j: i.irList())
-				{
-					Debuger.printInfo("irlist",j.toString());
+				if(j instanceof LabelIR){
+					Debuger.printInfo("irlist",((LabelIR) j).label());
 				}
 				i = i.next0();
 			}
 		}
-*/
+
 		IRRewriter regRewriter = new IRRewriter(allocator.colors(), blkList);
 		regRewriter.rewrite();
 
