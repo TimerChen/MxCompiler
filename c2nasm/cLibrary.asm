@@ -154,24 +154,24 @@ _L0_002:
 		        mov     eax, dword [r14]
 		        mov     dword [rbx], r15d
 		        test    eax, eax
-		        jle     _L1_003
+		        jle     L_003
 		        movsxd  rax, r13d
 		        mov     r15d, 1
 		        mov     qword [rsp+8H], rax
-		_L1_001:  cmp     r12d, 1
-		        jg      _L1_004
+		L_001:  cmp     r12d, 1
+		        jg      L_004
 		        test    rbp, rbp
-		        jz      _L1_002
+		        jz      L_002
 		        mov     rdi, qword [rsp+8H]
 		        call    malloc
 		        mov     qword [rbx+r15*8-4H], rax
 		        mov     rdi, rax
 		        call    rbp
-		_L1_002:  mov     eax, r15d
+		L_002:  mov     eax, r15d
 		        add     r15, 1
 		        cmp     dword [r14], eax
-		        jg      _L1_001
-		_L1_003:  mov     rax, qword [rsp]
+		        jg      L_001
+		L_003:  mov     rax, qword [rsp]
 		        add     rsp, 24
 		        pop     rbx
 		        pop     rbp
@@ -186,13 +186,13 @@ _L0_002:
 
 
 		ALIGN   8
-		_L1_004:  mov     rcx, rbp
+		L_004:  mov     rcx, rbp
 		        mov     edx, r13d
 		        mov     esi, r12d
 		        mov     rdi, r14
 		        call    __array_new
 		        mov     qword [rbx+r15*8-4H], rax
-		        jmp     _L1_002
+		        jmp     L_002
 
 
 
@@ -228,19 +228,19 @@ _L0_002:
 		        mov     rbx, rdi
 		        movzx   edi, byte [rdi]
 		        test    dil, dil
-		        jz      _L1_006
+		        jz      L_006
 
 
 
 
 		ALIGN   8
-		_L1_005:  mov     rsi, qword [rel stdout]
+		L_005:  mov     rsi, qword [rel stdout]
 		        add     rbx, 1
 		        call    _IO_putc
 		        movzx   edi, byte [rbx]
 		        test    dil, dil
-		        jnz     _L1_005
-		_L1_006:  pop     rbx
+		        jnz     L_005
+		L_006:  pop     rbx
 		        ret
 
 
@@ -290,12 +290,12 @@ _L0_002:
 
 
 		        xor     rcx, qword [fs:abs 28H]
-		        jnz     _L1_007
+		        jnz     L_007
 		        add     rsp, 32
 		        pop     rbx
 		        ret
 
-		_L1_007:  call    __stack_chk_fail
+		L_007:  call    __stack_chk_fail
 
 
 
@@ -335,7 +335,7 @@ _L0_002:
 		        test    r12d, r12d
 		        mov     dword [rdi], r12d
 		        mov     byte [rdi+rdx+4H], 0
-		        jle     _L1_009
+		        jle     L_009
 		        mov     ecx, ebx
 		        lea     r8, [rbp+r13]
 		        xor     edx, edx
@@ -345,12 +345,12 @@ _L0_002:
 
 
 		ALIGN   8
-		_L1_008:  movzx   esi, byte [r8+rdx]
+		L_008:  movzx   esi, byte [r8+rdx]
 		        mov     byte [rdi+rdx+4H], sil
 		        add     rdx, 1
 		        cmp     rdx, rcx
-		        jnz     _L1_008
-		_L1_009:  add     rsp, 8
+		        jnz     L_008
+		L_009:  add     rsp, 8
 		        pop     rbx
 		        pop     rbp
 		        pop     r12
@@ -395,17 +395,16 @@ _L0_002:
 
 		__string__plus:
 		        push    r14
-		        mov     r14, rdi
 		        push    r13
+		        mov     r14, rdi
 		        push    r12
 		        push    rbp
 		        mov     r13, rsi
 		        push    rbx
-		        mov     ebx, dword [rsi-4H]
-		        mov     edi, dword [rdi-4H]
-		        add     edi, ebx
-		        lea     ebp, [rdi+1H]
-		        add     edi, 2
+		        mov     ebx, dword [rdi-4H]
+		        mov     ebp, dword [rsi-4H]
+		        add     ebp, ebx
+		        lea     edi, [rbp+1H]
 		        movsxd  rdi, edi
 		        add     rdi, 4
 		        call    malloc
@@ -433,7 +432,7 @@ _L0_002:
 
 
 
-		ALIGN   8
+		ALIGN   16
 
 		__string__less:
 		        sub     rsp, 8

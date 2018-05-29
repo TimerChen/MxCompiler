@@ -68,7 +68,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		super.visit(node);
 		if(node.condi().type() != Options.typeBool)
-			throw new SemanticError(node.condi().position(), "bool excepted.");
+			throw new SemanticError(node.condi().position(), "bool expected.");
 		return null;
 	}
 
@@ -78,7 +78,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 		enterLoop(node);
 		super.visit(node);
 		if(node.condi().type() != Options.typeBool)
-			throw new SemanticError(node.condi().position(), "bool excepted.");
+			throw new SemanticError(node.condi().position(), "bool expected.");
 		exitLoop();
 		return null;
 	}
@@ -89,7 +89,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 		enterLoop(node);
 		super.visit(node);
 		if(node.condi() != null && node.condi().type() != Options.typeBool)
-			throw new SemanticError(node.condi().position(), "bool excepted.");
+			throw new SemanticError(node.condi().position(), "bool expected.");
 		exitLoop();
 		return null;
 	}
@@ -103,10 +103,10 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 			if(currentReturn instanceof TypeClass || currentReturn instanceof TypeArray)
 			{
 				if(type != Options.typeNull && type != currentReturn)
-					throw new SemanticError(node.position(), type+" found, but "+currentReturn+" excepted.");
+					throw new SemanticError(node.position(), type+" found, but "+currentReturn+" expected.");
 			}else
 			if(node.ret().type() != currentReturn)
-				throw new SemanticError(node.position(), currentReturn+" excepted.");
+				throw new SemanticError(node.position(), currentReturn+" expected.");
 		}
 		node.setFunction(nowFunction);
 		return super.visit(node);
@@ -131,7 +131,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 							i.init().type() == Options.typeNull)
 						;//OK
 					else
-						throw new SemanticError(i.init().position(), i.init().type()+" found, but "+node.type()+" excepted.");
+						throw new SemanticError(i.init().position(), i.init().type()+" found, but "+node.type()+" expected.");
 				}
 
 			}
@@ -168,11 +168,11 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 	{
 		super.visit(node);
 		if(!node.lhs().isLValue())
-			throw new SemanticError(node.lhs().position(), "LValue excepted");
+			throw new SemanticError(node.lhs().position(), "LValue expected");
 
 		Type lType = node.lhs().type(), rType = node.rhs().type();
 		if(!Options.typeTable.isEqual(lType, rType))
-			throw new SemanticError(node.position(), rType+" found, but "+lType+" excepted.");
+			throw new SemanticError(node.position(), rType+" found, but "+lType+" expected.");
 		return null;
 	}
 
@@ -200,7 +200,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 		if((node.operator()==UnaryOpNode.UnaryOp.PRE_INC ||
 			node.operator()==UnaryOpNode.UnaryOp.PRE_DEC) &&
 			!node.expr().isLValue())
-			throw new SemanticError(node.expr().position(), "L-value excepted.");
+			throw new SemanticError(node.expr().position(), "L-value expected.");
 		return null;
 	}
 
@@ -212,7 +212,7 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 		if((node.operator()==UnaryOpNode.UnaryOp.SUF_INC ||
 			node.operator()==UnaryOpNode.UnaryOp.SUF_DEC) &&
 			!node.expr().isLValue())
-			throw new SemanticError(node.expr().position(), "L-value excepted.");
+			throw new SemanticError(node.expr().position(), "L-value expected.");
 		return null;
 	}
 
@@ -247,19 +247,19 @@ public class ASTTypeVisitor extends ASTBaseVisitor
 				throw new SemanticError(node.position(), entity.name() + "is not a function.");
 		}else
 		{
-			throw new RuntimeException(function.getClass() + " found, but variable() excepted.");
+			throw new RuntimeException(function.getClass() + " found, but variable() expected.");
 		}
 		int n = node.params().size();
 		List<ExprNode> params = node.params();
 		List<ParameterEntity> paramEntities = ((FunctionEntity)entity).params();
 		if(n!=paramEntities.size())
-			throw new SemanticError(node.position(), n+" params found, but "+ paramEntities.size()+" excepted.");
+			throw new SemanticError(node.position(), n+" params found, but "+ paramEntities.size()+" expected.");
 
 		for(int i=0;i<n;++i)
 		{
 			Type lType=paramEntities.get(i).type(), rType=params.get(i).type();
 			if(!Options.typeTable.isEqual(lType, rType))
-				throw new SemanticError(params.get(i).position(), rType+" found, but "+lType+" excepted.");
+				throw new SemanticError(params.get(i).position(), rType+" found, but "+lType+" expected.");
 		}
 
 		return null;

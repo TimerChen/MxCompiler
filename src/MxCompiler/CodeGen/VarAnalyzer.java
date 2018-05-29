@@ -377,4 +377,10 @@ public class VarAnalyzer implements IRVisitor
 		}
 
 	}
+
+	@Override
+	public void visit(SpecialIR node)
+	{
+		//Nothing
+	}
 }

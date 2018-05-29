@@ -28,13 +28,13 @@ public class FuncallNode extends ExprNode
 	{
 		Type re = function.type();
 		if(re != Options.typeFunction)
-			throw new SemanticError(function.position(), re + " found, but function excepted.");
+			throw new SemanticError(function.position(), re + " found, but function expected.");
 		if(function instanceof VariableNode)
 		{
 			return ((VariableNode)function).refEntity().type();
 		}else
 		{
-			throw new RuntimeException(function.getClass() + " found, but variable() excepted.");
+			throw new RuntimeException(function.getClass() + " found, but variable() expected.");
 		}
 	}
 	@Override

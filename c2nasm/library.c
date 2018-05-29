@@ -3,7 +3,8 @@
 #include <string.h>
 
 typedef void (*FUNC)(void*);
-
+//change _array to _._array
+//change _string to _.string
 
 void* __array_array(int size)
 {
@@ -84,15 +85,15 @@ int __string_ord(unsigned char* this, int pos)
 }
 
 //string + string
-unsigned char* __string__plus(unsigned char* this, unsigned char* other)
+char* __string__plus(unsigned char* this, unsigned char* other)
 {
 	unsigned char* str;
 	int n0, n1;
 	n0 = ((int*)this)[-1];
 	n1 = ((int*)other)[-1];
-	str = __string_string(n0+n1+1);
+	str = __string_string(n0+n1);
 	strcpy(str, this);
-	strcpy(str+n1, other);
+	strcpy(str+n0, other);
 	return str;
 }
 //string < string

@@ -23,4 +23,6 @@ public interface IRVisitor
 	void visit(StoreIR node);
 	void visit(MoveIR node);
 
+	void visit(SpecialIR node);
+
 }

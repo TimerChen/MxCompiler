@@ -663,7 +663,7 @@ public class IRBuilder extends ASTBaseVisitor
 			{
 				plist.add((VarIR)map.get(node.left()));
 				plist.add((VarIR)map.get(node.right()));
-				list.addAll(makeCall("__string__equal", plist));
+				list.addAll(makeCall("__.string__equal", plist));
 				list.add(new MoveIR(r0, new VarRegIR(0)));
 				if(node.operator() == BinaryOpNode.BinaryOp.NE)
 				{
@@ -673,7 +673,7 @@ public class IRBuilder extends ASTBaseVisitor
 			{
 				plist.add((VarIR)map.get(node.left()));
 				plist.add((VarIR)map.get(node.right()));
-				list.addAll(makeCall("__string__plus", plist));
+				list.addAll(makeCall("__.string__plus", plist));
 				list.add(new MoveIR(r0, new VarRegIR(0)));
 			}else
 			{
@@ -692,10 +692,10 @@ public class IRBuilder extends ASTBaseVisitor
 				{
 					case LT:
 					case GT:
-						list.addAll(makeCall("__string__less", plist));break;
+						list.addAll(makeCall("__.string__less", plist));break;
 					case LE:
 					case GE:
-						list.addAll(makeCall("__string__lessEqual", plist));break;
+						list.addAll(makeCall("__.string__lessEqual", plist));break;
 				}
 				list.add(new MoveIR(r0, new VarRegIR(0)));
 				if(node.operator() == BinaryOpNode.BinaryOp.GT ||
@@ -860,7 +860,7 @@ public class IRBuilder extends ASTBaseVisitor
 			r0 = getNewReg();
 			//Array
 			plist.add(new VarIntIR(node.args().size()*8));
-			list.addAll(makeCall("__array_array",plist));
+			list.addAll(makeCall("__.array_.array",plist));
 
 			//fill the *aSize
 			list.add(new MoveIR(r0, new VarRegIR(0)));
@@ -898,7 +898,7 @@ public class IRBuilder extends ASTBaseVisitor
 
 
 			//void* __array_new(int *aSize, int dim, int eSize, FUNC func)
-			list.addAll(makeCall("__array_new", plist));
+			list.addAll(makeCall("__.array_new", plist));
 
 
 		}else
@@ -1074,7 +1074,7 @@ public class IRBuilder extends ASTBaseVisitor
 			r0 = params.get(i);
 			list.addAll(r0.irList());
 		}
-
+		list.add(new SpecialIR(SpecialIR.Type.CALLER_SAVE));
 		for(int i=params.size()-1;i>=6; --i)
 		{
 			r0 = params.get(i);
@@ -1092,6 +1092,7 @@ public class IRBuilder extends ASTBaseVisitor
 		//pop all params
 		if(params.size() > 6)
 			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR((params.size()-6)*8)));
+		list.add(new SpecialIR(SpecialIR.Type.CALLER_RECOVER));
 		/*
 		for(int i=Math.min(5, params.size()-1); i>=0; --i)
 		{
@@ -1115,7 +1116,7 @@ public class IRBuilder extends ASTBaseVisitor
 
 		 */
 
-
+		Debuger.printInfo("funcIs",node.function()+"");
 		if(node.function() instanceof MemberNode)
 			plist.add(preVar);
 		for(int i=0;i<node.params().size(); ++i)
@@ -1124,6 +1125,7 @@ public class IRBuilder extends ASTBaseVisitor
 			plist.add(tmp = (VarIR) map.get(node.params().get(i)));
 		}
 		funName = ((VariableNode) node.function()).funName();
+		Debuger.printInfo("funName",funName);
 		list.addAll(makeCall(funName, plist));
 		r0 = getNewReg();
 		list.add(new MoveIR(r0, new VarRegIR(0)));
@@ -1224,12 +1226,12 @@ public class IRBuilder extends ASTBaseVisitor
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
 		VarIR parent = (VarIR) map.get(node.parent());
-		VarRegIR r0, r1, r2;
+		VarRegIR r1, r2;
 
 		list.addAll(parent.irList());
-		r0 = (VarRegIR)parent;
 		if(!(node.type() instanceof TypeFunction))
 		{
+			VarRegIR r0 = (VarRegIR)parent;
 		/*
 		<Result: r1>
 			[parent]->r0
@@ -1246,11 +1248,12 @@ public class IRBuilder extends ASTBaseVisitor
 				map.put(node, new VarMemIR(list, r0, indexOfMember));
 		}else
 		{
+			VarIR r0 = (VarIR)parent;
 		/*
 		<Result: r0>
 			[parent]->r0
 		 */
-			map.put(node, new VarRegIR(list, r0.regIndex()));
+			map.put(node, r0.clone(list));
 		}
 		return null;
 	}

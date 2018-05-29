@@ -20,7 +20,7 @@ public class StoreIR extends InsIR
 	public StoreIR(VarIR dest, VarIR src)
 	{
 		if(dest instanceof VarRegIR || dest instanceof VarLabelIR)
-			throw new RuntimeException("Address excepted.");
+			throw new RuntimeException("Address expected.");
 		this.dest = dest;
 		this.src = src;
 	}

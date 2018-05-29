@@ -11,46 +11,87 @@ _main:
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp,	24
-	mov	r13,	15
-	push	r13
-	mov	r13,	14
-	push	r13
-	mov	r13,	13
-	push	r13
-	mov	r13,	12
-	push	r13
-	mov	r13,	11
-	push	r13
-	mov	r13,	10
-	push	r13
-	mov	r13,	9
-	push	r13
-	mov	r13,	8
-	push	r13
-	mov	r13,	7
-	push	r13
-	mov	rdi,	1
-	mov	rsi,	2
-	mov	rdx,	3
-	mov	rcx,	4
-	mov	r8,	5
-	mov	r9,	6
-	call	_a
-	add	rsp,	72
-	mov	qword [rbp + -56],	rax
+	sub	rsp,	72
+	mov	qword [rbp + -56],	STR_0
+	mov	qword [rbp + -64],	STR_1
+	mov	qword [rbp + -72],	STR_2
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	call	_getInt
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -80],	rax
+	mov	r13,	qword [rbp + -80]
+	mov	qword [rbp + -88],	r13
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	r13,	qword [rbp + -88]
+	mov	rdi,	r13
 	mov	r13,	qword [rbp + -56]
+	mov	rsi,	r13
+	mov	r13,	qword [rbp + -64]
+	mov	rdx,	r13
+	mov	r13,	qword [rbp + -72]
+	mov	rcx,	r13
+	mov	r8,	0
+	call	_cd
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -96],	rax
+	mov	r13,	qword [rbp + -96]
+	mov	qword [rbp + -104],	r13
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	r13,	qword [rbp + -104]
 	mov	rdi,	r13
 	call	_toString
-	mov	qword [rbp + -64],	rax
-	mov	r13,	qword [rbp + -64]
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -112],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	r13,	qword [rbp + -112]
 	mov	rdi,	r13
 	call	_println
-	mov	qword [rbp + -72],	rax
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -120],	rax
 	mov	rax,	0
 	jmp	___exit_main
 ___exit_main:
-	add	rsp,	24
+	add	rsp,	72
 	pop	r15
 	pop	r14
 	pop	r13
@@ -58,7 +99,7 @@ ___exit_main:
 	pop	rbx
 	pop	rbp
 	ret
-_a:
+_cd:
 	push	rbp
 	mov	rbp,	rsp
 	add	rbp,	8
@@ -67,120 +108,236 @@ _a:
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp,	232
+	sub	rsp,	160
 	mov	qword [rbp + -56],	rdi
 	mov	qword [rbp + -64],	rsi
 	mov	qword [rbp + -72],	rdx
 	mov	qword [rbp + -80],	rcx
 	mov	qword [rbp + -88],	r8
-	mov	qword [rbp + -96],	r9
-	mov	r13,	qword [rbp + 8]
-	mov	qword [rbp + -104],	r13
-	mov	r13,	qword [rbp + 16]
-	mov	qword [rbp + -112],	r13
-	mov	r13,	qword [rbp + 24]
-	mov	qword [rbp + -120],	r13
-	mov	r13,	qword [rbp + 32]
-	mov	qword [rbp + -128],	r13
-	mov	r13,	qword [rbp + 40]
-	mov	qword [rbp + -136],	r13
-	mov	r13,	qword [rbp + 48]
-	mov	qword [rbp + -144],	r13
-	mov	r13,	qword [rbp + 56]
-	mov	qword [rbp + -152],	r13
-	mov	r13,	qword [rbp + 64]
-	mov	qword [rbp + -160],	r13
-	mov	r13,	qword [rbp + 72]
-	mov	qword [rbp + -168],	r13
 	mov	r13,	qword [rbp + -56]
-	mov	qword [rbp + -176],	r13
-	mov	r13,	qword [rbp + -64]
-	mov	r14,	qword [rbp + -176]
-	add	r14,	r13
-	mov	qword [rbp + -176],	r14
-	mov	r13,	qword [rbp + -176]
-	mov	qword [rbp + -184],	r13
-	mov	r13,	qword [rbp + -72]
-	mov	r14,	qword [rbp + -184]
-	add	r14,	r13
-	mov	qword [rbp + -184],	r14
-	mov	r13,	qword [rbp + -184]
-	mov	qword [rbp + -192],	r13
-	mov	r13,	qword [rbp + -80]
-	mov	r14,	qword [rbp + -192]
-	add	r14,	r13
-	mov	qword [rbp + -192],	r14
-	mov	r13,	qword [rbp + -192]
-	mov	qword [rbp + -200],	r13
-	mov	r13,	qword [rbp + -88]
-	mov	r14,	qword [rbp + -200]
-	add	r14,	r13
-	mov	qword [rbp + -200],	r14
-	mov	r13,	qword [rbp + -200]
-	mov	qword [rbp + -208],	r13
+	cmp	r13,	1
+	sete	al
+	movzx	r15,	al
+	mov	qword [rbp + -96],	r15
 	mov	r13,	qword [rbp + -96]
-	mov	r14,	qword [rbp + -208]
-	add	r14,	r13
-	mov	qword [rbp + -208],	r14
-	mov	r13,	qword [rbp + -208]
-	mov	qword [rbp + -216],	r13
+	cmp	r13,	0
+	je	_L11_0
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	rdi,	STR_3
+	mov	r13,	qword [rbp + -64]
+	mov	rsi,	r13
+	call	__.string__plus
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -104],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
 	mov	r13,	qword [rbp + -104]
-	mov	r14,	qword [rbp + -216]
-	add	r14,	r13
-	mov	qword [rbp + -216],	r14
-	mov	r13,	qword [rbp + -216]
-	mov	qword [rbp + -224],	r13
+	mov	rdi,	r13
+	mov	rsi,	STR_4
+	call	__.string__plus
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -112],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
 	mov	r13,	qword [rbp + -112]
-	mov	r14,	qword [rbp + -224]
-	add	r14,	r13
-	mov	qword [rbp + -224],	r14
-	mov	r13,	qword [rbp + -224]
-	mov	qword [rbp + -232],	r13
+	mov	rdi,	r13
+	mov	r13,	qword [rbp + -80]
+	mov	rsi,	r13
+	call	__.string__plus
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -120],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
 	mov	r13,	qword [rbp + -120]
-	mov	r14,	qword [rbp + -232]
-	add	r14,	r13
-	mov	qword [rbp + -232],	r14
-	mov	r13,	qword [rbp + -232]
-	mov	qword [rbp + -240],	r13
-	mov	r13,	qword [rbp + -128]
-	mov	r14,	qword [rbp + -240]
-	add	r14,	r13
-	mov	qword [rbp + -240],	r14
-	mov	r13,	qword [rbp + -240]
-	mov	qword [rbp + -248],	r13
-	mov	r13,	qword [rbp + -136]
-	mov	r14,	qword [rbp + -248]
-	add	r14,	r13
-	mov	qword [rbp + -248],	r14
-	mov	r13,	qword [rbp + -248]
-	mov	qword [rbp + -256],	r13
+	mov	rdi,	r13
+	call	_println
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -128],	rax
+	mov	r13,	qword [rbp + -88]
+	mov	qword [rbp + -136],	r13
+	mov	r14,	qword [rbp + -88]
+	add	r14,	1
+	mov	qword [rbp + -88],	r14
+	jmp	_L11_1
+_L11_0:
+	mov	r13,	qword [rbp + -56]
+	mov	qword [rbp + -144],	r13
+	mov	r14,	qword [rbp + -144]
+	sub	r14,	1
+	mov	qword [rbp + -144],	r14
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
 	mov	r13,	qword [rbp + -144]
-	mov	r14,	qword [rbp + -256]
-	add	r14,	r13
-	mov	qword [rbp + -256],	r14
-	mov	r13,	qword [rbp + -256]
-	mov	qword [rbp + -264],	r13
+	mov	rdi,	r13
+	mov	r13,	qword [rbp + -64]
+	mov	rsi,	r13
+	mov	r13,	qword [rbp + -80]
+	mov	rdx,	r13
+	mov	r13,	qword [rbp + -72]
+	mov	rcx,	r13
+	mov	r13,	qword [rbp + -88]
+	mov	r8,	r13
+	call	_cd
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -152],	rax
 	mov	r13,	qword [rbp + -152]
-	mov	r14,	qword [rbp + -264]
-	add	r14,	r13
-	mov	qword [rbp + -264],	r14
-	mov	r13,	qword [rbp + -264]
-	mov	qword [rbp + -272],	r13
+	mov	qword [rbp + -88],	r13
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	rdi,	STR_5
+	mov	r13,	qword [rbp + -64]
+	mov	rsi,	r13
+	call	__.string__plus
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -160],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
 	mov	r13,	qword [rbp + -160]
-	mov	r14,	qword [rbp + -272]
-	add	r14,	r13
-	mov	qword [rbp + -272],	r14
-	mov	r13,	qword [rbp + -272]
-	mov	qword [rbp + -280],	r13
+	mov	rdi,	r13
+	mov	rsi,	STR_6
+	call	__.string__plus
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -168],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
 	mov	r13,	qword [rbp + -168]
-	mov	r14,	qword [rbp + -280]
-	add	r14,	r13
-	mov	qword [rbp + -280],	r14
-	mov	r13,	qword [rbp + -280]
+	mov	rdi,	r13
+	mov	r13,	qword [rbp + -80]
+	mov	rsi,	r13
+	call	__.string__plus
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -176],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	r13,	qword [rbp + -176]
+	mov	rdi,	r13
+	call	_println
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -184],	rax
+	mov	r13,	qword [rbp + -56]
+	mov	qword [rbp + -192],	r13
+	mov	r14,	qword [rbp + -192]
+	sub	r14,	1
+	mov	qword [rbp + -192],	r14
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	r13,	qword [rbp + -192]
+	mov	rdi,	r13
+	mov	r13,	qword [rbp + -72]
+	mov	rsi,	r13
+	mov	r13,	qword [rbp + -64]
+	mov	rdx,	r13
+	mov	r13,	qword [rbp + -80]
+	mov	rcx,	r13
+	mov	r13,	qword [rbp + -88]
+	mov	r8,	r13
+	call	_cd
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -200],	rax
+	mov	r13,	qword [rbp + -200]
+	mov	qword [rbp + -88],	r13
+	mov	r13,	qword [rbp + -88]
+	mov	qword [rbp + -208],	r13
+	mov	r14,	qword [rbp + -88]
+	add	r14,	1
+	mov	qword [rbp + -88],	r14
+_L11_1:
+	mov	r13,	qword [rbp + -88]
 	mov	rax,	r13
-	jmp	___exit_a
-___exit_a:
-	add	rsp,	232
+	jmp	___exit_cd
+___exit_cd:
+	add	rsp,	160
 	pop	r15
 	pop	r14
 	pop	r13
@@ -189,23 +346,45 @@ ___exit_a:
 	pop	rbp
 	ret
 SECTION .rodata
+	dd 1
+STR_0:
+	db "A", 0
+	dd 1
+STR_1:
+	db "B", 0
+	dd 1
+STR_2:
+	db "C", 0
+	dd 5
+STR_3:
+	db "move ", 0
+	dd 5
+STR_4:
+	db " --> ", 0
+	dd 5
+STR_5:
+	db "move ", 0
+	dd 5
+STR_6:
+	db " --> ", 0
 ; ============Library============
+default rel
 
-global __array_array
-global __array_new
-global __string_string
+global __.array_.array
+global __.array_new
+global __.string_.string
 global _print
 global _println
 global _getString
-global __string_length
-global __string_substring
-global __string_parseInt
-global __string_ord
-global __string__plus
-global __string__less
-global __string__lessEqual
-global __string__equal
-global __array_length
+global __.string_length
+global __.string_substring
+global __.string_parseInt
+global __.string_ord
+global __.string__plus
+global __.string__less
+global __.string__lessEqual
+global __.string__equal
+global __.array_length
 
 global _getInt
 global _toString
@@ -304,7 +483,7 @@ _L0_002:
 
 		SECTION .text   6
 
-		__array_array:
+		__.array_.array:
 		        push    rbx
 		        movsxd  rdi, edi
 		        mov     rbx, rdi
@@ -322,7 +501,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__array_new:
+		__.array_new:
 		        push    r15
 		        push    r14
 		        mov     r14, rdi
@@ -345,24 +524,24 @@ _L0_002:
 		        mov     eax, dword [r14]
 		        mov     dword [rbx], r15d
 		        test    eax, eax
-		        jle     _L1_003
+		        jle     L_003
 		        movsxd  rax, r13d
 		        mov     r15d, 1
 		        mov     qword [rsp+8H], rax
-		_L1_001:  cmp     r12d, 1
-		        jg      _L1_004
+		L_001:  cmp     r12d, 1
+		        jg      L_004
 		        test    rbp, rbp
-		        jz      _L1_002
+		        jz      L_002
 		        mov     rdi, qword [rsp+8H]
 		        call    malloc
 		        mov     qword [rbx+r15*8-4H], rax
 		        mov     rdi, rax
 		        call    rbp
-		_L1_002:  mov     eax, r15d
+		L_002:  mov     eax, r15d
 		        add     r15, 1
 		        cmp     dword [r14], eax
-		        jg      _L1_001
-		_L1_003:  mov     rax, qword [rsp]
+		        jg      L_001
+		L_003:  mov     rax, qword [rsp]
 		        add     rsp, 24
 		        pop     rbx
 		        pop     rbp
@@ -377,13 +556,13 @@ _L0_002:
 
 
 		ALIGN   8
-		_L1_004:  mov     rcx, rbp
+		L_004:  mov     rcx, rbp
 		        mov     edx, r13d
 		        mov     esi, r12d
 		        mov     rdi, r14
-		        call    __array_new
+		        call    __.array_new
 		        mov     qword [rbx+r15*8-4H], rax
-		        jmp     _L1_002
+		        jmp     L_002
 
 
 
@@ -392,7 +571,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__string_string:
+		__.string_.string:
 		        push    rbx
 		        movsxd  rbx, edi
 		        lea     edi, [rbx+1H]
@@ -419,19 +598,19 @@ _L0_002:
 		        mov     rbx, rdi
 		        movzx   edi, byte [rdi]
 		        test    dil, dil
-		        jz      _L1_006
+		        jz      L_006
 
 
 
 
 		ALIGN   8
-		_L1_005:  mov     rsi, qword [rel stdout]
+		L_005:  mov     rsi, qword [rel stdout]
 		        add     rbx, 1
 		        call    _IO_putc
 		        movzx   edi, byte [rbx]
 		        test    dil, dil
-		        jnz     _L1_005
-		_L1_006:  pop     rbx
+		        jnz     L_005
+		L_006:  pop     rbx
 		        ret
 
 
@@ -481,19 +660,19 @@ _L0_002:
 
 
 		        xor     rcx, qword [fs:abs 28H]
-		        jnz     _L1_007
+		        jnz     L_007
 		        add     rsp, 32
 		        pop     rbx
 		        ret
 
-		_L1_007:  call    __stack_chk_fail
+		L_007:  call    __stack_chk_fail
 
 
 
 
 		ALIGN   8
 
-		__string_length:
+		__.string_length:
 		        mov     eax, dword [rdi-4H]
 		        ret
 
@@ -505,7 +684,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__string_substring:
+		__.string_substring:
 		        push    r13
 		        push    r12
 		        mov     r13, rsi
@@ -526,7 +705,7 @@ _L0_002:
 		        test    r12d, r12d
 		        mov     dword [rdi], r12d
 		        mov     byte [rdi+rdx+4H], 0
-		        jle     _L1_009
+		        jle     L_009
 		        mov     ecx, ebx
 		        lea     r8, [rbp+r13]
 		        xor     edx, edx
@@ -536,12 +715,12 @@ _L0_002:
 
 
 		ALIGN   8
-		_L1_008:  movzx   esi, byte [r8+rdx]
+		L_008:  movzx   esi, byte [r8+rdx]
 		        mov     byte [rdi+rdx+4H], sil
 		        add     rdx, 1
 		        cmp     rdx, rcx
-		        jnz     _L1_008
-		_L1_009:  add     rsp, 8
+		        jnz     L_008
+		L_009:  add     rsp, 8
 		        pop     rbx
 		        pop     rbp
 		        pop     r12
@@ -555,7 +734,7 @@ _L0_002:
 
 		ALIGN   8
 
-		__string_parseInt:
+		__.string_parseInt:
 		        sub     rsp, 8
 		        mov     edx, 10
 		        xor     esi, esi
@@ -572,7 +751,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__string_ord:
+		__.string_ord:
 		        movsxd  rsi, esi
 		        movzx   eax, byte [rdi+rsi]
 		        ret
@@ -584,19 +763,18 @@ _L0_002:
 
 		ALIGN   16
 
-		__string__plus:
+		__.string__plus:
 		        push    r14
-		        mov     r14, rdi
 		        push    r13
+		        mov     r14, rdi
 		        push    r12
 		        push    rbp
 		        mov     r13, rsi
 		        push    rbx
-		        mov     ebx, dword [rsi-4H]
-		        mov     edi, dword [rdi-4H]
-		        add     edi, ebx
-		        lea     ebp, [rdi+1H]
-		        add     edi, 2
+		        mov     ebx, dword [rdi-4H]
+		        mov     ebp, dword [rsi-4H]
+		        add     ebp, ebx
+		        lea     edi, [rbp+1H]
 		        movsxd  rdi, edi
 		        add     rdi, 4
 		        call    malloc
@@ -624,9 +802,9 @@ _L0_002:
 
 
 
-		ALIGN   8
+		ALIGN   16
 
-		__string__less:
+		__.string__less:
 		        sub     rsp, 8
 		        call    strcmp
 		        cmp     eax, -1
@@ -642,7 +820,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__string__lessEqual:
+		__.string__lessEqual:
 		        sub     rsp, 8
 		        call    strcmp
 		        test    eax, eax
@@ -658,7 +836,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__string__equal:
+		__.string__equal:
 		        sub     rsp, 8
 		        call    strcmp
 		        test    eax, eax
@@ -674,7 +852,7 @@ _L0_002:
 
 		ALIGN   16
 
-		__array_length:
+		__.array_length:
 		        mov     eax, dword [rdi-4H]
 		        ret
 

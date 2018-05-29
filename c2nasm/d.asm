@@ -19,6 +19,7 @@ main:
         mov     eax, dword [rbp-8H]
         cmp     eax, dword [rbp-4H]
         setl    al
+_.array:
         movzx   eax, al
         mov     dword [rbp-8H], eax
         mov     eax, dword [rbp-8H]

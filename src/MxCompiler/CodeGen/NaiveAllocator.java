@@ -293,4 +293,10 @@ public class NaiveAllocator implements IRVisitor
 			}break;
 		}
 	}
+
+	@Override
+	public void visit(SpecialIR node)
+	{
+		//Nothing
+	}
 }

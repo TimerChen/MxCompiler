@@ -217,7 +217,7 @@ public class MxASTVisitor extends MxBaseVisitor
 	@Override
 	public Object visitErrorCreator(MxParser.ErrorCreatorContext ctx)
 	{
-		throw new SemanticError(new SourcePosition(ctx), "Array excepted.");
+		throw new SemanticError(new SourcePosition(ctx), "Array expected.");
 		//return super.visitErrorCreator(ctx);
 	}
 

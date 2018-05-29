@@ -239,4 +239,10 @@ public class NASMTranslator implements IRVisitor
 			list.add(CODE_PREFIX+"mov\t"+node.lhs()+",\t"+node.rhs());
 		map.put(node, list);
 	}
+
+	@Override
+	public void visit(SpecialIR node)
+	{
+		throw new RuntimeException("SpecialIR unexpected.");
+	}
 }

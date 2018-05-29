@@ -356,4 +356,22 @@ public class IRRewriter implements IRVisitor
 
 
 	}
+
+	@Override
+	public void visit(SpecialIR node)
+	{
+		int []idx = {7,6,2,1,8,9};
+		switch (node.type())
+		{
+			case CALLER_SAVE:
+				for(int i=0;i<6;++i)
+					newIRList.add(new PushIR(new VarRegIR(idx[i])));
+				break;
+			case CALLER_RECOVER:
+				for(int i=5;i>=0;--i)
+					newIRList.add(new PopIR(new VarRegIR(idx[i])));
+				break;
+			default:
+		}
+	}
 }

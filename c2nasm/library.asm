@@ -319,17 +319,16 @@ ALIGN   16
 
 __string__plus:
         push    r14
-        mov     r14, rdi
         push    r13
+        mov     r14, rdi
         push    r12
         push    rbp
         mov     r13, rsi
         push    rbx
-        mov     ebx, dword [rsi-4H]
-        mov     edi, dword [rdi-4H]
-        add     edi, ebx
-        lea     ebp, [rdi+1H]
-        add     edi, 2
+        mov     ebx, dword [rdi-4H]
+        mov     ebp, dword [rsi-4H]
+        add     ebp, ebx
+        lea     edi, [rbp+1H]
         movsxd  rdi, edi
         add     rdi, 4
         call    malloc
@@ -357,7 +356,7 @@ __string__plus:
 
 
 
-ALIGN   8
+ALIGN   16
 
 __string__less:
         sub     rsp, 8

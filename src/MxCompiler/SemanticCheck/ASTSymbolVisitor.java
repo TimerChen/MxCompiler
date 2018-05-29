@@ -110,7 +110,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		if(entity == null)
 			throw new SemanticError(node.position(), "return type not find.");
 		if(!(entity instanceof ClassEntity))
-			throw new SemanticError(node.position(), "Type excepted.");
+			throw new SemanticError(node.position(), "Type expected.");
 		newScope();
 		for(ParameterEntity i : node.entity().params())
 		{
@@ -119,7 +119,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			if(entity == null)
 				throw new SemanticError(i.position(), "type not find.");
 			if(!(entity instanceof ClassEntity))
-				throw new SemanticError(node.position(), "Type excepted.");
+				throw new SemanticError(node.position(), "Type expected.");
 			currentScope.add(i);
 		}
 		//Debuger.printInfo("Tmp","visit(node.entity().body().stmts());");
@@ -142,7 +142,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			if(entity == null)
 				throw new SemanticError(i.position(), "type not find.");
 			if(!(entity instanceof ClassEntity))
-				throw new SemanticError(node.position(), "Type excepted.");
+				throw new SemanticError(node.position(), "Type expected.");
 			if(i.entity().size() > 1)
 				throw new SemanticError(i.position(),
 						"variable member in class only have 1-to-1 format.");
@@ -162,7 +162,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			if(entity == null)
 				throw new SemanticError(i.position(), "return type not find.");
 			if(!(entity instanceof ClassEntity))
-				throw new SemanticError(node.position(), "Type excepted.");
+				throw new SemanticError(node.position(), "Type expected.");
 		}
 
 		//visit
@@ -177,7 +177,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 				if(entity == null)
 					throw new SemanticError(j.position(), "type not find.");
 				if(!(entity instanceof ClassEntity))
-					throw new SemanticError(node.position(), "Type excepted.");
+					throw new SemanticError(node.position(), "Type expected.");
 			}
 			visit(i.entity().body().stmts());
 			exitScope();
@@ -242,7 +242,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			if(entity == null)
 				throw new SemanticError(node.position(), "Type not find.");
 			if(!(entity instanceof ClassEntity))
-				throw new SemanticError(node.position(), entity.name() + " found , but type excepted.");
+				throw new SemanticError(node.position(), entity.name() + " found , but type expected.");
 
 			entity = ((ClassEntity) entity).scope().findCurrent(node.name());
 			if(entity == null)
@@ -279,7 +279,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		if(entity == null)
 			throw new SemanticError(node.position(), "variable not find.");
 		if(!((entity instanceof ParameterEntity)||(entity instanceof FunctionEntity)))
-			throw new SemanticError(node.position(), "Variable or Function excepted.");
+			throw new SemanticError(node.position(), "Variable or Function expected.");
 		node.setRefEntity(entity);
 		return super.visit(node);
 	}
@@ -291,7 +291,7 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		if(entity == null)
 			throw new SemanticError(node.position(), "type not find.");
 		if(!(node.type() instanceof TypeClass || node.type() instanceof TypeArray))
-			throw new SemanticError(node.position(), entity.type() + "Type excepted.");
+			throw new SemanticError(node.position(), entity.type() + "Type expected.");
 		return super.visit(node);
 	}
 	@Override

@@ -38,7 +38,7 @@ public class StringLitIR
 	public String toCodeStr(String label)
 	{
 		//???
-		String length = "\tdd " + val.length() + "\n",
+		String length = "\tdd " + (val.length()-2) + "\n",
 				content = "\tdb "+ val + ", 0";
 
 		return length + label +":\n" +  content;
