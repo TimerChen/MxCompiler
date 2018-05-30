@@ -11,14 +11,15 @@ _main:
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp,	104
+	sub	rsp,	56
 	push	rdi
 	push	rsi
 	push	rdx
 	push	rcx
 	push	r8
 	push	r9
-	call	_getInt
+	mov	rdi,	1
+	call	__.array_.array
 	pop	r9
 	pop	r8
 	pop	rcx
@@ -26,15 +27,20 @@ _main:
 	pop	rsi
 	pop	rdi
 	mov	qword [rbp + -56],	rax
-	mov	r15,	qword [rbp + -56]
-	mov	qword [_#N# + 0],	r15
+	mov	r13,	qword [rbp + -56]
+	mov	qword [r13 + 0],	10
 	push	rdi
 	push	rsi
 	push	rdx
 	push	rcx
 	push	r8
 	push	r9
-	call	_getInt
+	mov	r13,	qword [rbp + -56]
+	mov	rdi,	r13
+	mov	rsi,	1
+	mov	rdx,	8
+	mov	rcx,	0
+	call	__.array_new
 	pop	r9
 	pop	r8
 	pop	rcx
@@ -42,124 +48,18 @@ _main:
 	pop	rsi
 	pop	rdi
 	mov	qword [rbp + -64],	rax
-	mov	r15,	qword [rbp + -64]
-	mov	qword [_#M# + 0],	r15
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	call	_getString
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -72],	rax
-	mov	r15,	qword [rbp + -72]
-	mov	qword [_#ch# + 0],	r15
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	rdi,	STR_0
-	mov	r13,	qword [_#ch# + 0]
-	mov	rsi,	r13
-	call	__.string__plus
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -80],	rax
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	r13,	qword [rbp + -80]
-	mov	rdi,	r13
-	call	_println
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -88],	rax
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	r13,	qword [_#N# + 0]
-	mov	rdi,	r13
-	call	_toString
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -96],	rax
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	r13,	qword [rbp + -96]
-	mov	rdi,	r13
-	call	_println
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -104],	rax
-	mov	qword [rbp + -112],	1
-_L4_0:
-	mov	r13,	qword [rbp + -112]
-	mov	r14,	qword [_#N# + 0]
-	cmp	r13,	r14
-	setle	al
-	movzx	r15,	al
-	mov	qword [rbp + -120],	r15
-	mov	r13,	qword [rbp + -120]
-	cmp	r13,	0
-	je	_L4_1
-_L4_2:
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	call	_getInt
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -136],	rax
-	mov	r13,	qword [rbp + -112]
-	mov	qword [rbp + -128],	r13
-	mov	r14,	qword [rbp + -112]
-	add	r14,	1
-	mov	qword [rbp + -112],	r14
-	jmp	_L4_0
-_L4_1:
+	mov	r13,	qword [rbp + -64]
+	mov	qword [rbp + -72],	r13
+	mov	qword [rbp + -80],	1
+	mov	r13,	qword [rbp + -72]
+	mov	r14,	qword [rbp + -80]
+	mov	r13,	qword [r13 + r14*8]
+	mov	qword [rbp + -96],	r13
+	mov	r14,	qword [rbp + -72]
+	mov	r15,	qword [rbp + -80]
+	add	qword [r14 + r15*8],	1
 ___exit_main:
-	add	rsp,	104
+	add	rsp,	56
 	pop	r15
 	pop	r14
 	pop	r13
@@ -168,16 +68,7 @@ ___exit_main:
 	pop	rbp
 	ret
 SECTION .bss
-_#N#:	resb	8
-_#M#:	resb	8
-_#ch#:	resb	8
-_#l#:	resb	8
-_#r#:	resb	8
-_#w#:	resb	8
 SECTION .rodata
-	dd 3
-STR_0:
-	db "ch:", 0
 ; ============Library============
 default rel
 

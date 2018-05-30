@@ -357,7 +357,7 @@ public class IRBuilder extends ASTBaseVisitor
 				condi = (VarIR) map.get(node.condi()),
 				step = (VarIR) map.get(node.step());
 		List<InsIR> body = (List<InsIR>) map.get(node.body());
-		VarIR r0;
+		//VarIR r0;
 		VarLabelIR l0, l1, l2;
 		List<InsIR> list = new LinkedList<>();
 		l2 = getNewLabel(block);
@@ -365,15 +365,20 @@ public class IRBuilder extends ASTBaseVisitor
 		l1 = exitLabel;
 
 //			[init]
-		list.addAll(init.irList());
+		if(init != null)
+			list.addAll(init.irList());
 //		.L0:
 		list.add(new LabelIR(l0.label()));
 //			[condi]->r0
-		list.addAll(condi.irList());
-		//r0 = regTrans(condi);
-		r0 = condi;
+		if(condi != null)
+		{
+			list.addAll(condi.irList());
 //		CJUMP .L1 (r0 == 0)?
-		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l1));
+			list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l1));
+		}else
+		{
+			//Never Jump to exit
+		}
 //		.L2:
 		list.add(new LabelIR(l2.label()));
 
@@ -381,7 +386,8 @@ public class IRBuilder extends ASTBaseVisitor
 //			[body]
 		list.addAll(body);
 //			[step]
-		list.addAll(step.irList());
+		if(step!=null)
+			list.addAll(step.irList());
 //      JUMP .L0
 		list.add(new JumpIR(new VarLabelIR(l0.label())));
 		Global.IRBuilder_loopDeepth--;
@@ -954,6 +960,11 @@ public class IRBuilder extends ASTBaseVisitor
 	@Override
 	public Void visit(PrefixOpNode node)
 	{
+		if(node.operator() == UnaryOpNode.UnaryOp.PRE_DEC ||
+				node.operator() == UnaryOpNode.UnaryOp.PRE_INC)
+		{
+			llMap.add(node.expr());
+		}
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
 		VarIR lhs = (VarIR) map.get(node.expr());
@@ -988,8 +999,9 @@ public class IRBuilder extends ASTBaseVisitor
 				list.add(new UnaryIR(UnaryIR.Op.NEG, r1));
 				break;
 			case BIT_NOT:
-			case LOGIC_NOT:
 				list.add(new UnaryIR(UnaryIR.Op.NOT, r1));
+			case LOGIC_NOT:
+				list.add(new BinaryIR(BinaryIR.Op.XOR, r1, new VarIntIR(1)));
 				break;
 			default:
 				throw new RuntimeException("Unknown type.");
@@ -1015,6 +1027,11 @@ public class IRBuilder extends ASTBaseVisitor
 			mov r1 r0
 			add r0 1
 		 */
+		if(node.operator() == UnaryOpNode.UnaryOp.SUF_INC||
+				node.operator() == UnaryOpNode.UnaryOp.SUF_DEC)
+		{
+			llMap.add(node.expr());
+		}
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
 		VarIR ref = (VarIR) map.get(node.expr());

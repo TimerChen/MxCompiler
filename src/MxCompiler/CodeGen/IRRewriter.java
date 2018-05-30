@@ -111,7 +111,7 @@ public class IRRewriter implements IRVisitor
 					newIRList.add(new MoveIR(r0, var));
 					return r0;
 				}else
-				if(var.index() instanceof VarIntIR || var.index() instanceof VarMemIR)
+				if(var.index() instanceof VarIntIR)
 				{
 					tmp0 = colorIR(var.base(), r0, null, true, false);
 					newIRList.add(new MoveIR(r0, new VarMemIR(tmp0, var.index())));
@@ -129,7 +129,7 @@ public class IRRewriter implements IRVisitor
 				{
 					return var;
 				}else
-				if(var.index() instanceof VarIntIR || var.index() instanceof VarMemIR)
+				if(var.index() instanceof VarIntIR)
 				{
 					tmp0 = colorIR(var.base(), r0, null, true, false);
 					tmp1 = var.index();
@@ -167,21 +167,32 @@ public class IRRewriter implements IRVisitor
 
 		node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
 		//node.setLhs(colorS0IR(node.lhs(), reg[0], reg[1]));
-		//lhs cannot be a varmemir
-		VarRegIR var = (VarRegIR)node.lhs();
-		int i = var.regIndex();
-		if(nowColor.get(i) == -1)
+		VarIR oVar = (VarIR)node.lhs();
+		Debuger.printInfo("lhs", node.lhs().toString_old());
+		if(oVar instanceof VarRegIR)
 		{
-			i = i-16;
-			VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
-			newIRList.add(new MoveIR(reg[1], mem));
-			node.setLhs(reg[1]);
-			newIRList.add(node);
-			newIRList.add(new MoveIR(mem, reg[1]));
+			//lhs cannot be a varmemir
+			VarRegIR var = (VarRegIR)oVar;
+			int i = var.regIndex();
+			if(nowColor.get(i) == -1)
+			{
+				i = i-16;
+				VarMemIR mem = new VarMemIR(new VarRegIR(5), new VarIntIR(-i-1-6));
+				newIRList.add(new MoveIR(reg[1], mem));
+				node.setLhs(reg[1]);
+				newIRList.add(node);
+				newIRList.add(new MoveIR(mem, reg[1]));
+			}else
+			{
+				newIRList.add(node);
+			}
 		}else
 		{
+			VarMemIR var = (VarMemIR)oVar;
+			node.setLhs(colorDIR(node.lhs(), reg[1], reg[2]));
 			newIRList.add(node);
 		}
+
 	}
 
 	@Override
