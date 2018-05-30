@@ -12,6 +12,7 @@ public class FunctionEntity extends Entity
 {
 	private List<ParameterEntity> params;
 	private BlockNode body;
+	private ClassEntity belongsTo;
 
 	public FunctionEntity(String name, Type type, SourcePosition position, List<ParameterEntity> params, BlockNode body)
 	{
@@ -21,8 +22,18 @@ public class FunctionEntity extends Entity
 		else
 			this.params = new LinkedList<>();
 		this.body = body;
+		this.belongsTo = null;
 	}
 
+	public ClassEntity belongsTo()
+	{
+		return belongsTo;
+	}
+
+	public void setBelongsTo(ClassEntity belongsTo)
+	{
+		this.belongsTo = belongsTo;
+	}
 
 	public List<ParameterEntity> params()
 	{

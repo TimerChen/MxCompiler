@@ -1,7 +1,46 @@
-int main()
-{
-	int []a = new int[10];
-	int i,j;
-	i=1;
-	a[i]++;
+class point {
+	int x;
+	int y;
+	int z;
+	point() {
+		x = 0;
+		y = 0;
+		z = 0;
+	}
 }
+
+int main() {
+	point a = new point;
+}
+
+
+
+/*!! metadata:
+=== comment ===
+point-5140309561-sunxingyuan.txt
+=== is_public ===
+True
+=== assert ===
+output
+=== timeout ===
+0.1
+=== input ===
+
+=== phase ===
+codegen extended
+=== output ===
+(0, 0, 0)
+28716325
+7421636
+9980404
+38464544
+1854392
+(7616, 1666188, -1232986)
+(-508, 4119, 3390)
+(562, 1584, 2144)
+(-920, 768, -524)
+(612, -469, -630)
+=== exitcode ===
+
+
+!!*/

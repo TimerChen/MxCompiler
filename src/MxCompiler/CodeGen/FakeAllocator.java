@@ -29,7 +29,7 @@ public class FakeAllocator extends Object
 		for(int i=0; i<nFun; ++i)
 		{
 			List<Integer> color = new ArrayList<Integer>(Global.regNumber.size());
-			//Debuger.printInfo("size", ""+Global.regNumber.size());
+			Debuger.printInfo("Rsize", ""+Global.regNumber.get(i));
 			for(int j=0; j<Global.regNumber.get(i); ++j)
 			if(j<16){
 				color.add(j);

@@ -11,15 +11,15 @@ _main:
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp,	56
+	sub	rsp,	24
 	push	rdi
 	push	rsi
 	push	rdx
 	push	rcx
 	push	r8
 	push	r9
-	mov	rdi,	1
-	call	__.array_.array
+	mov	rdi,	32
+	call	malloc
 	pop	r9
 	pop	r8
 	pop	rcx
@@ -27,8 +27,6 @@ _main:
 	pop	rsi
 	pop	rdi
 	mov	qword [rbp + -56],	rax
-	mov	r13,	qword [rbp + -56]
-	mov	qword [r13 + 0],	10
 	push	rdi
 	push	rsi
 	push	rdx
@@ -37,29 +35,43 @@ _main:
 	push	r9
 	mov	r13,	qword [rbp + -56]
 	mov	rdi,	r13
-	mov	rsi,	1
-	mov	rdx,	8
-	mov	rcx,	0
-	call	__.array_new
+	call	__point_point
 	pop	r9
 	pop	r8
 	pop	rcx
 	pop	rdx
 	pop	rsi
 	pop	rdi
-	mov	qword [rbp + -64],	rax
-	mov	r13,	qword [rbp + -64]
-	mov	qword [rbp + -72],	r13
-	mov	qword [rbp + -80],	1
-	mov	r13,	qword [rbp + -72]
-	mov	r14,	qword [rbp + -80]
-	mov	r13,	qword [r13 + r14*8]
-	mov	qword [rbp + -96],	r13
-	mov	r14,	qword [rbp + -72]
-	mov	r15,	qword [rbp + -80]
-	add	qword [r14 + r15*8],	1
+	mov	r13,	qword [rbp + -56]
+	mov	qword [rbp + -64],	r13
 ___exit_main:
-	add	rsp,	56
+	add	rsp,	24
+	pop	r15
+	pop	r14
+	pop	r13
+	pop	r12
+	pop	rbx
+	pop	rbp
+	ret
+__point_point:
+	push	rbp
+	mov	rbp,	rsp
+	add	rbp,	8
+	push	rbx
+	push	r12
+	push	r13
+	push	r14
+	push	r15
+	sub	rsp,	24
+	mov	qword [rbp + -56],	rdi
+	mov	r13,	qword [rbp + -56]
+	mov	qword [r13 + 8],	0
+	mov	r13,	qword [rbp + -56]
+	mov	qword [r13 + 16],	0
+	mov	r13,	qword [rbp + -56]
+	mov	qword [r13 + 24],	0
+___exit__point_point:
+	add	rsp,	24
 	pop	r15
 	pop	r14
 	pop	r13

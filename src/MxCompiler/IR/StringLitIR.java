@@ -29,7 +29,7 @@ public class StringLitIR
 		length = val.length()-2;
 		int tmp0, tmp1;
 		tmp0 = val.length();
-		val = val.replaceAll("\\\\" + "\"" , "\", 34, \"");
+		val = val.replaceAll("\\\\" + "\\\\" , "\", 92, \"");
 		tmp1 = val.length();
 		length -= (tmp1-tmp0)/6;
 		tmp0=tmp1;
@@ -37,7 +37,8 @@ public class StringLitIR
 		tmp1 = val.length();
 		length -= (tmp1-tmp0)/6;
 		tmp0 = tmp1;
-		val = val.replaceAll("\\\\" + "\\\\" , "\", 92, \"");
+		//Put it at last
+		val = val.replaceAll("\\\\" + "\"" , "\", 34, \"");
 		tmp1 = val.length();
 		length -= (tmp1-tmp0)/6;
 		String pa = "\\\"\\\", ";

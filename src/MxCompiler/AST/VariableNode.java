@@ -4,6 +4,7 @@ package MxCompiler.AST;
 	MxCompiler.AST.VariableNode
 */
 
+import MxCompiler.Entities.ClassEntity;
 import MxCompiler.Entities.Entity;
 import MxCompiler.Entities.FunctionEntity;
 import MxCompiler.Entities.VariableEntity;
@@ -59,7 +60,11 @@ public class VariableNode extends LHSNode
 	{
 		if(!(refEntity instanceof FunctionEntity))
 			throw new RuntimeException("Not function");
-		return "_" + name;
+		ClassEntity e = ((FunctionEntity) refEntity).belongsTo();
+		if(e == null)
+			return "_" + name;
+		else
+			return "__"+e.name()+"_"+name;
 	}
 	@Override
 	public Type type()

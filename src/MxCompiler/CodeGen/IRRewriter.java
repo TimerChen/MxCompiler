@@ -70,6 +70,7 @@ public class IRRewriter implements IRVisitor
 		{
 			VarRegIR var = (VarRegIR)oVar;
 			int i = var.regIndex();
+			Debuger.printInfo("i",""+i);
 			if(nowColor.get(i) == -1)
 			{
 				i = i-16;

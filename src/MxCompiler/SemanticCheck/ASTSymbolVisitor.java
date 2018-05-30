@@ -58,13 +58,15 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 		{
 			for(VariableEntity j : i.entity())
 			{
-
+				j.setIsMember(true);
 				currentScope.add(j);
+
 			}
 		}
 
 		for(FunDefNode i : node.entity().funList())
 		{
+			i.entity().setBelongsTo(node.entity());
 			currentScope.add(i.entity());
 			i.setClassEntity(node.entity());
 			newScope();
@@ -75,6 +77,15 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			i.entity().body().setScope(currentScope);
 			//visit(i.entity().body().stmts());
 			exitScope();
+		}
+		//constructor
+		{
+			FunDefNode fnode = node.entity().constructorNode();
+			if(fnode!=null)
+			{
+				fnode.setClassEntity(node.entity());
+				fnode.entity().setBelongsTo(node.entity());
+			}
 		}
 		exitScope();
 	}
@@ -280,6 +291,13 @@ public class ASTSymbolVisitor extends ASTBaseVisitor
 			throw new SemanticError(node.position(), "variable not find.");
 		if(!((entity instanceof ParameterEntity)||(entity instanceof FunctionEntity)))
 			throw new SemanticError(node.position(), "Variable or Function expected.");
+
+		/*
+		if(currentScope.findCurrent(node.name())!=null && entity instanceof ParameterEntity)
+		{
+			((ParameterEntity) entity).setIsMember(true);
+		}*/
+
 		node.setRefEntity(entity);
 		return super.visit(node);
 	}

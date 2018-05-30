@@ -153,29 +153,6 @@ public class IRBuilder extends ASTBaseVisitor
 		return new VarLabelIR(str.getLabel());
 	}
 
-	VarIR varTrans( VarIR var )
-	{
-		if(var instanceof VarMemIR)
-		{
-			List<InsIR> list = new LinkedList<>();
-			list.addAll(var.irList());
-			VarRegIR r0 = getNewReg();
-			list.add(new MoveIR(r0, var));
-			return new VarRegIR(list, r0.regIndex());
-		}else
-			return var;
-
-	}
-	VarRegIR regTrans( VarIR var )
-	{
-		if(var instanceof VarRegIR)
-			return (VarRegIR) var;
-		List<InsIR> list = new LinkedList<>();
-		list.addAll(var.irList());
-		VarRegIR r0 = getNewReg();
-		list.add(new MoveIR(r0, var));
-		return new VarRegIR(list, r0.regIndex());
-	}
 	@Override
 	public Void visit(BlockNode node)
 	{
@@ -185,6 +162,7 @@ public class IRBuilder extends ASTBaseVisitor
 		List<InsIR> list = new LinkedList<>();
 		for(StmtNode i: node.stmts())
 		{
+			Debuger.printInfo("stmt",i.position()+" ");
 			list.addAll((List<InsIR>) map.get(i));
 		}
 		//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(node.scope().varNumber())));
@@ -488,9 +466,24 @@ public class IRBuilder extends ASTBaseVisitor
 		 */
 		List<InsIR> plist = new LinkedList<>();
 		int[] pidx = {7, 6, 2, 1, 8, 9};
-		for(int i=0;i<node.entity().params().size();++i)
+		int size = node.entity().params().size();
+		boolean isMem = (node.isMember());
+		if(isMem)
+			size++;
+		for(int i=0;i<size;++i)
+		if(i==0 && isMem)
 		{
-			ParameterEntity pi = node.entity().params().get(i);
+			VarRegIR r0;
+			r0 = getNewReg();
+			thisReg = r0.regIndex();
+			plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
+		}else
+		{
+			ParameterEntity pi;
+			if(isMem)
+				pi = node.entity().params().get(i-1);
+			else
+				pi = node.entity().params().get(i);
 			VarRegIR r0;
 
 			if(i>=6)
@@ -504,8 +497,6 @@ public class IRBuilder extends ASTBaseVisitor
 				//???
 				//this can let regs be re-alloc
 				r0 = getNewReg();
-				if(i==0)
-					thisReg = r0.regIndex();
 				pi.setRegIR(r0);
 				plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
 			}
@@ -1170,6 +1161,10 @@ public class IRBuilder extends ASTBaseVisitor
 		Debuger.printInfo("funcIs",node.function()+"");
 		if(node.function() instanceof MemberNode)
 			plist.add(preVar);
+		else if(((FunctionEntity)(((VariableNode)node.function()).refEntity())).belongsTo() !=null)
+		{
+			plist.add(new VarRegIR(thisReg));
+		}
 		for(int i=0;i<node.params().size(); ++i)
 		{
 			VarIR tmp;
@@ -1205,6 +1200,7 @@ public class IRBuilder extends ASTBaseVisitor
 				 */
 				//((LinkedList<InsIR>) list).push();
 				r0 = ((ParameterEntity)node.refEntity()).regIR();
+				Debuger.printInfo("node",node.name());
 				map.put(node, r0.clone(list));
 			}
 
