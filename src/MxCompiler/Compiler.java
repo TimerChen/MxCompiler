@@ -67,6 +67,7 @@ public class Compiler
 	private List<List<InsIR>> irLists;
 	private List<BasicBlock> blkList;
 	private List<StringLitIR> irLitList;
+	private List<GlobalVarIR> globalVarIRS;
 	private ASTree ast;
 	private List<String> codeStr;
 	private List<String> libraryStr;
@@ -77,6 +78,7 @@ public class Compiler
 		IRBuilder irBuilder = new IRBuilder(ast);
 		irLists = irBuilder.irList();
 		irLitList = irBuilder.constList();
+		globalVarIRS = irBuilder.globalVars();
 
 		for(List<InsIR> i : irLists)
 		{
@@ -93,7 +95,7 @@ public class Compiler
 		Debuger.printLine("Code Translate");
 		BlockToList btl = new BlockToList(blkList);
 		List<InsIR> irList = btl.toList();
-		NASMTranslator translator = new NASMTranslator(irList, irLitList);
+		NASMTranslator translator = new NASMTranslator(irList, irLitList, globalVarIRS);
 
 		codeStr = translator.codeStr();
 	}
@@ -194,7 +196,7 @@ public class Compiler
 
 		InputStream is;
 		OutputStream os;
-		if(fileInName == "")
+		if(fileInName.equals(""))
 		{
 			Debuger.printInfo("Info", "Input: stdin");
 			is = System.in;
@@ -203,7 +205,7 @@ public class Compiler
 			is = new FileInputStream(fileInName);
 		}
 
-		if(fileOutName == "")
+		if(fileOutName.equals(""))
 		{
 			Debuger.printInfo("Info", "Input: stdout");
 			os = System.out;

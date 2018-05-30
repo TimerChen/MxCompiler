@@ -88,14 +88,14 @@ public class IRRewriter implements IRVisitor
 			{
 				return new VarRegIR(nowColor.get(i));
 			}
-		}else if(oVar instanceof VarIntIR)
+		}else if(oVar instanceof VarIntIR || oVar instanceof VarLabelIR)
 		{
-			VarIntIR var = (VarIntIR)oVar;
+			//VarIntIR var = (VarIntIR)oVar;
 			if(!isSrc)
 				throw new RuntimeException("dest is imm");
 			if(!canInt)
 			{
-				newIRList.add(new MoveIR(r0, var));
+				newIRList.add(new MoveIR(r0, oVar));
 				return r0;
 			}else
 				return oVar;
@@ -106,7 +106,12 @@ public class IRRewriter implements IRVisitor
 			VarIR tmp0, tmp1;
 			if(isSrc)
 			{
-				if(var.index() instanceof VarIntIR)
+				if(var.base() instanceof VarLabelIR)
+				{
+					newIRList.add(new MoveIR(r0, var));
+					return r0;
+				}else
+				if(var.index() instanceof VarIntIR || var.index() instanceof VarMemIR)
 				{
 					tmp0 = colorIR(var.base(), r0, null, true, false);
 					newIRList.add(new MoveIR(r0, new VarMemIR(tmp0, var.index())));
@@ -120,7 +125,11 @@ public class IRRewriter implements IRVisitor
 				}
 			}else
 			{
-				if(var.index() instanceof VarIntIR)
+				if(var.base() instanceof VarLabelIR)
+				{
+					return var;
+				}else
+				if(var.index() instanceof VarIntIR || var.index() instanceof VarMemIR)
 				{
 					tmp0 = colorIR(var.base(), r0, null, true, false);
 					tmp1 = var.index();
@@ -180,7 +189,9 @@ public class IRRewriter implements IRVisitor
 	{
 		if(node.has2Dest())
 		{
+			//mul mod div
 			//o<=o
+			/*
 			VarRegIR var = (VarRegIR)node.src();
 			int i = var.regIndex();
 			if(nowColor.get(i) == -1)
@@ -195,14 +206,20 @@ public class IRRewriter implements IRVisitor
 			{
 				newIRList.add(node);
 			}
+			*/
+
+			node.setSrc(colorS0IR(node.src(), reg[0], reg[1]));
+			newIRList.add(node);
+
 		}else
 		{
+			//neg not
 			//?<=o
 			//node.setSrc(colorS0IR(node.src(),reg[0], reg[1]));
 			VarIR oVar= (VarIR)node.src();
 			if(oVar instanceof VarMemIR)
 			{
-				node.setSrc(colorS0IR(node.src(), reg[0], reg[1]));
+				node.setSrc(colorDIR(node.src(), reg[0], reg[1]));
 				newIRList.add(node);
 			}else if(oVar instanceof VarRegIR)
 			{
@@ -304,7 +321,7 @@ public class IRRewriter implements IRVisitor
 			[a,b] <= c
 			mov [a,b] c
 		 */
-		node.setSrc(colorSIR(node.src(), reg[2], reg[2]));
+		node.setSrc(colorSIR(node.src(), reg[2], reg[0]));
 		node.setDest(colorDIR(node.dest(), reg[0], reg[1]));
 		newIRList.add(node);
 	}
@@ -336,7 +353,7 @@ public class IRRewriter implements IRVisitor
 			//o<=o
 			if(node.lhs() instanceof VarMemIR)
 			{
-				node.setRhs(colorSIR(node.rhs(), reg[2], reg[2]));
+				node.setRhs(colorSIR(node.rhs(), reg[2], reg[0]));
 				node.setLhs(colorDIR(node.lhs(), reg[0], reg[1]));
 				newIRList.add(node);
 			}else if(node.rhs() instanceof VarMemIR)

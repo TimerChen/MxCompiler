@@ -27,7 +27,9 @@ public class IRBuilder extends ASTBaseVisitor
 {
 	private HashMap<ASTNode, Object>map = new HashMap<>();
 	private HashSet<ASTNode>llMap = new HashSet<>();
-	private List<InsIR> mainIrList, globalVarList;
+	private List<InsIR> mainIrList, globalVarInitList;
+	private List<GlobalVarIR> globalVars;
+	private boolean isGlobal;
 	private List<List<InsIR>> irList;
 	private List<StringLitIR> constList;
 	private ASTree ast;
@@ -43,9 +45,11 @@ public class IRBuilder extends ASTBaseVisitor
 		this.ast = ast;
 		this.constList = new ArrayList<>();
 		this.nowScope = ast.mainScope();
+		this.globalVars = new ArrayList<>();
 	}
 	private List<InsIR> getGlobalVarList()
 	{
+		isGlobal = true;
 		List<InsIR> list = new ArrayList<InsIR>();
 		for(ASTNode i: ast.definitionNodes())
 		if(i instanceof VarDecNode)
@@ -53,6 +57,7 @@ public class IRBuilder extends ASTBaseVisitor
 			visit((VarDecNode) i);
 			list.addAll((List<InsIR>) map.get(i));
 		}
+		isGlobal = false;
 		return list;
 	}
 	private List<InsIR> getMainIRList()
@@ -89,7 +94,7 @@ public class IRBuilder extends ASTBaseVisitor
 		if(irList == null)
 		{
 			irList = new ArrayList<List<InsIR>>();
-			globalVarList();
+			globalVarInitList();
 			savedRegNumber = regNumber;
 			irList.add(mainIrList());
 			irList.addAll(getIRList());
@@ -103,24 +108,29 @@ public class IRBuilder extends ASTBaseVisitor
 		{
 			mainIrList = new LinkedList<>();
 			mainIrList.add(new LabelIR("main"));
-			//mainIrList.addAll(globalVarList());
+			//mainIrList.addAll(globalVarInitList());
 			mainIrList.addAll(getMainIRList());
 		}
 		return mainIrList;
 	}
 
-	public List<InsIR> globalVarList()
+	private List<InsIR> globalVarInitList()
 	{
-		if(globalVarList == null)
+		if(globalVarInitList == null)
 		{
-			globalVarList = getGlobalVarList();
+			globalVarInitList = getGlobalVarList();
 		}
-		return globalVarList;
+		return globalVarInitList;
 	}
 
 	public List<StringLitIR> constList()
 	{
 		return constList;
+	}
+
+	public List<GlobalVarIR> globalVars()
+	{
+		return globalVars;
 	}
 
 	private int labelNumber = 0;
@@ -187,7 +197,11 @@ public class IRBuilder extends ASTBaseVisitor
 	public Void visit(ExprStmtNode node)
 	{
 		super.visit(node);
-		map.put(node, ((VarIR)map.get(node.expr())).irList());
+		VarIR var = ((VarIR)map.get(node.expr()));
+		if(var == null)
+			map.put(node, new LinkedList<>());
+		else
+			map.put(node, var.irList());
 		return null;
 	}
 
@@ -410,8 +424,11 @@ public class IRBuilder extends ASTBaseVisitor
 			mov rax r0
 			jump exitLabel
 		 */
-		list.addAll(ret.irList());
-		list.add(new MoveIR(new VarRegIR(0), r0));
+		if(node.ret() != null)
+		{
+			list.addAll(ret.irList());
+			list.add(new MoveIR(new VarRegIR(0), r0));
+		}
 		list.add(new JumpIR(node.function().exitLabel()));
 		map.put(node, list);
 		return null;
@@ -422,7 +439,7 @@ public class IRBuilder extends ASTBaseVisitor
 	{
 		super.visit(node);
 		List<InsIR> list = new LinkedList<>();
-		VarRegIR r0, r1;
+		VarIR r1;
 		//Initialize variables
 		/*
 		(var set r1)
@@ -431,7 +448,13 @@ public class IRBuilder extends ASTBaseVisitor
 		 */
 		for(VariableEntity i: node.entity())
 		{
-			r1 = getNewReg();
+			if(isGlobal)
+			{
+				r1 = new VarMemIR(new VarLabelIR("_#"+i.name()+"#"), new VarIntIR(0));
+				globalVars.add(new GlobalVarIR("_#"+i.name()+"#"));
+			}
+			else
+				r1 = getNewReg();
 			i.setRegIR(r1);
 			if(i.init()!=null){
 				VarIR init = (VarIR)map.get(i.init());
@@ -507,7 +530,12 @@ public class IRBuilder extends ASTBaseVisitor
 			list.add(new PushIR(new VarRegIR(idx[i])));
 		}
 		//skip temp vars
-		list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
+		//Align to 16
+		//Enter this function we use call, so rsp = n*16+8
+		if((regNumber&1) == 0)
+			list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
+		else
+			list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
 		//tmp regs
 		//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
 		//paramters to new regs
@@ -516,7 +544,7 @@ public class IRBuilder extends ASTBaseVisitor
 		//global variables
 		if(node.name().equals("main"))
 		{
-			list.addAll(globalVarList);
+			list.addAll(globalVarInitList);
 		}
 
 		//function body
@@ -526,7 +554,10 @@ public class IRBuilder extends ASTBaseVisitor
 		list.add(new LabelIR(node.exitLabel().label()));
 
 		//move rsp rbp
-		list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
+		if((regNumber&1) == 0)
+			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
+		else
+			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
 		//list.add(new MoveIR(new VarRegIR(4), new VarRegIR(5)));
 		//recover callee-saved regs
 		for(int i=5;i>=0;--i)
@@ -564,15 +595,14 @@ public class IRBuilder extends ASTBaseVisitor
 	@Override
 	public Void visit(AssignNode node)
 	{
+		llMap.add(node.lhs());
 		super.visit(node);
 
 		int block = blockNumber++;
 		List<InsIR> list = new LinkedList<>();
 		VarIR lhs, rhs;
 		VarRegIR r0;
-		llMap.add(node.lhs());
 		lhs = (VarIR) map.get(node.lhs());
-		Debuger.printInfo("rhs",node.rhs().toString());
 		rhs = (VarIR) map.get(node.rhs());
 		list.addAll(lhs.irList());
 		list.addAll(rhs.irList());
@@ -647,7 +677,7 @@ public class IRBuilder extends ASTBaseVisitor
 			list.add(tmp);
 
 			map.put(node, new VarRegIR(list, r1.regIndex()));
-		}else if (node.type() == Options.typeString)
+		}else if (node.left().type() == Options.typeString)
 		{
 			VarRegIR r0;
 			//use funcall
@@ -944,10 +974,10 @@ public class IRBuilder extends ASTBaseVisitor
 				r0++
 			 */
 			case PRE_DEC:
-				list.add(new BinaryIR(BinaryIR.Op.ADD, r0, new VarIntIR(1)));
+				list.add(new BinaryIR(BinaryIR.Op.SUB, r0, new VarIntIR(1)));
 				break;
 			case PRE_INC:
-				list.add(new BinaryIR(BinaryIR.Op.SUB, r0, new VarIntIR(-1)));
+				list.add(new BinaryIR(BinaryIR.Op.ADD, r0, new VarIntIR(1)));
 				break;
 			case ADD:
 				break;
@@ -995,7 +1025,7 @@ public class IRBuilder extends ASTBaseVisitor
 		switch (node.operator())
 		{
 			case SUF_DEC:
-				list.add(new BinaryIR(BinaryIR.Op.ADD, r0, new VarIntIR(1)));
+				list.add(new BinaryIR(BinaryIR.Op.SUB, r0, new VarIntIR(1)));
 				break;
 			case SUF_INC:
 				list.add(new BinaryIR(BinaryIR.Op.ADD, r0, new VarIntIR(1)));
@@ -1027,7 +1057,7 @@ public class IRBuilder extends ASTBaseVisitor
 
 		list.addAll(ref.irList());
 		list.addAll(index.irList());
-		if(llMap.contains(node))
+		if(!llMap.contains(node))
 		{
 			r2 = getNewReg();
 			list.add(new LoadIR(r2, r0, r1));
@@ -1139,13 +1169,13 @@ public class IRBuilder extends ASTBaseVisitor
 	void visitSimpleVar(VariableNode node)
 	{
 		List<InsIR> list = new LinkedList<>();
-		VarRegIR r0, r1, r2;
+		VarIR r0, r1, r2;
 		if(!(node.type() instanceof TypeFunction))
 		{
-			if(node.name() == "null")
+			if(node.name().equals("null"))
 			{
 				map.put(node, new VarIntIR(new LinkedList<>(), 0));
-			}else if(node.name() == "this")
+			}else if(node.name().equals("this"))
 			{
 				map.put(node, new VarRegIR(new LinkedList<>(), thisReg));
 			}else{
@@ -1155,7 +1185,7 @@ public class IRBuilder extends ASTBaseVisitor
 				 */
 				//((LinkedList<InsIR>) list).push();
 				r0 = ((ParameterEntity)node.refEntity()).regIR();
-				map.put(node, new VarRegIR(list, r0.regIndex()));
+				map.put(node, r0.clone(list));
 			}
 
 		}else
@@ -1183,7 +1213,7 @@ public class IRBuilder extends ASTBaseVisitor
 			load r1 [r0+indexOfMember*8]
 		 */
 			VarIntIR indexOfMember = new VarIntIR(((ParameterEntity)node.refEntity()).rank());
-			if(llMap.contains(node))
+			if(!llMap.contains(node))
 			{
 				r1 = getNewReg();
 				list.add(new LoadIR(r1 ,r0, indexOfMember));
@@ -1240,7 +1270,7 @@ public class IRBuilder extends ASTBaseVisitor
 		 */
 
 			VarIntIR indexOfMember = new VarIntIR(((ParameterEntity)node.refEntity()).rank());
-			if(llMap.contains(node))
+			if(!llMap.contains(node))
 			{
 				r1 = getNewReg();
 				list.add(new LoadIR(r1 ,r0, indexOfMember));

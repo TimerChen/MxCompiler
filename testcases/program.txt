@@ -1,34 +1,5 @@
-
-class TA{
-	string state;
-}
 int main()
 {
-	TA mr;
-	TA mars;
-	mr = new TA;
-	mr.state = "the leading TA";
-	println(mr.state);
-	return 0;
+	int i;
+	print(toString(i));
 }
-
-
-/*!! metadata:
-=== comment ===
-class_test-mahaojun.mx
-=== input ===
-
-=== assert ===
-output
-=== timeout ===
-0.1
-=== output ===
-MR, the leading TA enjoys this work. XD
-Mars, the striking TA enjoys this work. XD
-Mars, the striking TA wants to give up!!!!!
-=== phase ===
-codegen pretest
-=== is_public ===
-True
-
-!!*/

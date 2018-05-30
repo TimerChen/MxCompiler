@@ -1,6 +1,6 @@
 package MxCompiler.Entities;
 import MxCompiler.AST.SourcePosition;
-import MxCompiler.IR.VarRegIR;
+import MxCompiler.IR.*;
 import MxCompiler.Type.Type;
 /*
 	Coded by timemachine on 18-4-28
@@ -9,14 +9,14 @@ import MxCompiler.Type.Type;
 
 public class ParameterEntity extends Entity
 {
-	private VarRegIR regIR;
+	private VarIR ir;
 	private int rank;
 
 	private boolean isMember;
 	public ParameterEntity(String name, Type type, SourcePosition position)
 	{
 		super(name, type, position);
-		regIR = null;
+		ir = null;
 		rank = -1;
 		isMember = false;
 	}
@@ -31,14 +31,14 @@ public class ParameterEntity extends Entity
 	{
 		isMember = true;
 	}
-	public VarRegIR regIR()
+	public VarIR regIR()
 	{
-		return regIR;
+		return ir;
 	}
 
-	public void setRegIR(VarRegIR regIR)
+	public void setRegIR(VarIR regIR)
 	{
-		this.regIR = regIR;
+		this.ir = regIR;
 	}
 
 	public int rank()

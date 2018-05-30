@@ -20,7 +20,7 @@ unsigned char* __string__plus(unsigned char* this, unsigned char* other)
 	return str;
 }
 */
-
+/*
 void printString(unsigned char *name, unsigned char* str)
 {
 	printf("%s[%d]: %s\n", name, ((int*)str)[-1], str);
@@ -37,6 +37,13 @@ void test_string()
 	unsigned char *addr;
 	addr =  __string__plus(str0, str1);
 	printString("str0+str1",addr);
+}*/
+
+#include<string.h>
+//string < string
+_Bool __string__less(unsigned char* this, unsigned char* other)
+{
+	return strcmp(this, other) == -1;
 }
 int main()
 {
@@ -44,5 +51,6 @@ int main()
 	// unsigned char *str = oStr + sizeof(int);
 	// ((int*)str)[-1] = strlen(str);
 	// _println(_toString(__string_length(str)));
-	test_string();
+
+	__string__less("DC", "BA");
 }

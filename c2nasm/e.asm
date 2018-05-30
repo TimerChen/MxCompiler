@@ -9,7 +9,7 @@ default rel
 global main
 
 
-SECTION .text   
+SECTION .text
 
 main:
         push    rbp
@@ -21,7 +21,8 @@ main:
         idiv    qword [rbp-10H]
         mov     qword [rbp-8H], rax
         mov     rax, qword [rbp-18H]
-        imul    rax, qword [rbp-10H]
+		imul	10
+        ; imul    rax, qword [rbp-10H]
         mov     qword [rbp-8H], rax
         mov     rax, qword [rbp-18H]
         cqo
@@ -33,9 +34,7 @@ main:
 
 
 
-SECTION .data   
+SECTION .data
 
 
-SECTION .bss    
-
-
+SECTION .bss

@@ -82,6 +82,7 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 			visit(node.condi());
 		if(node.step()!=null)
 			visit(node.step());
+		visit(node.body());
 		return null;
 	}
 

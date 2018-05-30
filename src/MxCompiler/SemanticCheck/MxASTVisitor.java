@@ -48,7 +48,7 @@ public class MxASTVisitor extends MxBaseVisitor
 	public Object visitConstBoolExpr(MxParser.ConstBoolExprContext ctx)
 	{
 		Object ret = super.visitConstBoolExpr(ctx);
-		Boolean val = ctx.getText()=="true"? true : false;
+		Boolean val = ctx.getText().equals("true")? true : false;
 		map.put(ctx, new BoolLiteralNode(new SourcePosition(ctx), val));
 		return ret;
 	}

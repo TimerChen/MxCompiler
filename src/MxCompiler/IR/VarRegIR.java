@@ -55,10 +55,13 @@ public class VarRegIR extends VarIR
 			case 7: name = "rdi"; break;
 
 			default:
+				//name = "r"+regIndex;
+
 				if(regIndex < 16)
 					name = "r"+regIndex;
 				else
 					throw new RuntimeException("Register need alloc.");
+
 		}
 		return name;
 	}
@@ -78,10 +81,13 @@ public class VarRegIR extends VarIR
 			case 7: name = "dil"; break;
 
 			default:
+				name = "r"+regIndex+"b";
+
 				if(regIndex < 16)
 					name = "r"+regIndex+"b";
 				else
 					throw new RuntimeException("Register need alloc.");
+
 		}
 		return name;
 	}

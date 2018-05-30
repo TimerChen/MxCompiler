@@ -7,7 +7,7 @@ int val()
 {
 	return 233;
 }
-int ga=233,gb=244,gc;
+long int ga=233,gb=244,gc;
 int main()
 {
 	int i,j;

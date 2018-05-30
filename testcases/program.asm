@@ -11,15 +11,32 @@ _main:
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp,	32
+	sub	rsp,	40
 	push	rdi
 	push	rsi
 	push	rdx
 	push	rcx
 	push	r8
 	push	r9
-	mov	rdi,	16
-	call	malloc
+	mov	r13,	qword [rbp + -56]
+	mov	rdi,	r13
+	call	_toString
+	pop	r9
+	pop	r8
+	pop	rcx
+	pop	rdx
+	pop	rsi
+	pop	rdi
+	mov	qword [rbp + -64],	rax
+	push	rdi
+	push	rsi
+	push	rdx
+	push	rcx
+	push	r8
+	push	r9
+	mov	r13,	qword [rbp + -64]
+	mov	rdi,	r13
+	call	_print
 	pop	r9
 	pop	r8
 	pop	rcx
@@ -27,31 +44,8 @@ _main:
 	pop	rsi
 	pop	rdi
 	mov	qword [rbp + -72],	rax
-	mov	r13,	qword [rbp + -72]
-	mov	qword [rbp + -56],	r13
-	mov	r13,	qword [rbp + -56]
-	mov	qword [r13 + 8],	STR_0
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	r13,	qword [rbp + -56]
-	mov	r13,	qword [r13 + 8]
-	mov	rdi,	r13
-	call	_println
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -80],	rax
-	mov	rax,	0
-	jmp	___exit_main
 ___exit_main:
-	add	rsp,	32
+	add	rsp,	40
 	pop	r15
 	pop	r14
 	pop	r13
@@ -59,10 +53,8 @@ ___exit_main:
 	pop	rbx
 	pop	rbp
 	ret
+SECTION .bss
 SECTION .rodata
-	dd 14
-STR_0:
-	db "the leading TA", 0
 ; ============Library============
 default rel
 

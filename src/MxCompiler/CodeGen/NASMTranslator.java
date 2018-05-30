@@ -16,13 +16,15 @@ public class NASMTranslator implements IRVisitor
 	private List<InsIR> insIRList;
 	private List<StringLitIR> litIRlist;
 	private List<String> codeStr;
+	private List<GlobalVarIR> globalVarIRS;
 	static final String CODE_PREFIX = "\t";
 	private Map<InsIR, List<String>> map = new HashMap<>();
 
-	public NASMTranslator(List<InsIR> insIRList, List<StringLitIR> litIRlist)
+	public NASMTranslator(List<InsIR> insIRList, List<StringLitIR> litIRlist, List<GlobalVarIR>globalVarIRS)
 	{
 		this.insIRList = insIRList;
 		this.litIRlist = litIRlist;
+		this.globalVarIRS = globalVarIRS;
 		this.codeStr = null;
 	}
 
@@ -38,6 +40,9 @@ public class NASMTranslator implements IRVisitor
 		//visit(InsIR)
 		list.addAll(visitInsIR(insIRList));
 
+		list.add("SECTION .bss");
+		list.addAll(visitGlobalVarIR(globalVarIRS));
+
 		list.add("SECTION .rodata");
 		//visit(StringLitIR)
 		list.addAll(visitLitIR(litIRlist));
@@ -51,7 +56,15 @@ public class NASMTranslator implements IRVisitor
 		}
 		return codeStr;
 	}
-
+	private List<String> visitGlobalVarIR(List<GlobalVarIR> list)
+	{
+		List<String> ret = new LinkedList<>();
+		for(GlobalVarIR i: list)
+		{
+			ret.add(i.toCodeStr());
+		}
+		return ret;
+	}
 	private List<String> visitInsIR(List<InsIR> list)
 	{
 		List<String> ret = new LinkedList<>();
