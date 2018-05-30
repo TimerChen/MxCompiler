@@ -11,7 +11,6 @@ global __array_new
 global __string_string
 global _print
 global _println
-global _getString
 global __string_length
 global __string_substring
 global __string_parseInt
@@ -23,11 +22,8 @@ global __string__equal
 global __array_size
 
 extern strcmp
-extern strtol
-extern __stack_chk_fail
 extern strcpy
-extern getline
-extern stdin
+extern strtol
 extern puts
 extern _IO_putc
 extern stdout
@@ -180,46 +176,6 @@ _println:
 
 ALIGN   16
 
-_getString:
-        push    rbx
-        sub     rsp, 32
-        mov     rdx, qword [rel stdin]
-        lea     rsi, [rsp+0CH]
-        lea     rdi, [rsp+10H]
-        mov     qword [rsp+10H], 0
-
-
-        mov     rax, qword [fs:abs 28H]
-        mov     qword [rsp+18H], rax
-        xor     eax, eax
-        call    getline
-        movsxd  rbx, dword [rsp+0CH]
-        lea     edi, [rbx+1H]
-        movsxd  rdi, edi
-        add     rdi, 4
-        call    malloc
-        mov     rsi, qword [rsp+10H]
-        lea     rdx, [rax+4H]
-        mov     dword [rax], ebx
-        mov     byte [rax+rbx+4H], 0
-        mov     rdi, rdx
-        call    strcpy
-        mov     rcx, qword [rsp+18H]
-
-
-        xor     rcx, qword [fs:abs 28H]
-        jnz     L_007
-        add     rsp, 32
-        pop     rbx
-        ret
-
-L_007:  call    __stack_chk_fail
-
-
-
-
-ALIGN   8
-
 __string_length:
         mov     eax, dword [rdi-4H]
         ret
@@ -253,7 +209,7 @@ __string_substring:
         test    r12d, r12d
         mov     dword [rdi], r12d
         mov     byte [rdi+rdx+4H], 0
-        jle     L_009
+        jle     L_008
         mov     ecx, ebx
         lea     r8, [rbp+r13]
         xor     edx, edx
@@ -263,12 +219,12 @@ __string_substring:
 
 
 ALIGN   8
-L_008:  movzx   esi, byte [r8+rdx]
+L_007:  movzx   esi, byte [r8+rdx]
         mov     byte [rdi+rdx+4H], sil
         add     rdx, 1
         cmp     rdx, rcx
-        jnz     L_008
-L_009:  add     rsp, 8
+        jnz     L_007
+L_008:  add     rsp, 8
         pop     rbx
         pop     rbp
         pop     r12

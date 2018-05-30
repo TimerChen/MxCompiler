@@ -289,6 +289,7 @@ public class IRBuilder extends ASTBaseVisitor
 		contiueLabel =  getNewLabel(block);
 		exitLabel =  getNewLabel(block);
 		node.setLabels(contiueLabel, exitLabel);
+		Debuger.printInfo("labels", node.continueLabel()+" "+node.exitLabel());
 
 		Global.IRBuilder_loopDeepth++;
 		super.visit(node);
@@ -396,6 +397,7 @@ public class IRBuilder extends ASTBaseVisitor
 	public Void visit(BreakNode node)
 	{
 		List<InsIR> list = new LinkedList<>();
+		Debuger.printInfo("break",""+node.loop.exitLabel());
 		list.add(new JumpIR(node.loop.exitLabel()));
 		map.put(node, list);
 		return null;
@@ -405,6 +407,7 @@ public class IRBuilder extends ASTBaseVisitor
 	public Void visit(ContinueNode node)
 	{
 		List<InsIR> list = new LinkedList<>();
+		Debuger.printInfo("continue",""+node.loop().continueLabel());
 		list.add(new JumpIR(node.loop().continueLabel()));
 		map.put(node, list);
 		return null;

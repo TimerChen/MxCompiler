@@ -52,6 +52,7 @@ void _println(unsigned char* str)
 {
 	puts(str);
 }
+/*
 unsigned char* _getString()
 {
 	unsigned char* str = NULL, *ret;
@@ -60,7 +61,8 @@ unsigned char* _getString()
 	ret = __string_string(len);
 	strcpy(ret, str);
 	return ret;
-}
+}*/
+
 //string
 int __string_length(unsigned char* this)
 {

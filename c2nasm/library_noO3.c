@@ -17,6 +17,19 @@ unsigned char* _toString(int i)
 	str[len] = 0;
 	return str;
 }
+
+unsigned char* __string_string(int size);
+char buffer[256]={0};
+unsigned char* _getString()
+{
+	unsigned char *ret;
+	int len;
+	scanf("%s", &buffer);
+	len = strlen(buffer);
+	ret = __string_string(len);
+	strcpy(ret, buffer);
+	return ret;
+}
 /*
 	unsigned char* str = NULL, s[20];
 	sprintf(s, "%d", i);

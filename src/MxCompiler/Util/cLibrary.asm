@@ -51,7 +51,7 @@ _getInt:
         xor     eax, eax
         lea     rax, [rbp-0CH]
         mov     rsi, rax
-        lea     rdi, [rel _L0_002]
+        lea     rdi, [rel L0_002]
         mov     eax, 0
         call    __isoc99_scanf
         mov     eax, dword [rbp-0CH]
@@ -59,9 +59,9 @@ _getInt:
 
 
         xor     rdx, qword [fs:abs 28H]
-        jz      _L0_001
+        jz      L0_001
         call    __stack_chk_fail
-_L0_001:  leave
+L0_001:  leave
         ret
 
 
@@ -76,7 +76,7 @@ _toString:
         mov     qword [rbp-8H], rax
         mov     edx, dword [rbp-14H]
         mov     rax, qword [rbp-8H]
-        lea     rsi, [rel _L0_002]
+        lea     rsi, [rel L0_002]
         mov     rdi, rax
         mov     eax, 0
         call    sprintf
@@ -98,19 +98,51 @@ _toString:
         ret
 
 
+_getString:
+        push    rbp
+        mov     rbp, rsp
+        sub     rsp, 16
+        lea     rsi, [rel buffer]
+        lea     rdi, [rel L0_003]
+        mov     eax, 0
+        call    __isoc99_scanf
+        lea     rdi, [rel buffer]
+        call    strlen
+        mov     dword [rbp-0CH], eax
+        mov     eax, dword [rbp-0CH]
+        mov     edi, eax
+        call    __.string_.string
+        mov     qword [rbp-8H], rax
+        mov     rax, qword [rbp-8H]
+        lea     rsi, [rel buffer]
+        mov     rdi, rax
+        call    strcpy
+        mov     rax, qword [rbp-8H]
+        leave
+        ret
+
+
 
 SECTION .data
 
 
-SECTION .bss
+SECTION .bss    align=32
+
+buffer:
+        resb    256
 
 
 SECTION .rodata
 
-_L0_002:
+L0_002:
         db 25H, 64H, 00H
 
+L0_003:
+        db 25H, 73H, 00H
 
+
+
+;	=== O3 ===
 
 SECTION .text   6
 
@@ -257,46 +289,6 @@ _println:
 
 ALIGN   16
 
-_getString:
-        push    rbx
-        sub     rsp, 32
-        mov     rdx, qword [rel stdin]
-        lea     rsi, [rsp+0CH]
-        lea     rdi, [rsp+10H]
-        mov     qword [rsp+10H], 0
-
-
-        mov     rax, qword [fs:abs 28H]
-        mov     qword [rsp+18H], rax
-        xor     eax, eax
-        call    getline
-        movsxd  rbx, dword [rsp+0CH]
-        lea     edi, [rbx+1H]
-        movsxd  rdi, edi
-        add     rdi, 4
-        call    malloc
-        mov     rsi, qword [rsp+10H]
-        lea     rdx, [rax+4H]
-        mov     dword [rax], ebx
-        mov     byte [rax+rbx+4H], 0
-        mov     rdi, rdx
-        call    strcpy
-        mov     rcx, qword [rsp+18H]
-
-
-        xor     rcx, qword [fs:abs 28H]
-        jnz     L_007
-        add     rsp, 32
-        pop     rbx
-        ret
-
-L_007:  call    __stack_chk_fail
-
-
-
-
-ALIGN   8
-
 __.string_length:
         mov     eax, dword [rdi-4H]
         ret
@@ -330,7 +322,7 @@ __.string_substring:
         test    r12d, r12d
         mov     dword [rdi], r12d
         mov     byte [rdi+rdx+4H], 0
-        jle     L_009
+        jle     L_008
         mov     ecx, ebx
         lea     r8, [rbp+r13]
         xor     edx, edx
@@ -340,12 +332,12 @@ __.string_substring:
 
 
 ALIGN   8
-L_008:  movzx   esi, byte [r8+rdx]
+L_007:  movzx   esi, byte [r8+rdx]
         mov     byte [rdi+rdx+4H], sil
         add     rdx, 1
         cmp     rdx, rcx
-        jnz     L_008
-L_009:  add     rsp, 8
+        jnz     L_007
+L_008:  add     rsp, 8
         pop     rbx
         pop     rbp
         pop     r12
@@ -487,4 +479,5 @@ SECTION .data
 
 
 SECTION .bss
+
 

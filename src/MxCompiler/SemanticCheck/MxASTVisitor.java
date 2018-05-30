@@ -531,7 +531,7 @@ public class MxASTVisitor extends MxBaseVisitor
 	public Object visitBreakStmt(MxParser.BreakStmtContext ctx)
 	{
 		Object ret = super.visitBreakStmt(ctx);
-		map.put(ctx, new ContinueNode(new SourcePosition(ctx)));
+		map.put(ctx, new BreakNode(new SourcePosition(ctx)));
 		return ret;
 	}
 

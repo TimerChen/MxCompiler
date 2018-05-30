@@ -8,7 +8,11 @@ default rel
 
 global _getInt
 global _toString
+global _getString
+global buffer
 
+extern strcpy
+extern __string_string
 extern strlen
 extern sprintf
 extern malloc
@@ -77,16 +81,46 @@ _toString:
         ret
 
 
+_getString:
+        push    rbp
+        mov     rbp, rsp
+        sub     rsp, 16
+        lea     rsi, [rel buffer]
+        lea     rdi, [rel L_003]
+        mov     eax, 0
+        call    __isoc99_scanf
+        lea     rdi, [rel buffer]
+        call    strlen
+        mov     dword [rbp-0CH], eax
+        mov     eax, dword [rbp-0CH]
+        mov     edi, eax
+        call    __string_string
+        mov     qword [rbp-8H], rax
+        mov     rax, qword [rbp-8H]
+        lea     rsi, [rel buffer]
+        mov     rdi, rax
+        call    strcpy
+        mov     rax, qword [rbp-8H]
+        leave
+        ret
+
+
 
 SECTION .data   
 
 
-SECTION .bss    
+SECTION .bss    align=32
+
+buffer:
+        resb    256
 
 
 SECTION .rodata 
 
 L_002:
         db 25H, 64H, 00H
+
+L_003:
+        db 25H, 73H, 00H
 
 
