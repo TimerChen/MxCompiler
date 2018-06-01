@@ -82,10 +82,6 @@ public class Compiler
 		irLitList = irBuilder.constList();
 		globalVarIRS = irBuilder.globalVars();
 
-		for(List<InsIR> i : irLists)
-		{
-			Debuger.printInfo("size", i.size()+"");
-		}
 		Debuger.printLine("Code Analyze");
 		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
 		blkList = cfgBuilder.getCFG();

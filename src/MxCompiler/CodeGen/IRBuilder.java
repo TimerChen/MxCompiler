@@ -159,7 +159,6 @@ public class IRBuilder extends ASTBaseVisitor
 		List<InsIR> list = new LinkedList<>();
 		for(StmtNode i: node.stmts())
 		{
-			Debuger.printInfo("stmt",i.position()+" ");
 			list.addAll((List<InsIR>) map.get(i));
 		}
 		//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(node.scope().varNumber())));

@@ -1,5 +1,5 @@
 #???temp files
-./__*.bash
+__*.bash
 
 #Big files
 documents/
