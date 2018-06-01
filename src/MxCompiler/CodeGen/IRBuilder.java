@@ -863,9 +863,24 @@ public class IRBuilder extends ASTBaseVisitor
 					Debuger.printInfo("Operator",op.toString());
 					throw new RuntimeException("Op not find.");
 			}
-			list.add(new MoveIR(r2, r0));
-			list.add(new BinaryIR(bOp, r2, r1));
-			map.put(node, new VarRegIR(list, r2.regIndex()));
+			if(op == BinaryOpNode.BinaryOp.LSHIFT ||
+					op == BinaryOpNode.BinaryOp.RSHIFT)
+			{
+				list.add(new MoveIR(r2, r0));
+				if(!(rhs instanceof VarIntIR))
+				{
+					list.add(new MoveIR(new VarRegIR(1), rhs));
+					list.add(new BinaryIR(bOp, r2, new VarRegIR(1)));
+				}else
+					list.add(new BinaryIR(bOp, r2, rhs));
+
+				map.put(node, r2.clone(list));
+			}else
+			{
+				list.add(new MoveIR(r2, r0));
+				list.add(new BinaryIR(bOp, r2, r1));
+				map.put(node, r2.clone(list));
+			}
 		}
 		return null;
 	}

@@ -20,7 +20,7 @@ void** __array_new(long int *aSize, int dim, int eSize, FUNC func)
 	{
 		if(dim > 1)
 		{
-			array[i] = __array_new(aSize, dim, eSize, func);
+			array[i] = __array_new(aSize+1, dim-1, eSize, func);
 		}else
 		{
 			if(func!=NULL)

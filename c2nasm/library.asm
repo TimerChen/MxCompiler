@@ -75,14 +75,14 @@ __array_new:
         mov     qword [rsp], rax
         mov     dword [rbp], r15d
         jle     L_003
-        movsxd  rax, r14d
+        lea     eax, [r13-1H]
         mov     r15d, 1
-        mov     qword [rsp+8H], rax
+        mov     dword [rsp+0CH], eax
 L_001:  cmp     r13d, 1
         jg      L_004
         test    r12, r12
         jz      L_002
-        mov     rdi, qword [rsp+8H]
+        movsxd  rdi, r14d
         call    malloc
         mov     qword [rbp+r15*8-4H], rax
         mov     rdi, rax
@@ -101,19 +101,20 @@ L_003:  mov     rax, qword [rsp]
         pop     r15
         ret
 
+L_004:  mov     esi, dword [rsp+0CH]
+        lea     rdi, [rbx+8H]
+        mov     rcx, r12
+        mov     edx, r14d
+        call    __array_new
+        mov     qword [rbp+r15*8-4H], rax
+        jmp     L_002
+
+
 
 
 
 
 ALIGN   8
-L_004:  mov     rcx, r12
-        mov     edx, r14d
-        mov     esi, r13d
-        mov     rdi, rbx
-        call    __array_new
-        mov     qword [rbp+r15*8-4H], rax
-        jmp     L_002
-
 
 __string_string:
         push    rbx

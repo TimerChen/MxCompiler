@@ -129,7 +129,16 @@ public class NASMTranslator implements IRVisitor
 			case OR: op="or"; break;
 			default:throw new RuntimeException("Op not find");
 		}
-		list.add(CODE_PREFIX+ op + "\t" + node.lhs() + ",\t" + node.rhs());
+		if(node.operator() == BinaryIR.Op.LSHIFT ||
+				node.operator() == BinaryIR.Op.RSHIFT)
+
+		{
+			if(node.rhs() instanceof VarIntIR)
+				list.add(CODE_PREFIX+ op + "\t" + node.lhs() + ",\t" + node.rhs());
+			else
+				list.add(CODE_PREFIX+ op + "\t" + node.lhs() + ",\tcl");
+		}else
+			list.add(CODE_PREFIX+ op + "\t" + node.lhs() + ",\t" + node.rhs());
 		map.put(node, list);
 	}
 
