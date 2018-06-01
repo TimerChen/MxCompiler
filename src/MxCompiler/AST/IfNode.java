@@ -28,6 +28,11 @@ public class IfNode extends StmtNode
 			this.falseBody = new BlockNode(falseBody);
 	}
 
+	public void setCondi(ExprNode condi)
+	{
+		Condi = condi;
+	}
+
 	public ExprNode condi()
 	{
 		return Condi;

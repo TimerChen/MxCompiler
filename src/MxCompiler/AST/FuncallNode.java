@@ -8,8 +8,8 @@ import java.util.*;
 
 public class FuncallNode extends ExprNode
 {
-	ExprNode function;
-	List<ExprNode> params;
+	private ExprNode function;
+	private List<ExprNode> params;
 
 	public FuncallNode(ExprNode function, List<ExprNode> params)
 	{

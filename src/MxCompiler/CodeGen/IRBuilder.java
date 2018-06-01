@@ -15,10 +15,7 @@ import MxCompiler.Global;
 import MxCompiler.IR.*;
 import MxCompiler.Options;
 import MxCompiler.SemanticCheck.ASTree;
-import MxCompiler.Type.Type;
-import MxCompiler.Type.TypeArray;
-import MxCompiler.Type.TypeClass;
-import MxCompiler.Type.TypeFunction;
+import MxCompiler.Type.*;
 import MxCompiler.tools.Debuger;
 
 import java.util.*;
@@ -441,7 +438,9 @@ public class IRBuilder extends ASTBaseVisitor
 				globalVars.add(new GlobalVarIR("_#"+i.name()+"#"));
 			}
 			else
+			{
 				r1 = getNewReg();
+			}
 			i.setRegIR(r1);
 			if(i.init()!=null){
 				VarIR init = (VarIR)map.get(i.init());
@@ -611,6 +610,7 @@ public class IRBuilder extends ASTBaseVisitor
 		map.put(node, rhs.clone(list));
 		return null;
 	}
+
 
 	@Override
 	public Void visit(BinaryOpNode node)
@@ -1215,7 +1215,6 @@ public class IRBuilder extends ASTBaseVisitor
 				 */
 				//((LinkedList<InsIR>) list).push();
 				r0 = ((ParameterEntity)node.refEntity()).regIR();
-				Debuger.printInfo("node",node.name());
 				map.put(node, r0.clone(list));
 			}
 

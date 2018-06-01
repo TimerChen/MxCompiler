@@ -33,6 +33,20 @@ public class ForNode extends LoopNode
 		return step;
 	}
 
+	public void setInit(ExprNode init)
+	{
+		this.init = init;
+	}
+
+	public void setCondi(ExprNode condi)
+	{
+		this.condi = condi;
+	}
+
+	public void setStep(ExprNode step)
+	{
+		this.step = step;
+	}
 
 	@Override
 	public <S, E> S accept(ASTVisitor<S, E> visitor)

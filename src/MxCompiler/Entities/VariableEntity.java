@@ -33,4 +33,9 @@ public class VariableEntity extends ParameterEntity
 	{
 		return init;
 	}
+
+	public void setInit(ExprNode init)
+	{
+		this.init = init;
+	}
 }

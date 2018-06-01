@@ -32,6 +32,11 @@ public class ArefNode extends LHSNode
 		return index;
 	}
 
+	public void setIndex(ExprNode index)
+	{
+		this.index = index;
+	}
+
 	@Override
 	public Type type()
 	{

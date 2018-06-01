@@ -23,11 +23,20 @@ abstract public class UnaryOpNode extends ExprNode
 	private UnaryOp operator;
 	private ExprNode expr;
 
+	private boolean isConst;
+
 	public UnaryOpNode(SourcePosition position, UnaryOp operator, ExprNode expr)
 	{
 		this.position = position;
 		this.operator = operator;
 		this.expr = expr;
+		isConst = expr.isConst();
+	}
+
+	@Override
+	public boolean isConst()
+	{
+		return isConst;
 	}
 
 	public UnaryOp operator()
@@ -38,6 +47,11 @@ abstract public class UnaryOpNode extends ExprNode
 	public ExprNode expr()
 	{
 		return expr;
+	}
+
+	public void setExpr(ExprNode expr)
+	{
+		this.expr = expr;
 	}
 
 	private Type getType()

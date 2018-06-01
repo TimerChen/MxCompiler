@@ -24,6 +24,11 @@ public class WhileNode extends LoopNode
 		this.condi = condi;
 	}
 
+	public void setCondi(ExprNode condi)
+	{
+		this.condi = condi;
+	}
+
 	public ExprNode condi()
 	{
 		return condi;

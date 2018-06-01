@@ -11,48 +11,29 @@ _main:
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp,	24
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	rdi,	2
-	call	__.array_.array
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -56],	rax
-	mov	r13,	qword [rbp + -56]
-	mov	qword [r13 + 0],	100
-	mov	r13,	qword [rbp + -56]
-	mov	qword [r13 + 8],	80
-	push	rdi
-	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	mov	r13,	qword [rbp + -56]
-	mov	rdi,	r13
-	mov	rsi,	2
-	mov	rdx,	8
-	mov	rcx,	0
-	call	__.array_new
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	qword [rbp + -64],	rax
-	mov	r15,	qword [rbp + -64]
-	mov	qword [_#chunks# + 0],	r15
+	sub	rsp,	8
 ___exit_main:
+	add	rsp,	8
+	pop	r15
+	pop	r14
+	pop	r13
+	pop	r12
+	pop	rbx
+	pop	rbp
+	ret
+_fuck:
+	push	rbp
+	mov	rbp,	rsp
+	add	rbp,	8
+	push	rbx
+	push	r12
+	push	r13
+	push	r14
+	push	r15
+	sub	rsp,	24
+	mov	qword [rbp + -56],	rdi
+	mov	qword [rbp + -56],	1
+___exit_fuck:
 	add	rsp,	24
 	pop	r15
 	pop	r14
@@ -62,7 +43,6 @@ ___exit_main:
 	pop	rbp
 	ret
 SECTION .bss
-_#chunks#:	resb	8
 SECTION .rodata
 ; ============Library============
 default rel

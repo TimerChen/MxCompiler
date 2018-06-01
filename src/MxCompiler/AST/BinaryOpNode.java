@@ -1,10 +1,8 @@
 package MxCompiler.AST;
 
+import MxCompiler.IR.VarIntIR;
 import MxCompiler.Options;
-import MxCompiler.Type.Type;
-import MxCompiler.Type.TypeArray;
-import MxCompiler.Type.TypeClass;
-import MxCompiler.Type.TypeNull;
+import MxCompiler.Type.*;
 import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
 
@@ -75,6 +73,8 @@ public class BinaryOpNode extends ExprNode
 	private ExprNode left, right;
 	private BinaryOp operator;
 
+	private boolean isConst;
+
 	public ExprNode left()
 	{
 		return left;
@@ -90,6 +90,22 @@ public class BinaryOpNode extends ExprNode
 		return operator;
 	}
 
+	public void setLeft(ExprNode left)
+	{
+		this.left = left;
+	}
+
+	public void setRight(ExprNode right)
+	{
+		this.right = right;
+	}
+
+	@Override
+	public boolean isConst()
+	{
+		return isConst;
+	}
+
 	public BinaryOpNode(SourcePosition position, ExprNode left, ExprNode right, BinaryOp operator)
 	{
 		initOpCheck();
@@ -97,7 +113,9 @@ public class BinaryOpNode extends ExprNode
 		this.left = left;
 		this.right = right;
 		this.operator = operator;
+		this.isConst = (left.isConst() && right.isConst());
 	}
+
 
 	private Type getType()
 	{

@@ -37,6 +37,11 @@ public class ReturnNode extends StmtNode
 		return ret;
 	}
 
+	public void setRet(ExprNode ret)
+	{
+		this.ret = ret;
+	}
+
 	@Override
 	public <S, E> S accept(ASTVisitor<S, E> visitor)
 	{

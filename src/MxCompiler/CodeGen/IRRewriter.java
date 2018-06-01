@@ -70,7 +70,6 @@ public class IRRewriter implements IRVisitor
 		{
 			VarRegIR var = (VarRegIR)oVar;
 			int i = var.regIndex();
-			Debuger.printInfo("i",""+i);
 			if(nowColor.get(i) == -1)
 			{
 				i = i-16;
@@ -169,7 +168,6 @@ public class IRRewriter implements IRVisitor
 		node.setRhs(colorSIR(node.rhs(), reg[0], reg[1]));
 		//node.setLhs(colorS0IR(node.lhs(), reg[0], reg[1]));
 		VarIR oVar = (VarIR)node.lhs();
-		Debuger.printInfo("lhs", node.lhs().toString_old());
 		if(oVar instanceof VarRegIR)
 		{
 			//lhs cannot be a varmemir

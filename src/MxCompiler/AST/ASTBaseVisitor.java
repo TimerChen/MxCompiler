@@ -205,8 +205,8 @@ public class ASTBaseVisitor implements ASTVisitor<Void, Void>
 	@Override
 	public Void visit(FuncallNode node)
 	{
-		visit(node.function);
-		for(ExprNode i : node.params)
+		visit(node.function());
+		for(ExprNode i : node.params())
 		{
 			visit(i);
 

@@ -1,6 +1,8 @@
 package MxCompiler;
+import MxCompiler.AST.ASTNode;
 import MxCompiler.CodeGen.*;
 import MxCompiler.IR.*;
+import MxCompiler.Optim.ASTConstFolding;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
@@ -127,7 +129,7 @@ public class Compiler
 		Debuger.printLine("Code Optimize");
 		FakeAllocator allocator = new FakeAllocator(cgs);
 
-
+		/*
 		for(BasicBlock i: blkList)
 		{
 			while(i!=null)
@@ -139,6 +141,7 @@ public class Compiler
 				i = i.next0();
 			}
 		}
+		*/
 
 		IRRewriter regRewriter = new IRRewriter(allocator.colors(), blkList);
 		regRewriter.rewrite();
@@ -191,6 +194,11 @@ public class Compiler
 
 		return list;
 	}
+	private void preOptimize(ASTree ast)
+	{
+		ASTConstFolding cf = new ASTConstFolding(ast);
+		cf.constFolding();
+	}
 	public void compile( String fileInName, String fileOutName ) throws IOException, RuntimeException
 	{
 
@@ -222,6 +230,7 @@ public class Compiler
 		checkOnAst(ast);
 
 		//Code Generate
+		preOptimize(ast);
 		irGenerate(ast);
 		Optimize(blkList);
 		codeTranslate(blkList, irLitList);
