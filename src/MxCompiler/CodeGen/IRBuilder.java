@@ -996,6 +996,7 @@ public class IRBuilder extends ASTBaseVisitor
 				break;
 			case BIT_NOT:
 				list.add(new UnaryIR(UnaryIR.Op.NOT, r1));
+				break;
 			case LOGIC_NOT:
 				list.add(new BinaryIR(BinaryIR.Op.XOR, r1, new VarIntIR(1)));
 				break;

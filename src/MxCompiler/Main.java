@@ -14,7 +14,7 @@ public class Main
 	{
 		//Debuger.setDebugOptions();
 		Debuger.setDefaultOptions();
-		Debuger.setVERBOSE(1);
+		Debuger.setVERBOSE(2);
 	}
 
 	static void init()
