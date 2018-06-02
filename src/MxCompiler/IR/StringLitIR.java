@@ -19,7 +19,7 @@ public class StringLitIR
 	private int length;
 	public StringLitIR(String val)
 	{
-		Debuger.printInfo("val", val);
+		//Debuger.printInfo("val", val);
 		this.val = initVal(val);
 		this.idx = idxNumber++;
 	}
@@ -42,7 +42,7 @@ public class StringLitIR
 		tmp1 = val.length();
 		length -= (tmp1-tmp0)/6;
 		String pa = "\\\"\\\", ";
-		Debuger.printInfo("pattern", val);
+		//Debuger.printInfo("pattern", val);
 		val = val.replaceAll("\"\", ","");
 		val = val.replaceAll(", \"\"","");
 		return val;

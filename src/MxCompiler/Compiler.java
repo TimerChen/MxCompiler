@@ -1,18 +1,19 @@
 package MxCompiler;
-import MxCompiler.AST.ASTNode;
 import MxCompiler.CodeGen.*;
 import MxCompiler.IR.*;
 import MxCompiler.Optim.ASTConstFolding;
+import MxCompiler.Optim.FakeAllocator;
+import MxCompiler.Optim.GreedyAllocator;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
 import MxCompiler.Type.TypeTable;
-import MxCompiler.Util.SemanticError;
 import MxCompiler.tools.Debuger;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import MxCompiler.parser.*;
@@ -71,6 +72,7 @@ public class Compiler
 	private List<StringLitIR> irLitList;
 	private List<GlobalVarIR> globalVarIRS;
 	private ASTree ast;
+	private List<String> commentStr;
 	private List<String> codeStr;
 	private List<String> libraryStr;
 
@@ -88,13 +90,20 @@ public class Compiler
 
 
 	}
+	private void commentTranslate(List<BasicBlock> blkList, List<StringLitIR>irLitList)
+	{
+		Debuger.printLine("Comment Translate");
+		BlockToList btl = new BlockToList(blkList);
+		List<InsIR> irList = btl.toList();
+		IRTranslator irTranslator = new IRTranslator(irList, irLitList, globalVarIRS);
+		commentStr = irTranslator.codeStr();
+	}
 	private void codeTranslate(List<BasicBlock> blkList, List<StringLitIR>irLitList)
 	{
 		Debuger.printLine("Code Translate");
 		BlockToList btl = new BlockToList(blkList);
 		List<InsIR> irList = btl.toList();
 		NASMTranslator translator = new NASMTranslator(irList, irLitList, globalVarIRS);
-
 		codeStr = translator.codeStr();
 	}
 	private void outputCode(OutputStream os, List<String> outputStr)
@@ -123,8 +132,8 @@ public class Compiler
 		List<ConflictGraph> cgs = analyzer.cGraphs();
 
 		Debuger.printLine("Code Optimize");
-		FakeAllocator allocator = new FakeAllocator(cgs);
-
+		//FakeAllocator allocator = new FakeAllocator(cgs);
+		GreedyAllocator allocator = new GreedyAllocator(cgs);
 		/*
 		for(BasicBlock i: blkList)
 		{
@@ -134,7 +143,7 @@ public class Compiler
 				if(j instanceof LabelIR){
 					Debuger.printInfo("irlist",((LabelIR) j).label());
 				}
-				i = i.next0();
+				i = i.next();
 			}
 		}
 		*/
@@ -180,9 +189,14 @@ public class Compiler
 		}
 		return;
 	}
-	private List<String> mergeCodeStr(List<String> code, List<String> library)
+	private List<String> mergeCodeStr(List<String> comment, List<String> code, List<String> library)
 	{
 		List<String> list = new ArrayList<>();
+		for(int i=0;i<comment.size();++i)
+		{
+			comment.set(i, ";"+comment.get(i));
+		}
+		list.addAll(comment);
 		list.addAll(code);
 		list.add("; ============Library============");
 		list.addAll(library);
@@ -228,12 +242,15 @@ public class Compiler
 		//Code Generate
 		preOptimize(ast);
 		irGenerate(ast);
+		commentTranslate(blkList, irLitList);
+		//commentStr = new LinkedList<>();
 		Optimize(blkList);
 		codeTranslate(blkList, irLitList);
 
 		loadCLibrary();
 
-		outputCode(os, mergeCodeStr(codeStr, libraryStr));
+		outputCode(os, mergeCodeStr(new LinkedList<>(), codeStr, libraryStr));
+		//outputCode(os, mergeCodeStr(commentStr, codeStr, libraryStr));
 	}
 
 }

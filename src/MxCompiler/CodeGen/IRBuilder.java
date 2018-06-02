@@ -253,7 +253,6 @@ public class IRBuilder extends ASTBaseVisitor
 		.L0:
 			[condi]->r0
 			CJUMP .L1 (r0 == 0)?
-		.L2:
 			[body]
 			JUMP .L0
 		.L1:
@@ -263,7 +262,7 @@ public class IRBuilder extends ASTBaseVisitor
 		contiueLabel =  getNewLabel(block);
 		exitLabel =  getNewLabel(block);
 		node.setLabels(contiueLabel, exitLabel);
-		Debuger.printInfo("labels", node.continueLabel()+" "+node.exitLabel());
+		//Debuger.printInfo("labels", node.continueLabel()+" "+node.exitLabel());
 
 		Global.IRBuilder_loopDeepth++;
 		super.visit(node);
@@ -272,9 +271,8 @@ public class IRBuilder extends ASTBaseVisitor
 		VarIR condi = (VarIR) map.get(node.condi());
 		List<InsIR> body = (List<InsIR>) map.get(node.body());
 		//VarRegIR r0;
-		VarLabelIR l0, l1, l2;
+		VarLabelIR l0, l1;
 		List<InsIR> list = new LinkedList<>();
-		l2 = getNewLabel(block);
 		l0 = contiueLabel;
 		l1 = exitLabel;
 
@@ -285,14 +283,11 @@ public class IRBuilder extends ASTBaseVisitor
 		//r0 = condi;
 //		CJUMP .L1 (r0 == 0)?
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l1));
-//		.L2:
-		list.add(new LabelIR(l2.label()));
 
 		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
-		//r0 = condi;
-//		CJUMP .L2 (r0 == 1)?
+//		JUMP .L0
 		list.add(new JumpIR(new VarLabelIR(l0.label())));
 		Global.IRBuilder_loopDeepth--;
 
@@ -311,7 +306,6 @@ public class IRBuilder extends ASTBaseVisitor
 		.L0
 			[condi]->r0
 			CJUMP .L1 (r0 == 0)?
-		.L2:
 			[body]
 			[step]
 			JUMP .L0
@@ -332,9 +326,8 @@ public class IRBuilder extends ASTBaseVisitor
 				step = (VarIR) map.get(node.step());
 		List<InsIR> body = (List<InsIR>) map.get(node.body());
 		//VarIR r0;
-		VarLabelIR l0, l1, l2;
+		VarLabelIR l0, l1;
 		List<InsIR> list = new LinkedList<>();
-		l2 = getNewLabel(block);
 		l0 = contiueLabel;
 		l1 = exitLabel;
 
@@ -353,8 +346,6 @@ public class IRBuilder extends ASTBaseVisitor
 		{
 			//Never Jump to exit
 		}
-//		.L2:
-		list.add(new LabelIR(l2.label()));
 
 		Global.IRBuilder_loopDeepth++;
 //			[body]
@@ -1172,7 +1163,6 @@ public class IRBuilder extends ASTBaseVisitor
 
 		 */
 
-		Debuger.printInfo("funcIs",node.function()+"");
 		if(node.function() instanceof MemberNode)
 			plist.add(preVar);
 		else if(((FunctionEntity)(((VariableNode)node.function()).refEntity())).belongsTo() !=null)
@@ -1185,7 +1175,7 @@ public class IRBuilder extends ASTBaseVisitor
 			plist.add(tmp = (VarIR) map.get(node.params().get(i)));
 		}
 		funName = ((VariableNode) node.function()).funName();
-		Debuger.printInfo("funName",funName);
+		//Debuger.printInfo("funName",funName);
 		list.addAll(makeCall(funName, plist));
 		r0 = getNewReg();
 		list.add(new MoveIR(r0, new VarRegIR(0)));

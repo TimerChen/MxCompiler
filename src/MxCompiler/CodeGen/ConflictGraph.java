@@ -7,6 +7,7 @@
 package MxCompiler.CodeGen;
 
 import MxCompiler.IR.VarRegIR;
+import MxCompiler.tools.Debuger;
 
 import java.util.*;
 
@@ -23,6 +24,7 @@ public class ConflictGraph
 	public void addEdge(int a, int b)
 	{
 		if(a==b) return;
+		//Debuger.printInfo("Edge","("+a+", "+b+")");
 		//let a < b
 		Set<Integer> node;
 		if(graph.get(a) == null)

@@ -47,6 +47,7 @@ public class CFGBuilder extends Object
 					if(i!=0)
 					{
 						nowBlock.setNext0(nextBlock);
+						//Debuger.printInfo("l, r",start + ", "+i);
 						nowBlock.setIrList(irList.subList(start, i));
 						start = i;
 					}else
@@ -58,6 +59,7 @@ public class CFGBuilder extends Object
 				}else if(pir instanceof JumpIR || pir instanceof CJumpIR)
 				{
 					nextBlock = new BasicBlock(counter++);
+					//Debuger.printInfo("l, r",start + ", "+i);
 					nowBlock.setNext0(nextBlock);
 					nowBlock.setIrList(irList.subList(start, i));
 
@@ -65,7 +67,7 @@ public class CFGBuilder extends Object
 					start = i;
 				}
 			}
-			Debuger.printInfo("start, n",start + ", "+n);
+			//Debuger.printInfo("l, r",start + ", "+n);
 			if(start<n)
 				nowBlock.setIrList(irList.subList(start, n));
 
@@ -75,12 +77,12 @@ public class CFGBuilder extends Object
 				InsIR ir = nowBlock.irList().get(nowBlock.irList().size()-1);
 				if(ir instanceof JumpIR)
 				{
-					nowBlock.setNext1(map.get(((JumpIR) ir).aim().label()));
+					nowBlock.setNext1(map.get(((JumpIR) ir).aim().label()), true);
 				}else if(ir instanceof CJumpIR)
 				{
-					nowBlock.setNext1(map.get(((CJumpIR) ir).aim().label()));
+					nowBlock.setNext1(map.get(((CJumpIR) ir).aim().label()), false);
 				}
-				nowBlock = nowBlock.next0();
+				nowBlock = nowBlock.next();
 			}
 			ii++;
 		}

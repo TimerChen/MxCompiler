@@ -23,6 +23,10 @@ public class VarAnalyzer implements IRVisitor
 	private BasicBlock currentBlock;
 	private List<ConflictGraph> cGraphs;
 	private ConflictGraph nowGraph;
+	private Set<Integer> tmpSet;
+
+	private enum Phases{PreCalc, AddEdges};
+	Phases nowPhase;
 
 	public VarAnalyzer(List<BasicBlock> startBlocks)
 	{
@@ -39,22 +43,53 @@ public class VarAnalyzer implements IRVisitor
 		}
 		return cGraphs;
 	}
-
+	void print(Set<Integer> s)
+	{
+		Debuger.print("\t\t");
+		Iterator<Integer> it = s.iterator();
+		while(it.hasNext())
+		{
+			int val = it.next();
+			Debuger.print(val+", ");
+		}
+		Debuger.print("\n");
+	}
+	private void printSet(BasicBlock start)
+	{
+		BasicBlock now = start;
+		while(now!=null)
+		{
+			Debuger.printInfo("Debug","Block:\t"+now.id());
+			Debuger.printInfo("Debug", "UEVar:");
+			print(now.ueVar);
+			Debuger.printInfo("Debug", "VarKill:");
+			print(now.varKill);
+			Debuger.printInfo("Debug","LiveOut:");
+			print(now.liveOut);
+			now = now.next();
+		}
+	}
 	private void analyze()
 	{
 		ConcurrentLinkedDeque<BasicBlock> bQue;
 		for(BasicBlock start: startBlocks)
 		{
+			nowPhase = Phases.PreCalc;
 			cGraphs.add(nowGraph = new ConflictGraph(Global.maxRegNumber));
 			size = 0;
 			BasicBlock nowBlock = start;
 			while(nowBlock!=null)
 			{
 				size++;
-				nowBlock = nowBlock.next0();
+				nowBlock = nowBlock.next();
 			}
 			du = new int[size];
-			for(int i=0;i<size;++i)du[i]=0;
+			prev = new ArrayList<>(size);
+			for(int i=0;i<size;++i)
+			{
+				du[i]=0;
+				prev.add(new LinkedList<>());
+			}
 
 			nowBlock = start;
 			while(nowBlock!=null)
@@ -64,15 +99,25 @@ public class VarAnalyzer implements IRVisitor
 				b0 = nowBlock.next0();
 				b1 = nowBlock.next1();
 				if(b0 != null)
-					du[b0.id()]++;
+				{
+					du[nowBlock.id()]++;
+					prev.get(b0.id()).add(nowBlock);
+				}
+
 				if(b1 != null)
-					du[b1.id()]++;
-				nowBlock = nowBlock.next0();
+				{
+					du[nowBlock.id()]++;
+					prev.get(b1.id()).add(nowBlock);
+				}
+
+				nowBlock = nowBlock.next();
 			}
 
 			analyzeGraph(start);
 
 			buildCGraphLeft(start);
+
+			//printSet(start);
 		}
 	}
 	/*
@@ -88,19 +133,26 @@ public class VarAnalyzer implements IRVisitor
 	 */
 	private void buildCGraphLeft(BasicBlock start)
 	{
+		nowPhase = Phases.AddEdges;
 		BasicBlock now = start;
 		Set<Integer> T, A;
 		while(now!=null)
 		{
-			T = new HashSet<>(now.liveOut);
-			T = subSet(T, now.varKill);
-			A = mergeSet(now.liveOut, now.ueVar);
-			A.addAll(now.varKill);
+			tmpSet = new HashSet<>(now.liveOut);
+			List<InsIR> list = now.irList();
+			for(int i = list.size()-1;i>=0;--i)
+			{
+				list.get(i).accept(this);
+			}
+//			T = new HashSet<>(now.liveOut);
+//			T = subSet(T, now.varKill);
+//			A = mergeSet(now.liveOut, now.ueVar);
+//			A.addAll(now.varKill);
+//
+//			addEdges(now.ueVar, now.ueVar);
+//			addEdges(A, T);
 
-			addEdges(now.ueVar, now.ueVar);
-			addEdges(A, T);
-
-			now = now.next0();
+			now = now.next();
 		}
 	}
 	private void analyzeBlock(BasicBlock block)
@@ -149,10 +201,16 @@ public class VarAnalyzer implements IRVisitor
 		if(!(oVar instanceof VarRegIR))
 			return;
 		VarRegIR var = (VarRegIR)oVar;
-		
-		currentBlock.ueVar.remove(var.regIndex());
-		addEdges(var.regIndex(), currentBlock.ueVar);
-		currentBlock.varKill.add(var.regIndex());
+
+		if(nowPhase == Phases.PreCalc)
+		{
+			currentBlock.ueVar.remove(var.regIndex());
+			currentBlock.varKill.add(var.regIndex());
+		}else if(nowPhase == Phases.AddEdges){
+			tmpSet.remove(var.regIndex());
+			addEdges(var.regIndex(), tmpSet);
+		}
+
 	}
 
 	private void srcVisit(VarIR oVar)
@@ -169,7 +227,14 @@ public class VarAnalyzer implements IRVisitor
 			return;
 		VarRegIR var = (VarRegIR)oVar;
 
-		currentBlock.ueVar.add(var.regIndex());
+		if(nowPhase == Phases.PreCalc)
+		{
+			currentBlock.ueVar.add(var.regIndex());
+		}else if(nowPhase == Phases.AddEdges)
+		{
+			tmpSet.add(var.regIndex());
+		}
+
 	}
 
 	private void regVisit(VarIR dest0, VarIR dest1, VarIR src0, VarIR src1)
@@ -240,7 +305,10 @@ public class VarAnalyzer implements IRVisitor
 	@Override
 	public void visit(ReturnIR node)
 	{
-		//Nothing
+		//call-ee saved regs
+		//rax
+		regVisit(null, null, new VarRegIR(0), null);
+
 	}
 
 	@Override
@@ -270,7 +338,7 @@ public class VarAnalyzer implements IRVisitor
 	@Override
 	public void visit(MoveIR node)
 	{
-		regVisit(node.lhs(), null, node.lhs(), null);
+		regVisit(node.lhs(), null, node.rhs(), null);
 	}
 
 
@@ -279,6 +347,8 @@ public class VarAnalyzer implements IRVisitor
 	 *           Analyze Graph
 	 *************************************
 	 */
+
+	private List<List<BasicBlock>> prev;// = new ArrayList<>();
 
 	//For Priority Queue
 	class BlockPack
@@ -301,14 +371,14 @@ public class VarAnalyzer implements IRVisitor
 	};
 
 
-	Set<Integer> mergeSet(Set<Integer> a, Set<Integer> b)
+	private Set<Integer> mergeSet(Set<Integer> a, Set<Integer> b)
 	{
 		Set<Integer> c;
 		c = new HashSet<>(a);
 		c.addAll(b);
 		return c;
 	}
-	Set<Integer> subSet(Set<Integer> a, Set<Integer> b)
+	private Set<Integer> subSet(Set<Integer> a, Set<Integer> b)
 	{
 		Set<Integer> c;
 		c = new HashSet<>(a);
@@ -316,7 +386,7 @@ public class VarAnalyzer implements IRVisitor
 		return c;
 	}
 	//L(a) = U( (LiveOut(bi)-VarKill(bi)) U UEVar(bi) ) [i=1, 2]
-	boolean reCalculate(BasicBlock block)
+	private boolean reCalculate(BasicBlock block)
 	{
 		int oldSize = block.liveOut.size();
 		Set<Integer> ret;
@@ -336,22 +406,26 @@ public class VarAnalyzer implements IRVisitor
 		return oldSize != ret.size();
 	}
 
-	void analyzeGraph(BasicBlock start)
+	private void analyzeGraph(BasicBlock start)
 	{
-		boolean change = false;
-
+		boolean change = true;
+		boolean []vFlag = new boolean[size];
+		int []du = new int[size];
 		while(change)
 		{
-			int []du = new int[size];
+			change = false;
 			for(int i=0;i<size;++i)
+			{
 				du[i] = this.du[i];
+				vFlag[i] = false;
+			}
 			PriorityQueue<BlockPack> bQue = new PriorityQueue<BlockPack>(duComparator);
 			BasicBlock now = start;
 
 			for(int i=0;i<size;++i)
 			{
 				bQue.add(new BlockPack(now, du[i]));
-				now = now.next0();
+				now = now.next();
 			}
 			int left = size-1;
 			while(left >= 0)
@@ -359,21 +433,29 @@ public class VarAnalyzer implements IRVisitor
 				BlockPack pack;
 				do{
 					pack = bQue.poll();
-				}while(pack.du!=du[pack.block.id()]);
+				}while(pack.du!=du[pack.block.id()] || vFlag[pack.block.id()]);
 				now = pack.block;
+				vFlag[now.id()] = true;
+				//Debuger.printInfo("Calcing","id: "+now.id());
 				//reCalculate
 				change = (change || reCalculate(now));
 				//update successor
-				if(now.next0()!=null)
+				Iterator<BasicBlock> it = prev.get(now.id()).iterator();
+				while(it.hasNext())
 				{
-					bQue.add(new BlockPack(now.next0(), --du[now.next0().id()]));
-				}
-				if(now.next1()!=null)
-				{
-					bQue.add(new BlockPack(now.next1(), --du[now.next1().id()]));
+					BasicBlock j = it.next();
+					if(j!=now)
+						bQue.add(new BlockPack(j, --du[j.id()]));
 				}
 				left--;
 			}
+
+			/*
+			if(change)
+				Debuger.printInfo("Graph Analyze","Changed.");
+			else
+				Debuger.printInfo("Graph Analyze","Not Changed.");
+			*/
 		}
 
 	}

@@ -15,4 +15,5 @@ public class Global
 	static public int maxRegNumber = 0;
 	static public int IRBuilder_loopDeepth = 0;
 	static public boolean IRBuilder_inIf = false;
+	static public boolean checkRegColored = true;
 }

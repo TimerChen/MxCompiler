@@ -46,7 +46,7 @@ public class IRRewriter implements IRVisitor
 					ir.accept(this);
 				}
 				now.setIrList(newIRList);
-				now = now.next0();
+				now = now.next();
 			}
 
 		}
@@ -184,6 +184,7 @@ public class IRRewriter implements IRVisitor
 			}else
 			{
 				newIRList.add(node);
+				node.setLhs(new VarRegIR(nowColor.get(i)));
 			}
 		}else
 		{
@@ -246,6 +247,7 @@ public class IRRewriter implements IRVisitor
 				}else
 				{
 					newIRList.add(node);
+					node.setSrc(new VarRegIR(nowColor.get(i)));
 				}
 			}else
 				throw new RuntimeException("Unknown var type");

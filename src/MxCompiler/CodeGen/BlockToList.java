@@ -28,7 +28,7 @@ public class BlockToList
 			while(now != null)
 			{
 				list.addAll(now.irList());
-				now = now.next0();
+				now = now.next();
 			}
 		}
 		return list;

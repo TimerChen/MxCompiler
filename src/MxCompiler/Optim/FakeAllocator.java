@@ -1,13 +1,14 @@
 /*
 	Coded by timemachine on 18-5-26
-	MxCompiler.CodeGen.FakeAllocator
+	MxCompiler.Optim.FakeAllocator
 */
 
 
-package MxCompiler.CodeGen;
+package MxCompiler.Optim;
 
 import java.util.*;
 
+import MxCompiler.CodeGen.ConflictGraph;
 import MxCompiler.Global;
 import MxCompiler.IR.*;
 import MxCompiler.tools.Debuger;
