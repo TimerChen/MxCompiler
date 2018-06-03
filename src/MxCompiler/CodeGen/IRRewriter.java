@@ -15,7 +15,7 @@ public class IRRewriter implements IRVisitor
 {
 	//use 13, 14, 15
 	static final private VarRegIR []reg=
-			{new VarRegIR(13), new VarRegIR(14), new VarRegIR(15)};
+			{new VarRegIR(10), new VarRegIR(11), new VarRegIR(6)};
 	private List<List<Integer>> colors;
 	private List<BasicBlock> blkLists;
 
@@ -389,8 +389,9 @@ public class IRRewriter implements IRVisitor
 	@Override
 	public void visit(SpecialIR node)
 	{
-		int []idx = {7,6,2,1,8,9};
+		//int []idx = {7,6,2,1,8,9};
 		//int []idx = {2,1,8,9};
+		int []idx = {};
 		switch (node.type())
 		{
 			case CALLER_SAVE:
