@@ -48,9 +48,10 @@ public class WeightGreedyAllocator
 
 	class PointPack
 	{
-		int i, w;
+		int i;
+		double w;
 
-		public PointPack(int i, int w)
+		public PointPack(int i, double w)
 		{
 			this.i = i;
 			this.w = w;
@@ -60,7 +61,10 @@ public class WeightGreedyAllocator
 
 		@Override
 		public int compare(PointPack c1, PointPack c2) {
-			return -(c1.w - c2.w);
+			double val = -(c1.w - c2.w);
+			if(val < 0) return -1;
+			else return 1;
+			//return -(c1.w - c2.w);
 		}
 	};
 
@@ -109,18 +113,20 @@ public class WeightGreedyAllocator
 
 		Stack<Integer> stack = new Stack<>();
 		PriorityQueue<PointPack> pQue = new PriorityQueue<>(wComparator);
+		for(int i=0;i<num;++i)
+		if(nowGraph.graph.get(i) == null){
+			nowDu[i] = 0;
+		}else{
+			nowDu[i] = nowGraph.graph.get(i).size();
+		}
 		for(int i=16;i<num;++i)
 		{
 
-			if(nowGraph.graph.get(i) == null)
-			{
-				stack.push(i);
-			}
-			else if(nowGraph.graph.get(i).size() < 7)
+			if(nowDu[i] < 7)
 			{
 				stack.push(i);
 			}else{
-				pQue.add(new PointPack(i, weight.get(i)));
+				pQue.add(new PointPack(i, 1.*weight.get(i)/nowDu[i]));
 			}
 		}
 
