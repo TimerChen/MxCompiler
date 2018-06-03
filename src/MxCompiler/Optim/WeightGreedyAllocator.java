@@ -66,6 +66,7 @@ public class WeightGreedyAllocator
 
 	private static int []avai =
 			{(1<<3) | (1<<12) | (1<<13) | (1<<14) | (1<<15),
+			 (1<<9) | (1<<1)
 			 //(1<<7) | (1<<6) | (1<<8) | (1<<9) | (1<<1), //| (1<<2),
 			 //(1<<10) | (1<<11)
 			};
@@ -109,17 +110,25 @@ public class WeightGreedyAllocator
 		Stack<Integer> stack = new Stack<>();
 		PriorityQueue<PointPack> pQue = new PriorityQueue<>(wComparator);
 		for(int i=16;i<num;++i)
-		if(nowGraph.graph.get(i).size()<5){
-			stack.push(i);
-		}else{
-			pQue.add(new PointPack(i, weight.get(i)));
+		{
+
+			if(nowGraph.graph.get(i) == null)
+			{
+				stack.push(i);
+			}
+			else if(nowGraph.graph.get(i).size() < 7)
+			{
+				stack.push(i);
+			}else{
+				pQue.add(new PointPack(i, weight.get(i)));
+			}
 		}
 
 		while(!pQue.isEmpty())
 		{
 			PointPack pack = pQue.poll();
 			int i = pack.i;
-			Debuger.printInfo("point","["+pack.i+"]:"+pack.w);
+			//Debuger.printInfo("point","["+pack.i+"]:"+pack.w);
 			color.set(i, allocOne(i));
 		}
 

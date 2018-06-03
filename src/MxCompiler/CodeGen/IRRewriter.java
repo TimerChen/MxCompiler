@@ -391,7 +391,7 @@ public class IRRewriter implements IRVisitor
 	{
 		//int []idx = {7,6,2,1,8,9};
 		//int []idx = {2,1,8,9};
-		int []idx = {};
+		int []idx = {1,9};
 		switch (node.type())
 		{
 			case CALLER_SAVE:
