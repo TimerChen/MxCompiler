@@ -24,6 +24,10 @@ public class VarAnalyzer implements IRVisitor
 	private List<ConflictGraph> cGraphs;
 	private ConflictGraph nowGraph;
 	private Set<Integer> tmpSet;
+	private List<Integer>nowWeight;
+	private List<List<Integer>> weights;
+
+	private int loopWeight = 0;
 
 	private enum Phases{PreCalc, AddEdges};
 	Phases nowPhase;
@@ -69,9 +73,17 @@ public class VarAnalyzer implements IRVisitor
 			now = now.next();
 		}
 	}
+
+	public List<List<Integer>> weights()
+	{
+		return weights;
+	}
+
 	private void analyze()
 	{
 		ConcurrentLinkedDeque<BasicBlock> bQue;
+		weights = new LinkedList<>();
+		int idx = 0;
 		for(BasicBlock start: startBlocks)
 		{
 			nowPhase = Phases.PreCalc;
@@ -83,8 +95,14 @@ public class VarAnalyzer implements IRVisitor
 				size++;
 				nowBlock = nowBlock.next();
 			}
+			nowWeight = new ArrayList<>(size);
+			weights.add(nowWeight);
 			du = new int[size];
 			prev = new ArrayList<>(size);
+
+
+			for(int i=0;i<Global.regNumber.get(idx);++i)
+				nowWeight.add(0);
 			for(int i=0;i<size;++i)
 			{
 				du[i]=0;
@@ -118,6 +136,7 @@ public class VarAnalyzer implements IRVisitor
 			buildCGraphLeft(start);
 
 			//printSet(start);
+			idx++;
 		}
 	}
 	/*
@@ -162,6 +181,7 @@ public class VarAnalyzer implements IRVisitor
 		int n = list.size();
 		for(int i=n-1;i>=0;--i)
 		{
+			loopWeight = (int)Math.min(1e9, Math.pow(10,list.get(i).loopDeepth()));
 			list.get(i).accept(this);
 		}
 	}
@@ -229,6 +249,8 @@ public class VarAnalyzer implements IRVisitor
 
 		if(nowPhase == Phases.PreCalc)
 		{
+			int i = var.regIndex();
+			nowWeight.set(i, nowWeight.get(i)+loopWeight);
 			currentBlock.ueVar.add(var.regIndex());
 		}else if(nowPhase == Phases.AddEdges)
 		{

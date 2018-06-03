@@ -16,20 +16,21 @@ _main:
 	mov	rbx,	rax
 	mov	rbx,	rbx
 	mov	r12,	0
-	mov	r13,	1
+	mov	qword [rbp + -80],	1
 	mov	r14,	0
-	mov	qword [rbp + -96],	1
+	mov	r15,	1
 	mov	qword [rbp + -104],	0
-	mov	qword [rbp + -112],	1
+	mov	r13,	1
 	mov	qword [rbp + -120],	0
 	mov	qword [rbp + -120],	1
 _L0_0:
 	mov	r10,	qword [rbp + -120]
 	cmp	r10,	100000000
 	setle	al
-	movzx	r15,	al
-	mov	r13,	r15
-	cmp	r13,	0
+	movzx	rsi,	al
+	mov	qword [rbp + -128],	rsi
+	mov	r10,	qword [rbp + -128]
+	cmp	r10,	0
 	je	_L0_1
 	mov	rdi,	rbx
 	mov	rsi,	r12
@@ -44,8 +45,9 @@ _L0_0:
 	mov	rdi,	rbx
 	mov	rsi,	r12
 	call	_workc
-	mov	r13,	rax
-	mov	r13,	r13
+	mov	qword [rbp + -160],	rax
+	mov	r10,	qword [rbp + -160]
+	mov	qword [rbp + -80],	r10
 	mov	qword [rbp + -168],	rbx
 	mov	r10,	qword [rbp + -168]
 	neg	r10
@@ -57,8 +59,9 @@ _L0_0:
 	mov	qword [rbp + -176],	r11
 	mov	r10,	qword [rbp + -176]
 	mov	qword [rbp + -184],	r10
+	mov	r10,	qword [rbp + -80]
 	mov	r11,	qword [rbp + -184]
-	sub	r11,	r13
+	sub	r11,	r10
 	mov	qword [rbp + -184],	r11
 	mov	r10,	qword [rbp + -184]
 	mov	qword [rbp + -192],	r10
@@ -67,14 +70,12 @@ _L0_0:
 	mov	qword [rbp + -192],	r11
 	mov	r10,	qword [rbp + -192]
 	mov	r14,	r10
-	mov	r10,	qword [rbp + -96]
-	add	r14,	r10
+	add	r14,	r15
 	mov	r14,	r14
 	mov	r10,	qword [rbp + -104]
 	sub	r14,	r10
 	mov	r14,	r14
-	mov	r10,	qword [rbp + -112]
-	add	r14,	r10
+	add	r14,	r13
 	mov	r14,	r14
 	mov	qword [rbp + -224],	rbx
 	mov	r11,	qword [rbp + -224]
@@ -82,8 +83,9 @@ _L0_0:
 	mov	qword [rbp + -224],	r11
 	mov	r10,	qword [rbp + -224]
 	mov	qword [rbp + -232],	r10
+	mov	r10,	qword [rbp + -80]
 	mov	r11,	qword [rbp + -232]
-	add	r11,	r13
+	add	r11,	r10
 	mov	qword [rbp + -232],	r11
 	mov	r10,	qword [rbp + -232]
 	mov	qword [rbp + -240],	r10
@@ -92,32 +94,25 @@ _L0_0:
 	mov	qword [rbp + -240],	r11
 	mov	r10,	qword [rbp + -240]
 	mov	qword [rbp + -248],	r10
-	mov	r10,	qword [rbp + -96]
 	mov	r11,	qword [rbp + -248]
-	sub	r11,	r10
+	sub	r11,	r15
 	mov	qword [rbp + -248],	r11
 	mov	r10,	qword [rbp + -248]
-	mov	qword [rbp + -256],	r10
+	mov	r15,	r10
 	mov	r10,	qword [rbp + -104]
-	mov	r11,	qword [rbp + -256]
-	sub	r11,	r10
-	mov	qword [rbp + -256],	r11
-	mov	r10,	qword [rbp + -256]
-	mov	qword [rbp + -264],	r10
-	mov	r10,	qword [rbp + -112]
-	mov	r11,	qword [rbp + -264]
-	add	r11,	r10
-	mov	qword [rbp + -264],	r11
-	mov	r10,	qword [rbp + -264]
-	mov	qword [rbp + -96],	r10
+	sub	r15,	r10
+	mov	r15,	r15
+	add	r15,	r13
+	mov	r15,	r15
 	mov	qword [rbp + -272],	rbx
 	mov	r11,	qword [rbp + -272]
 	add	r11,	r12
 	mov	qword [rbp + -272],	r11
 	mov	r10,	qword [rbp + -272]
 	mov	qword [rbp + -280],	r10
+	mov	r10,	qword [rbp + -80]
 	mov	r11,	qword [rbp + -280]
-	sub	r11,	r13
+	sub	r11,	r10
 	mov	qword [rbp + -280],	r11
 	mov	r10,	qword [rbp + -280]
 	mov	qword [rbp + -288],	r10
@@ -126,9 +121,8 @@ _L0_0:
 	mov	qword [rbp + -288],	r11
 	mov	r10,	qword [rbp + -288]
 	mov	qword [rbp + -296],	r10
-	mov	r10,	qword [rbp + -96]
 	mov	r11,	qword [rbp + -296]
-	sub	r11,	r10
+	sub	r11,	r15
 	mov	qword [rbp + -296],	r11
 	mov	r10,	qword [rbp + -296]
 	mov	qword [rbp + -304],	r10
@@ -138,9 +132,8 @@ _L0_0:
 	mov	qword [rbp + -304],	r11
 	mov	r10,	qword [rbp + -304]
 	mov	qword [rbp + -312],	r10
-	mov	r10,	qword [rbp + -112]
 	mov	r11,	qword [rbp + -312]
-	sub	r11,	r10
+	sub	r11,	r13
 	mov	qword [rbp + -312],	r11
 	mov	r10,	qword [rbp + -312]
 	mov	qword [rbp + -104],	r10
@@ -150,8 +143,9 @@ _L0_0:
 	mov	qword [rbp + -320],	r11
 	mov	r10,	qword [rbp + -320]
 	mov	qword [rbp + -328],	r10
+	mov	r10,	qword [rbp + -80]
 	mov	r11,	qword [rbp + -328]
-	sub	r11,	r13
+	sub	r11,	r10
 	mov	qword [rbp + -328],	r11
 	mov	r10,	qword [rbp + -328]
 	mov	qword [rbp + -336],	r10
@@ -160,9 +154,8 @@ _L0_0:
 	mov	qword [rbp + -336],	r11
 	mov	r10,	qword [rbp + -336]
 	mov	qword [rbp + -344],	r10
-	mov	r10,	qword [rbp + -96]
 	mov	r11,	qword [rbp + -344]
-	add	r11,	r10
+	add	r11,	r15
 	mov	qword [rbp + -344],	r11
 	mov	r10,	qword [rbp + -344]
 	mov	qword [rbp + -352],	r10
@@ -172,56 +165,66 @@ _L0_0:
 	mov	qword [rbp + -352],	r11
 	mov	r10,	qword [rbp + -352]
 	mov	qword [rbp + -360],	r10
-	mov	r10,	qword [rbp + -112]
 	mov	r11,	qword [rbp + -360]
-	add	r11,	r10
+	add	r11,	r13
 	mov	qword [rbp + -360],	r11
 	mov	r10,	qword [rbp + -360]
-	mov	qword [rbp + -112],	r10
+	mov	r13,	r10
 	mov	qword [rbp + -368],	rbx
 	mov	r11,	qword [rbp + -368]
 	add	r11,	r12
 	mov	qword [rbp + -368],	r11
 	mov	r10,	qword [rbp + -368]
 	mov	qword [rbp + -376],	r10
+	mov	r10,	qword [rbp + -80]
 	mov	r11,	qword [rbp + -376]
-	add	r11,	r13
+	add	r11,	r10
 	mov	qword [rbp + -376],	r11
 	mov	r10,	qword [rbp + -376]
-	mov	r13,	r10
-	add	r13,	r14
-	mov	r13,	r13
-	mov	r10,	qword [rbp + -96]
-	add	r13,	r10
-	mov	r13,	r13
+	mov	qword [rbp + -384],	r10
+	mov	r11,	qword [rbp + -384]
+	add	r11,	r14
+	mov	qword [rbp + -384],	r11
+	mov	r10,	qword [rbp + -384]
+	mov	qword [rbp + -392],	r10
+	mov	r11,	qword [rbp + -392]
+	add	r11,	r15
+	mov	qword [rbp + -392],	r11
+	mov	r10,	qword [rbp + -392]
+	mov	qword [rbp + -400],	r10
 	mov	r10,	qword [rbp + -104]
-	add	r13,	r10
-	mov	r13,	r13
-	mov	r10,	qword [rbp + -112]
-	add	r13,	r10
-	cmp	r13,	100000000
+	mov	r11,	qword [rbp + -400]
+	add	r11,	r10
+	mov	qword [rbp + -400],	r11
+	mov	r10,	qword [rbp + -400]
+	mov	qword [rbp + -408],	r10
+	mov	r11,	qword [rbp + -408]
+	add	r11,	r13
+	mov	qword [rbp + -408],	r11
+	mov	r10,	qword [rbp + -408]
+	cmp	r10,	100000000
 	setg	al
-	movzx	r15,	al
-	mov	r13,	r15
-	cmp	r13,	0
+	movzx	rsi,	al
+	mov	qword [rbp + -416],	rsi
+	mov	r10,	qword [rbp + -416]
+	cmp	r10,	0
 	je	_L48_2
 	mov	rbx,	123
 	mov	r12,	456
-	mov	r13,	789
+	mov	qword [rbp + -80],	789
 	mov	r14,	155
-	mov	qword [rbp + -96],	123
+	mov	r15,	123
 	mov	qword [rbp + -104],	55
-	mov	qword [rbp + -112],	32
+	mov	r13,	32
 _L48_2:
 	mov	r10,	qword [rbp + -120]
-	mov	r13,	r10
+	mov	qword [rbp + -136],	r10
 	mov	r11,	qword [rbp + -120]
 	add	r11,	1
 	mov	qword [rbp + -120],	r11
 	jmp	_L0_0
 _L0_1:
-	mov	r10,	qword [rbp + -112]
-	mov	rdi,	r10
+	mov	rdi,	r13
 	call	_toString
 	mov	rbx,	rax
 	mov	rdi,	rbx
@@ -248,11 +251,11 @@ _worka:
 	push	r14
 	push	r15
 	sub	rsp,	40
-	mov	rbx,	rdi
+	mov	r13,	rdi
 	mov	r12,	rsi
-	mov	r13,	rbx
-	add	r13,	rbx
 	mov	rbx,	r13
+	add	rbx,	r13
+	mov	rbx,	rbx
 	sub	rbx,	r12
 	mov	rax,	rbx
 	jmp	___exit_worka
@@ -275,15 +278,15 @@ _workb:
 	push	r14
 	push	r15
 	sub	rsp,	56
-	mov	rbx,	rdi
-	mov	r12,	rsi
-	mov	rbx,	rbx
-	neg	rbx
-	mov	rbx,	rbx
-	add	rbx,	r12
-	mov	rbx,	rbx
-	add	rbx,	r12
-	mov	rax,	rbx
+	mov	r12,	rdi
+	mov	rbx,	rsi
+	mov	r12,	r12
+	neg	r12
+	mov	r12,	r12
+	add	r12,	rbx
+	mov	r12,	r12
+	add	r12,	rbx
+	mov	rax,	r12
 	jmp	___exit_workb
 ___exit_workb:
 	add	rsp,	56

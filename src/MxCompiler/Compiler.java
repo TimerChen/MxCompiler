@@ -4,6 +4,7 @@ import MxCompiler.IR.*;
 import MxCompiler.Optim.ASTConstFolding;
 import MxCompiler.Optim.FakeAllocator;
 import MxCompiler.Optim.GreedyAllocator;
+import MxCompiler.Optim.WeightGreedyAllocator;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
@@ -130,10 +131,12 @@ public class Compiler
 	{
 		VarAnalyzer analyzer = new VarAnalyzer(blkList);
 		List<ConflictGraph> cgs = analyzer.cGraphs();
+		List<List<Integer>> rws = analyzer.weights();
 
 		Debuger.printLine("Code Optimize");
 		//FakeAllocator allocator = new FakeAllocator(cgs);
-		GreedyAllocator allocator = new GreedyAllocator(cgs);
+		//GreedyAllocator allocator = new GreedyAllocator(cgs);
+		WeightGreedyAllocator allocator = new WeightGreedyAllocator(cgs, rws);
 		/*
 		for(BasicBlock i: blkList)
 		{

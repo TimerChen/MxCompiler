@@ -276,6 +276,7 @@ public class IRBuilder extends ASTBaseVisitor
 		l0 = contiueLabel;
 		l1 = exitLabel;
 
+		Global.IRBuilder_loopDeepth++;
 //		.L0:
 		list.add(new LabelIR(l0.label()));
 //		[condi]->r0
@@ -284,7 +285,6 @@ public class IRBuilder extends ASTBaseVisitor
 //		CJUMP .L1 (r0 == 0)?
 		list.add(new CJumpIR(CJumpIR.LogicOp.EQ, condi, new VarIntIR(0), l1));
 
-		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
 //		JUMP .L0
@@ -334,6 +334,8 @@ public class IRBuilder extends ASTBaseVisitor
 //			[init]
 		if(init != null)
 			list.addAll(init.irList());
+
+		Global.IRBuilder_loopDeepth++;
 //		.L0:
 		list.add(new LabelIR(l0.label()));
 //			[condi]->r0
@@ -346,8 +348,6 @@ public class IRBuilder extends ASTBaseVisitor
 		{
 			//Never Jump to exit
 		}
-
-		Global.IRBuilder_loopDeepth++;
 //			[body]
 		list.addAll(body);
 //			[step]
