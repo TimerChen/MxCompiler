@@ -11,7 +11,6 @@ import MxCompiler.CodeGen.ConflictGraph;
 import MxCompiler.CodeGen.VarAnalyzer;
 import MxCompiler.Global;
 import MxCompiler.tools.Debuger;
-import org.antlr.runtime.misc.IntArray;
 
 import java.util.*;
 
@@ -23,6 +22,7 @@ public class WeightGreedyAllocator
 	private List<List<Integer>> weights;
 
 	private int[] nowDu;
+	private int usedReg = 0;
 
 	public WeightGreedyAllocator(List<ConflictGraph> cGraphs, List<List<Integer>> weights)
 	{
@@ -79,8 +79,6 @@ public class WeightGreedyAllocator
 	int allocOne(int i)
 	{
 
-
-
 		int ok = ~getConflict(i);
 		//boolean colored = false;
 		for(int j=0;j<avai.length;++j)
@@ -89,6 +87,7 @@ public class WeightGreedyAllocator
 			if(tmp != 0)
 			{
 				tmp = (-tmp)&tmp;
+				usedReg |= tmp;
 				tmp = (int)((Math.log(tmp)/log2)+1e-10);
 				//Debuger.printInfo("Colorit", i+"->"+tmp);
 				return tmp;
@@ -162,7 +161,9 @@ public class WeightGreedyAllocator
 		int idx = 0;
 		for(ConflictGraph i : cGraphs)
 		{
+			usedReg = Global.usedRegs.get(idx);
 			colors.add(colorGraph(i, weights.get(idx), idx));
+			Global.usedRegs.set(idx, usedReg);
 			idx++;
 		}
 		return colors;

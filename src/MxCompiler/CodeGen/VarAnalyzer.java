@@ -27,6 +27,8 @@ public class VarAnalyzer implements IRVisitor
 	private List<Integer>nowWeight;
 	private List<List<Integer>> weights;
 
+	private int usedReg;
+
 	private int loopWeight = 0;
 
 	private enum Phases{PreCalc, AddEdges};
@@ -81,11 +83,12 @@ public class VarAnalyzer implements IRVisitor
 
 	private void analyze()
 	{
-		ConcurrentLinkedDeque<BasicBlock> bQue;
+		//ConcurrentLinkedDeque<BasicBlock> bQue;
 		weights = new LinkedList<>();
 		int idx = 0;
 		for(BasicBlock start: startBlocks)
 		{
+			usedReg = 0;
 			nowPhase = Phases.PreCalc;
 			cGraphs.add(nowGraph = new ConflictGraph(Global.maxRegNumber));
 			size = 0;
@@ -136,6 +139,7 @@ public class VarAnalyzer implements IRVisitor
 			buildCGraphLeft(start);
 
 			//printSet(start);
+			Global.usedRegs.add(usedReg);
 			idx++;
 		}
 	}
@@ -154,7 +158,6 @@ public class VarAnalyzer implements IRVisitor
 	{
 		nowPhase = Phases.AddEdges;
 		BasicBlock now = start;
-		Set<Integer> T, A;
 		while(now!=null)
 		{
 			tmpSet = new HashSet<>(now.liveOut);
@@ -222,6 +225,9 @@ public class VarAnalyzer implements IRVisitor
 			return;
 		VarRegIR var = (VarRegIR)oVar;
 
+		if(var.regIndex() < 16)
+			usedReg |= (1<<var.regIndex());
+
 		if(nowPhase == Phases.PreCalc)
 		{
 			currentBlock.ueVar.remove(var.regIndex());
@@ -246,6 +252,9 @@ public class VarAnalyzer implements IRVisitor
 		if(!(oVar instanceof VarRegIR))
 			return;
 		VarRegIR var = (VarRegIR)oVar;
+
+		if(var.regIndex() < 16)
+			usedReg |= (1<<var.regIndex());
 
 		if(nowPhase == Phases.PreCalc)
 		{

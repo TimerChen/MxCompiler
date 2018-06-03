@@ -6,6 +6,7 @@
 
 package MxCompiler.CodeGen;
 
+import MxCompiler.Global;
 import MxCompiler.IR.*;
 import MxCompiler.tools.Debuger;
 
@@ -23,6 +24,8 @@ public class IRRewriter implements IRVisitor
 
 	private List<InsIR> newIRList;
 
+	private int usedReg;
+
 	public IRRewriter(List<List<Integer>> colors, List<BasicBlock> irs)
 	{
 		this.colors = colors;
@@ -33,7 +36,7 @@ public class IRRewriter implements IRVisitor
 		for(int i=0; i<blkLists.size(); ++i)
 		{
 			BasicBlock now = blkLists.get(i);
-
+			usedReg = Global.usedRegs.get(i);
 			nowColor = colors.get(i);
 			while(now != null)
 			{
@@ -391,16 +394,43 @@ public class IRRewriter implements IRVisitor
 	{
 		//int []idx = {7,6,2,1,8,9};
 		//int []idx = {2,1,8,9};
-		int []idx = {1,9};
+		int []callerIdx = {1,9};
+
+		int []calleeIdx = {3, 12, 13, 14, 15};
+
+
+		int cot = 0;
 		switch (node.type())
 		{
 			case CALLER_SAVE:
-				for(int i=0;i<idx.length;++i)
-					newIRList.add(new PushIR(new VarRegIR(idx[i])));
+				for(int i=0;i<callerIdx.length;++i)
+					newIRList.add(new PushIR(new VarRegIR(callerIdx[i])));
 				break;
 			case CALLER_RECOVER:
-				for(int i=idx.length-1;i>=0;--i)
-					newIRList.add(new PopIR(new VarRegIR(idx[i])));
+				for(int i=callerIdx.length-1;i>=0;--i)
+					newIRList.add(new PopIR(new VarRegIR(callerIdx[i])));
+				break;
+
+			case CALLEE_SAVE:
+				for(int i=0;i<calleeIdx.length;++i)
+				if((usedReg&(1<<calleeIdx[i]))!=0)
+				{
+					newIRList.add(new PushIR(new VarRegIR(calleeIdx[i])));
+					cot++;
+				}else
+					node.p0+=8;
+				newIRList.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(node.p0)));
+				break;
+			case CALLEE_RECOVER:
+				for(int i=calleeIdx.length-1;i>=0;--i)
+					if((usedReg&(1<<calleeIdx[i]))==0)
+						node.p0+=8;
+				newIRList.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(node.p0)));
+				for(int i=calleeIdx.length-1;i>=0;--i)
+				if((usedReg&(1<<calleeIdx[i]))!=0)
+				{
+					newIRList.add(new PopIR(new VarRegIR(calleeIdx[i])));
+				}
 				break;
 			default:
 		}

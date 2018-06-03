@@ -514,17 +514,25 @@ public class IRBuilder extends ASTBaseVisitor
 		//move rbp rsp
 		list.add(new MoveIR(new VarRegIR(5), new VarRegIR(4)));
 		list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(5), new VarIntIR(8)));
+		/*
 		for(int i=1;i<6;++i)
 		{
 			list.add(new PushIR(new VarRegIR(idx[i])));
-		}
+		}*/
 		//skip temp vars
 		//Align to 16
 		//Enter this function we use call, so rsp = n*16+8
+		int offset;
 		if((regNumber&1) == 0)
-			list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
+			offset = 8*(regNumber-16+1);
+			//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
 		else
-			list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
+			offset = 8*(regNumber-16+2);
+			//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
+
+
+		list.add(new SpecialIR(SpecialIR.Type.CALLEE_SAVE, offset));
+
 		//tmp regs
 		//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
 		//paramters to new regs
@@ -543,14 +551,18 @@ public class IRBuilder extends ASTBaseVisitor
 		list.add(new LabelIR(node.exitLabel().label()));
 
 		//move rsp rbp
+		/*
 		if((regNumber&1) == 0)
 			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
 		else
 			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
+			*/
 		//list.add(new MoveIR(new VarRegIR(4), new VarRegIR(5)));
 		//recover callee-saved regs
-		for(int i=5;i>=0;--i)
-			list.add(new PopIR(new VarRegIR(idx[i])));
+		//for(int i=5;i>=0;--i)
+		list.add(new SpecialIR(SpecialIR.Type.CALLEE_RECOVER, offset ));
+		list.add(new PopIR(new VarRegIR(5)));
+
 		//return
 		list.add(new ReturnIR());
 

@@ -6,7 +6,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="591d0fc4-2eaa-4e18-9f1e-1ea9a24058b6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MxCompiler/Optim/WeightGreedyAllocator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MxCompiler/Optim/WeightGreedyAllocator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testcases/program" beforeDir="false" afterPath="$PROJECT_DIR$/testcases/program" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testcases/program.asm" beforeDir="false" afterPath="$PROJECT_DIR$/testcases/program.asm" afterDir="false" />
@@ -26,16 +30,16 @@
     <option name="HIDE_WARNINGS" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6953073">
+    <splitter split-orientation="horizontal" split-proportion="0.1521164">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="IRBuilder.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="IRBuilder.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="5420">
-                  <caret line="271" column="15" selection-start-line="271" selection-start-column="15" selection-end-line="271" selection-end-column="15" />
+                <state relative-caret-position="-1313">
+                  <caret line="1204" column="40" selection-start-line="1204" selection-start-column="40" selection-end-line="1204" selection-end-column="40" />
                   <folding>
-                    <marker date="1527990823012" expanded="true" signature="10148:10191" ph="..." />
+                    <marker date="1528004771949" expanded="true" signature="10148:10191" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -98,11 +102,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="WeightGreedyAllocator.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="WeightGreedyAllocator.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/Optim/WeightGreedyAllocator.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="520">
-                  <caret line="128" column="45" selection-start-line="128" selection-start-column="45" selection-end-line="128" selection-end-column="45" />
+                <state relative-caret-position="1571">
+                  <caret line="164" column="54" selection-start-line="164" selection-start-column="54" selection-end-line="164" selection-end-column="54" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -125,8 +129,8 @@
           <file leaf-file-name="VarAnalyzer.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3400">
-                  <caret line="183" column="38" selection-start-line="183" selection-start-column="38" selection-end-line="183" selection-end-column="38" />
+                <state relative-caret-position="-6760">
+                  <caret line="85" column="10" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -150,7 +154,7 @@
           <file leaf-file-name="IRTranslator.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRTranslator.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4140">
+                <state relative-caret-position="-803">
                   <caret line="216" column="5" selection-start-line="216" selection-start-column="5" selection-end-line="216" selection-end-column="5" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -162,8 +166,12 @@
           <file leaf-file-name="SpecialIR.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="100">
-                  <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+                <state relative-caret-position="220">
+                  <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+                  <folding>
+                    <element signature="e#235#236#0" expanded="true" />
+                    <element signature="e#258#259#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -171,8 +179,8 @@
           <file leaf-file-name="Global.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/Global.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="260">
-                  <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+                <state relative-caret-position="280">
+                  <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
@@ -198,7 +206,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="NASMTranslator.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="NASMTranslator.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/NASMTranslator.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="-2058">
@@ -207,11 +215,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="IRRewriter.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="IRRewriter.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="449">
-                  <caret line="393" column="24" selection-start-line="393" selection-start-column="24" selection-end-line="393" selection-end-column="24" />
+                <state relative-caret-position="417">
+                  <caret line="431" column="73" selection-start-line="431" selection-start-column="73" selection-end-line="431" selection-end-column="73" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -233,7 +241,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Edge</find>
       <find>next0\(\)</find>
       <find>\.next0\(\)</find>
       <find>printSet</find>
@@ -243,7 +250,7 @@
       <find>dest</find>
       <find>&quot;Colorit</find>
       <find>&quot;Change</find>
-      <find>&quot;l, r</find>
+      <find />
       <find>&quot;labels</find>
       <find>&quot;funName</find>
       <find>&quot;val</find>
@@ -255,7 +262,7 @@
       <find>loadIR</find>
       <find>~&quot;</find>
       <find>NOT</find>
-      <find>FOrNode node</find>
+      <find />
       <find>allocator</find>
       <find>srcVisit</find>
       <find>avai</find>
@@ -263,6 +270,7 @@
       <find>priority</find>
       <find>loop</find>
       <find>&quot;point</find>
+      <find>FunDefNode</find>
     </findStrings>
     <replaceStrings>
       <replace>MxParser</replace>
@@ -289,8 +297,8 @@
       <replace>__.array_size</replace>
       <replace>_.array</replace>
       <replace>_.string</replace>
-      <replace>$1return new IntLiteralNode(null, $2);break;</replace>
-      <replace>$1return new BoolLiteralNode(null, $2);</replace>
+      <replace />
+      <replace />
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/MxCompiler/Entities</dir>
@@ -303,7 +311,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/MxCompiler/IR/IRVisitor.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/NaiveAllocator.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/AST/MemberNode.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Type/TypeClass.java" />
@@ -339,7 +346,6 @@
         <option value="$PROJECT_DIR$/src/MxCompiler/AST/ASTBaseVisitor.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/ASTConstFolding.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Optim/ASTConstFolding.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/Global.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/IR/VarRegIR.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRTranslator.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/ConflictGraph.java" />
@@ -348,15 +354,17 @@
         <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/BasicBlock.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Main.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Optim/GreedyAllocator.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Compiler.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java" />
-        <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/Global.java" />
         <option value="$PROJECT_DIR$/src/MxCompiler/Optim/WeightGreedyAllocator.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java" />
+        <option value="$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="27" />
     <option name="width" value="1920" />
     <option name="height" value="1053" />
@@ -465,6 +473,13 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="MxCompiler" type="462c0819:PsiDirectoryNode" />
               <item name="Entities" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MxCompiler" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MxCompiler" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="MxCompiler" type="462c0819:PsiDirectoryNode" />
+              <item name="IR" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MxCompiler" type="b2602c69:ProjectViewProjectNode" />
@@ -599,7 +614,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java</url>
-          <line>728</line>
+          <line>740</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
@@ -611,24 +626,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java</url>
-          <line>672</line>
+          <line>684</line>
           <properties />
           <option name="timeStamp" value="33" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java</url>
-          <line>137</line>
-          <properties />
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java</url>
-          <line>127</line>
-          <properties />
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="43" />
+      <option name="time" value="45" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -650,6 +653,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="434">
           <caret line="38" selection-start-line="38" selection-end-line="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#609#610#0" expanded="true" />
+            <element signature="e#625#626#0" expanded="true" />
+            <element signature="e#664#665#0" expanded="true" />
+            <element signature="e#686#687#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -657,6 +667,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+          <folding>
+            <element signature="e#368#369#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -671,6 +684,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
           <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+          <folding>
+            <element signature="e#698#699#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -678,6 +694,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
           <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding>
+            <element signature="e#518#519#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -685,6 +704,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
+          <folding>
+            <element signature="e#554#555#0" expanded="true" />
+            <element signature="e#596#597#0" expanded="true" />
+            <element signature="e#621#622#0" expanded="true" />
+            <element signature="e#661#662#0" expanded="true" />
+            <element signature="e#684#685#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -699,6 +725,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
           <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+          <folding>
+            <element signature="e#664#665#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -713,6 +742,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
           <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <folding>
+            <element signature="e#368#369#0" expanded="true" />
+            <element signature="e#406#407#0" expanded="true" />
+            <element signature="e#427#428#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -741,6 +775,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="334">
           <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+          <folding>
+            <element signature="e#518#519#0" expanded="true" />
+            <element signature="e#747#748#0" expanded="true" />
+            <element signature="e#780#781#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -748,6 +787,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="464">
           <caret line="208" column="37" selection-start-line="208" selection-start-column="37" selection-end-line="208" selection-end-column="37" />
+          <folding>
+            <element signature="e#703#704#0" expanded="true" />
+            <element signature="e#727#728#0" expanded="true" />
+            <element signature="e#764#765#0" expanded="true" />
+            <element signature="e#788#789#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -755,6 +800,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
           <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+          <folding>
+            <element signature="e#947#948#0" expanded="true" />
+            <element signature="e#969#970#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -783,6 +832,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="554">
           <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
+          <folding>
+            <element signature="e#747#748#0" expanded="true" />
+            <element signature="e#767#768#0" expanded="true" />
+            <element signature="e#929#930#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -790,6 +844,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+          <folding>
+            <element signature="e#154#155#0" expanded="true" />
+            <element signature="e#179#180#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -797,6 +855,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="634">
           <caret line="43" selection-start-line="43" selection-end-line="43" />
+          <folding>
+            <element signature="e#260#261#0" expanded="true" />
+            <element signature="e#281#282#0" expanded="true" />
+            <element signature="e#679#680#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -804,6 +867,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="519">
           <caret line="53" selection-start-line="53" selection-end-line="53" />
+          <folding>
+            <element signature="e#0#696#0" expanded="true" />
+            <element signature="e#397#398#0" expanded="true" />
+            <element signature="e#414#415#0" expanded="true" />
+            <element signature="e#692#693#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -849,6 +918,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="20" column="28" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <folding>
+            <element signature="e#582#583#0" expanded="true" />
+            <element signature="e#598#599#0" expanded="true" />
+            <element signature="e#1140#1141#0" expanded="true" />
+            <element signature="e#1159#1160#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -903,30 +978,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Global.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRTranslator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4140">
-          <caret line="216" column="5" selection-start-line="216" selection-start-column="5" selection-end-line="216" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/SemanticCheck/ASTSymbolVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2200">
@@ -955,16 +1006,6 @@
           <folding>
             <element signature="e#391#392#0" expanded="true" />
             <element signature="e#415#416#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5420">
-          <caret line="271" column="15" selection-start-line="271" selection-start-column="15" selection-end-line="271" selection-end-column="15" />
-          <folding>
-            <marker date="1527990823012" expanded="true" signature="10148:10191" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1008,26 +1049,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3400">
-          <caret line="183" column="38" selection-start-line="183" selection-start-column="38" selection-end-line="183" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="393" column="24" selection-start-line="393" selection-start-column="24" selection-end-line="393" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/NASMTranslator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2058">
@@ -1035,10 +1056,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/Global.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxCompiler/Optim/WeightGreedyAllocator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="128" column="45" selection-start-line="128" selection-start-column="45" selection-end-line="128" selection-end-column="45" />
+        <state relative-caret-position="1571">
+          <caret line="164" column="54" selection-start-line="164" selection-start-column="54" selection-end-line="164" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/VarAnalyzer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6760">
+          <caret line="85" column="10" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-803">
+          <caret line="216" column="5" selection-start-line="216" selection-start-column="5" selection-end-line="216" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/IR/SpecialIR.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <folding>
+            <element signature="e#235#236#0" expanded="true" />
+            <element signature="e#258#259#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1313">
+          <caret line="1204" column="40" selection-start-line="1204" selection-start-column="40" selection-end-line="1204" selection-end-column="40" />
+          <folding>
+            <marker date="1528004771949" expanded="true" signature="10148:10191" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MxCompiler/CodeGen/IRRewriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="431" column="73" selection-start-line="431" selection-start-column="73" selection-end-line="431" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
