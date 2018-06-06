@@ -45,20 +45,18 @@ int main() {
 
 /*!! metadata:
 === comment ===
-optim-515030910645-suyufeng.txt
-=== is_public ===
-True
+horse3-5100309153-yanghuan.mx
+=== input ===
+103
 === assert ===
 output
 === timeout ===
-3.0
-=== input ===
-1
-=== phase ===
-optim pretest
+0.4
 === output ===
-36151
-=== exitcode ===
-
+67
+=== phase ===
+codegen pretest
+=== is_public ===
+True
 
 !!*/
