@@ -240,6 +240,7 @@ public class VarAnalyzer implements IRVisitor
 			currentBlock.varKill.add(var.regIndex());
 		}else if(nowPhase == Phases.AddEdges){
 			if(tmpSet.contains(var.regIndex()) || var.regIndex() < 16)
+			//if(tmpSet.contains(var.regIndex()) || var.regIndex() < 16 || true)
 			{
 				tmpSet.remove(var.regIndex());
 				addEdges(var.regIndex(), tmpSet);

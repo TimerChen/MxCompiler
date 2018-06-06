@@ -40,7 +40,7 @@ public class IRInliner implements IRVisitor
 		List<List<InsIR>> lists;
 		final int lineLimit = 2048;
 		final int regLimit = 1000;
-		leftInline = 5;
+		leftInline = 0;
 		totalLines = 0;
 		stopInline = false;
 		while(leftInline > 0 && totalLines < lineLimit && regNumber < regLimit)
@@ -62,7 +62,8 @@ public class IRInliner implements IRVisitor
 				Global.regNumber.set(idx, regNumber);
 				idx++;
 				totalLines += newList.size();
-
+				//Debuger.printInfo("totalLines", ""+totalLines);
+				//Debuger.printInfo("regLimit", ""+regLimit);
 			}
 			irLists = lists;
 			if(!inlined)
