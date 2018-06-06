@@ -164,7 +164,12 @@ public class VarAnalyzer implements IRVisitor
 			List<InsIR> list = now.irList();
 			for(int i = list.size()-1;i>=0;--i)
 			{
+				uselessFlag = false;
 				list.get(i).accept(this);
+				if(uselessFlag)
+				{
+					list.get(i).useless = true;
+				}
 			}
 //			T = new HashSet<>(now.liveOut);
 //			T = subSet(T, now.varKill);
@@ -211,6 +216,7 @@ public class VarAnalyzer implements IRVisitor
 		}
 
 	}
+	private boolean uselessFlag;
 	private void destVisit(VarIR oVar)
 	{
 		if(oVar == null)return;
@@ -233,8 +239,17 @@ public class VarAnalyzer implements IRVisitor
 			currentBlock.ueVar.remove(var.regIndex());
 			currentBlock.varKill.add(var.regIndex());
 		}else if(nowPhase == Phases.AddEdges){
-			tmpSet.remove(var.regIndex());
-			addEdges(var.regIndex(), tmpSet);
+			if(tmpSet.contains(var.regIndex()) || var.regIndex() < 16)
+			{
+				tmpSet.remove(var.regIndex());
+				addEdges(var.regIndex(), tmpSet);
+			}
+			else
+			{
+				//useless & remove it
+				uselessFlag = true;
+			}
+
 		}
 
 	}
@@ -270,6 +285,7 @@ public class VarAnalyzer implements IRVisitor
 
 	private void regVisit(VarIR dest0, VarIR dest1, VarIR src0, VarIR src1)
 	{
+		uselessFlag = false;
 		destVisit(dest0);
 		destVisit(dest1);
 		srcVisit(src0);
@@ -280,6 +296,7 @@ public class VarAnalyzer implements IRVisitor
 	public void visit(AlignIR node)
 	{
 		//Nothing
+		regVisit(null, null, null, null);
 	}
 
 	@Override
@@ -313,12 +330,14 @@ public class VarAnalyzer implements IRVisitor
 	public void visit(JumpIR node)
 	{
 		//Nothing
+		regVisit(null, null, null, null);
 	}
 
 	@Override
 	public void visit(CallIR node)
 	{
 		//Nothing
+
 		int []idx = {7, 6, 2, 1, 8, 9};
 		for(int i=0;i<6&&i<node.pNum();++i)
 		{
@@ -331,6 +350,7 @@ public class VarAnalyzer implements IRVisitor
 	public void visit(LabelIR node)
 	{
 		//Nothing
+		regVisit(null, null, null, null);
 	}
 
 	@Override
@@ -370,6 +390,10 @@ public class VarAnalyzer implements IRVisitor
 	public void visit(MoveIR node)
 	{
 		regVisit(node.lhs(), null, node.rhs(), null);
+		if(node.lhs() instanceof VarRegIR && node.rhs() instanceof VarRegIR)
+		{
+			uselessFlag = uselessFlag || (((VarRegIR) node.lhs()).regIndex() == ((VarRegIR) node.rhs()).regIndex());
+		}
 	}
 
 

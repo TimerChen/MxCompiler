@@ -70,8 +70,11 @@ public class NASMTranslator implements IRVisitor
 		List<String> ret = new LinkedList<>();
 		for(InsIR i: list)
 		{
-			i.accept(this);
-			ret.addAll((List<String>)map.get(i));
+			if(!i.useless)
+			{
+				i.accept(this);
+				ret.addAll((List<String>) map.get(i));
+			}
 		}
 		return ret;
 	}

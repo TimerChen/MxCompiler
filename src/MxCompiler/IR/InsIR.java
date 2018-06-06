@@ -13,6 +13,8 @@ abstract public class InsIR extends Object
 {
 	private int loopDeepth;
 
+	public boolean useless = false;
+
 	public InsIR()
 	{
 		loopDeepth = Global.IRBuilder_loopDeepth;
