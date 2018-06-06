@@ -24,7 +24,7 @@ public class IRRewriter implements IRVisitor
 
 	private List<InsIR> newIRList;
 
-	private int usedReg;
+	private int usedReg, regNumber;
 
 	public IRRewriter(List<List<Integer>> colors, List<BasicBlock> irs)
 	{
@@ -37,6 +37,7 @@ public class IRRewriter implements IRVisitor
 		{
 			BasicBlock now = blkLists.get(i);
 			usedReg = Global.usedRegs.get(i);
+			regNumber = Global.regNumber.get(i);
 			nowColor = colors.get(i);
 			while(now != null)
 			{
@@ -400,6 +401,7 @@ public class IRRewriter implements IRVisitor
 
 
 		int cot = 0;
+		int offset;
 		switch (node.type())
 		{
 			case CALLER_SAVE:
@@ -412,20 +414,32 @@ public class IRRewriter implements IRVisitor
 				break;
 
 			case CALLEE_SAVE:
+
+				if((regNumber&1) == 0)
+					offset = 8*(regNumber-16+1);
+				else
+					offset = 8*(regNumber-16+2);
+
 				for(int i=0;i<calleeIdx.length;++i)
 				if((usedReg&(1<<calleeIdx[i]))!=0)
 				{
 					newIRList.add(new PushIR(new VarRegIR(calleeIdx[i])));
 					cot++;
 				}else
-					node.p0+=8;
-				newIRList.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(node.p0)));
+					offset+=8;
+				newIRList.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(offset)));
 				break;
 			case CALLEE_RECOVER:
+
+				if((regNumber&1) == 0)
+					offset = 8*(regNumber-16+1);
+				else
+					offset = 8*(regNumber-16+2);
+
 				for(int i=calleeIdx.length-1;i>=0;--i)
 					if((usedReg&(1<<calleeIdx[i]))==0)
-						node.p0+=8;
-				newIRList.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(node.p0)));
+						offset+=8;
+				newIRList.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(offset)));
 				for(int i=calleeIdx.length-1;i>=0;--i)
 				if((usedReg&(1<<calleeIdx[i]))!=0)
 				{

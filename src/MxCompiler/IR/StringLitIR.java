@@ -8,12 +8,15 @@ package MxCompiler.IR;
 
 import MxCompiler.Entities.Entity;
 import MxCompiler.tools.Debuger;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StringLitIR
 {
 	static private int idxNumber = 0;
 	static private String PREFIX = "STR_";
-
+	static private Map<String, Integer> oldString = new HashMap<>();
+	private boolean isNew;
 	private int idx;
 	private String val;
 	private int length;
@@ -21,7 +24,22 @@ public class StringLitIR
 	{
 		//Debuger.printInfo("val", val);
 		this.val = initVal(val);
-		this.idx = idxNumber++;
+		if(oldString.containsKey(val))
+		{
+			this.idx = oldString.get(val);
+			isNew = false;
+		}
+		else
+		{
+			this.idx = idxNumber++;
+			oldString.put(val, this.idx);
+			isNew = true;
+
+		}
+	}
+	public boolean isNew()
+	{
+		return isNew;
 	}
 	private String initVal(String val)
 	{

@@ -42,6 +42,11 @@ public class CallIR extends InsIR
 		this.dest = dest;
 	}
 
+	public void setPlist(List<VarIR> plist)
+	{
+		this.plist = plist;
+	}
+
 	public String funName()
 	{
 		return funName;

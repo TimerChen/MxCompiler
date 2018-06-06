@@ -39,10 +39,11 @@ public class IRInliner implements IRVisitor
 	{
 		List<List<InsIR>> lists;
 		final int lineLimit = 2048;
-		leftInline = 0;
+		final int regLimit = 1000;
+		leftInline = 5;
 		totalLines = 0;
 		stopInline = false;
-		while(leftInline > 0 && totalLines < lineLimit)
+		while(leftInline > 0 && totalLines < lineLimit && regNumber < regLimit)
 		{
 			lists = new ArrayList<List<InsIR>>();
 			inlined = false;
@@ -52,13 +53,16 @@ public class IRInliner implements IRVisitor
 				regNumber = Global.regNumber.get(idx);
 				newList = new ArrayList<>();
 				for(InsIR i: list)
-				if(i instanceof CallIR){
-					i.accept(this);
+				if(i instanceof CallIR && totalLines < lineLimit && regNumber < regLimit){
+					newList.addAll(visitCall((CallIR) i));
+					//i.accept(this);
 				}else
 					newList.add(i);
 				lists.add(newList);
 				Global.regNumber.set(idx, regNumber);
 				idx++;
+				totalLines += newList.size();
+
 			}
 			irLists = lists;
 			if(!inlined)
@@ -78,7 +82,7 @@ public class IRInliner implements IRVisitor
 			newList = new ArrayList<>();
 			for(InsIR i: list)
 				if(i instanceof CallIR){
-					i.accept(this);
+					newList.addAll(visitCall((CallIR) i));
 				}else
 					newList.add(i);
 			lists.add(newList);
@@ -90,17 +94,20 @@ public class IRInliner implements IRVisitor
 		return irLists;
 	}
 
-
-	@Override
-	public void visit(CallIR node)
+	private List<InsIR> visitCall(CallIR node)
 	{
-		Debuger.printInfo("Call", node.funName());
 		inlined = true;
+		//node.setPlist(visitPList(node.plist()));
+
 		IRBuilder reBuilder = new IRBuilder(ast);
 		reBuilder.savedRegNumber= regNumber;
 		List<InsIR> list = new ArrayList<>();
-		if(stopInline || node.funNode() == null)
+		if(node.funName() == null)
 		{
+			list.add(node);
+		}else if(stopInline || node.funNode() == null)
+		{
+			//code use lib | compiler use lib
 			if(stopInline)
 			{
 				reBuilder.nowInline = false;
@@ -109,12 +116,17 @@ public class IRInliner implements IRVisitor
 				list.add(node);
 		}else
 		{
-			list = reBuilder.funcIR(node.funNode(), node.plist());
+			list = reBuilder.funcIR(node.funNode(), node.plist(), node.dest());
 		}
 
 
 		regNumber += reBuilder.regNumber-16;
-		newList.addAll(list);
+		return list;
+	}
+	@Override
+	public void visit(CallIR node)
+	{
+
 	}
 
 	@Override

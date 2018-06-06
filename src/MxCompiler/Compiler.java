@@ -251,8 +251,8 @@ public class Compiler
 		preOptimize(ast);
 		irGenerate(ast);
 		commentTranslate(blkList, irLitList);
-		for(String i: commentStr)
-			Debuger.println(i);
+		/*for(String i: commentStr)
+			Debuger.println(i);*/
 		//commentStr = new LinkedList<>();
 		Optimize(blkList);
 		codeTranslate(blkList, irLitList);

@@ -107,11 +107,16 @@ public class IRBuilder extends ASTBaseVisitor
 		return irList;
 	}
 
-	public List<InsIR> funcIR(FunDefNode node, List<VarIR> topPlist)
+	public List<InsIR> funcIR(FunDefNode node, List<VarIR> topPlist, VarRegIR dest)
 	{
+		List<InsIR> list = new ArrayList<>();
 		this.topPlist = topPlist;
 		node.accept(this);
-		return (List<InsIR>) map.get(node);
+		//list.add();
+		list.addAll((List<InsIR>) map.get(node));
+		list.add(new MoveIR(dest, new VarRegIR(0)));
+		//list.add(new MoveIR(node.dest(), new VarRegIR(0)));
+		return list;
 	}
 	public List<InsIR> funcIR(CallIR node)
 	{
@@ -173,7 +178,8 @@ public class IRBuilder extends ASTBaseVisitor
 		//Add static data...
 		//...
 		StringLitIR str = new StringLitIR(val);
-		constList.add(str);
+		if(str.isNew())
+			constList.add(str);
 		return new VarLabelIR(str.getLabel());
 	}
 
@@ -1263,8 +1269,18 @@ public class IRBuilder extends ASTBaseVisitor
 			CallIR call;
 			call = new CallIR(name, 0, node.fDef(), plist,
 					((VariableNode) node.function()).funName(), r0);
+
+			for(VarIR i: plist)
+			{
+				list.addAll(i.irList());
+			}
+			for(int i=0;i<plist.size();++i)
+			{
+				plist.set(i, plist.get(i).clone(new LinkedList<>()));
+			}
+
 			list.add(call);
-			list.add(new MoveIR(r0, new VarRegIR(0)));
+			//list.add(new MoveIR(r0, new VarRegIR(0)));
 			map.put(node, r0.clone(list));
 			return null;
 		}else
