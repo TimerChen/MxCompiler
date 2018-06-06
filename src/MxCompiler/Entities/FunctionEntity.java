@@ -13,6 +13,7 @@ public class FunctionEntity extends Entity
 	private List<ParameterEntity> params;
 	private BlockNode body;
 	private ClassEntity belongsTo;
+	private FunDefNode defNode=null;
 
 	public FunctionEntity(String name, Type type, SourcePosition position, List<ParameterEntity> params, BlockNode body)
 	{
@@ -23,6 +24,16 @@ public class FunctionEntity extends Entity
 			this.params = new LinkedList<>();
 		this.body = body;
 		this.belongsTo = null;
+	}
+
+	public FunDefNode defNode()
+	{
+		return defNode;
+	}
+
+	public void setDefNode(FunDefNode defNode)
+	{
+		this.defNode = defNode;
 	}
 
 	public ClassEntity belongsTo()

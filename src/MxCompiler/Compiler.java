@@ -4,6 +4,7 @@ import MxCompiler.IR.*;
 import MxCompiler.Optim.ASTConstFolding;
 import MxCompiler.Optim.FakeAllocator;
 import MxCompiler.Optim.GreedyAllocator;
+import MxCompiler.Optim.IRInliner;
 import MxCompiler.SemanticCheck.ASTree;
 import MxCompiler.SemanticCheck.MxASTVisitor;
 import MxCompiler.SemanticCheck.ParseErrorListener;
@@ -83,6 +84,10 @@ public class Compiler
 		irLists = irBuilder.irList();
 		irLitList = irBuilder.constList();
 		globalVarIRS = irBuilder.globalVars();
+
+		Debuger.printLine("Inline Functions");
+		IRInliner irInliner = new IRInliner(irLists, ast);
+		irLists = irInliner.getInline();
 
 		Debuger.printLine("Code Analyze");
 		CFGBuilder cfgBuilder = new CFGBuilder(irLists);
@@ -243,6 +248,8 @@ public class Compiler
 		preOptimize(ast);
 		irGenerate(ast);
 		commentTranslate(blkList, irLitList);
+		for(String i: commentStr)
+			Debuger.println(i);
 		//commentStr = new LinkedList<>();
 		Optimize(blkList);
 		codeTranslate(blkList, irLitList);

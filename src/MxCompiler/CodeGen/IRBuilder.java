@@ -31,9 +31,15 @@ public class IRBuilder extends ASTBaseVisitor
 	private List<StringLitIR> constList;
 	private ASTree ast;
 	private Scope nowScope;
-	private int thisReg, savedRegNumber;
+	private int thisReg;
+	public int savedRegNumber;
 
-	private boolean isLeftValue = false;
+	static private int inlineCount;
+
+	//private static final int InlineTimes = 5;
+	//private int leftInlineTimes;
+	public boolean nowInline = true, firstBuild = false;
+	private List<VarIR> topPlist = null;
 
 
 	public IRBuilder(ASTree ast)
@@ -43,6 +49,7 @@ public class IRBuilder extends ASTBaseVisitor
 		this.constList = new ArrayList<>();
 		this.nowScope = ast.mainScope();
 		this.globalVars = new ArrayList<>();
+		this.inlineCount++;
 	}
 	private List<InsIR> getGlobalVarList()
 	{
@@ -90,6 +97,7 @@ public class IRBuilder extends ASTBaseVisitor
 	{
 		if(irList == null)
 		{
+			firstBuild = true;
 			irList = new ArrayList<List<InsIR>>();
 			globalVarInitList();
 			savedRegNumber = regNumber;
@@ -97,6 +105,25 @@ public class IRBuilder extends ASTBaseVisitor
 			irList.addAll(getIRList());
 		}
 		return irList;
+	}
+
+	public List<InsIR> funcIR(FunDefNode node, List<VarIR> topPlist)
+	{
+		this.topPlist = topPlist;
+		node.accept(this);
+		return (List<InsIR>) map.get(node);
+	}
+	public List<InsIR> funcIR(CallIR node)
+	{
+		List<InsIR> list = new ArrayList<>();
+		List<VarIR> plist = node.plist();
+		VarRegIR r0;
+		String funName = node.funName();
+		list.addAll(makeCall(funName, plist));
+		//r0 = getNewReg();
+		list.add(new MoveIR(node.dest(), new VarRegIR(0)));
+
+		return list;
 	}
 
 	public List<InsIR> mainIrList()
@@ -130,9 +157,9 @@ public class IRBuilder extends ASTBaseVisitor
 		return globalVars;
 	}
 
-	private int labelNumber = 0;
-	private int regNumber = 16;
-	private int blockNumber = 0;
+	static public int labelNumber = 0;
+	public int regNumber = 16;
+	static public int blockNumber = 0;
 	VarLabelIR getNewLabel(int block)
 	{
 		return new VarLabelIR("_L" + block + "_" + (labelNumber++));
@@ -447,54 +474,100 @@ public class IRBuilder extends ASTBaseVisitor
 	@Override
 	public Void visit(FunDefNode node)
 	{
-		regNumber = savedRegNumber;
+		if(!firstBuild)
+		{
+			regNumber = savedRegNumber;
+
+			List<InsIR> plist = new LinkedList<>();
+			int size = node.entity().params().size();
+			boolean isMem = (node.isMember());
+			if(isMem)
+				size++;
+			for(int i=0;i<size;++i)
+				if(i==0 && isMem)
+				{
+					VarRegIR r0;
+					r0 = getNewReg();
+					thisReg = r0.regIndex();
+					plist.add(new MoveIR(new VarRegIR(r0.regIndex()), topPlist.get(0)));
+				}else
+				{
+					ParameterEntity pi;
+					if(isMem)
+						pi = node.entity().params().get(i-1);
+					else
+						pi = node.entity().params().get(i);
+					VarRegIR r0;
+					r0 = getNewReg();
+					pi.setRegIR(r0);
+					plist.add(new MoveIR(new VarRegIR(r0.regIndex()), topPlist.get(i)));
+				}
+
+			node.setExitLabel(new VarLabelIR("___exit"+"#"+inlineCount+"#"+node.labelName()));
+
+			super.visit(node);
+
+			List<InsIR> list = new LinkedList<>();
+
+			list.add(new LabelIR(node.labelName()+"#"+inlineCount+"#"));
+			list.addAll(plist);
+			//function body
+			list.addAll((List<InsIR>) map.get(node.entity().body()));
+			//exitLabel:
+			list.add(new LabelIR(node.exitLabel().label()));
+
+			map.put(node, list);
+			return null;
+		}else
+		{
+			regNumber = savedRegNumber;
 
 		/*
 		Params:
 			rdi(r7), rsi(r6), rdx(r2), rcx(r1), r8, r9
 		 */
-		List<InsIR> plist = new LinkedList<>();
-		int[] pidx = {7, 6, 2, 1, 8, 9};
-		int size = node.entity().params().size();
-		boolean isMem = (node.isMember());
-		if(isMem)
-			size++;
-		for(int i=0;i<size;++i)
-		if(i==0 && isMem)
-		{
-			VarRegIR r0;
-			r0 = getNewReg();
-			thisReg = r0.regIndex();
-			plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
-		}else
-		{
-			ParameterEntity pi;
+			List<InsIR> plist = new LinkedList<>();
+			int[] pidx = {7, 6, 2, 1, 8, 9};
+			int size = node.entity().params().size();
+			boolean isMem = (node.isMember());
 			if(isMem)
-				pi = node.entity().params().get(i-1);
-			else
-				pi = node.entity().params().get(i);
-			VarRegIR r0;
+				size++;
+			for(int i=0;i<size;++i)
+				if(i==0 && isMem)
+				{
+					VarRegIR r0;
+					r0 = getNewReg();
+					thisReg = r0.regIndex();
+					plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
+				}else
+				{
+					ParameterEntity pi;
+					if(isMem)
+						pi = node.entity().params().get(i-1);
+					else
+						pi = node.entity().params().get(i);
+					VarRegIR r0;
 
-			if(i>=6)
-			{
-				r0 = getNewReg();
-				pi.setRegIR(r0);
-				plist.add(new LoadIR(new VarRegIR(r0.regIndex()), new VarRegIR(5), new VarIntIR(i-5)));
-			}else
-			{
+					if(i>=6)
+					{
+						r0 = getNewReg();
+						pi.setRegIR(r0);
+						plist.add(new LoadIR(new VarRegIR(r0.regIndex()), new VarRegIR(5), new VarIntIR(i-5)));
+					}else
+					{
 //				pi.setRegIR(new VarRegIR(pidx[i]));
-				//???
-				//this can let regs be re-alloc
-				r0 = getNewReg();
-				pi.setRegIR(r0);
-				plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
-			}
-		}
-		node.setExitLabel(new VarLabelIR("___exit"+node.labelName()));
+						//???
+						//this can let regs be re-alloc
+						r0 = getNewReg();
+						pi.setRegIR(r0);
+						plist.add(new MoveIR(new VarRegIR(r0.regIndex()), new VarRegIR(pidx[i])));
+					}
+				}
+			node.setExitLabel(new VarLabelIR("___exit"+node.labelName()));
 
-		super.visit(node);
+			super.visit(node);
 
-		List<InsIR> list = new LinkedList<>();
+			List<InsIR> list = new LinkedList<>();
 		/*
 		Calle-saved:
 			rbp(r5), rbx(r3), r12, r13, r14, r15
@@ -506,58 +579,60 @@ public class IRBuilder extends ASTBaseVisitor
 		(pop callee-saved regs)
 		(ret)
 		 */
-		int[] idx = {5, 3, 12, 13, 14, 15};
-		list.add(new LabelIR(node.labelName()));
+			int[] idx = {5, 3, 12, 13, 14, 15};
+			list.add(new LabelIR(node.labelName()));
 
-		//callee-save regs
-		list.add(new PushIR(new VarRegIR(5)));
-		//move rbp rsp
-		list.add(new MoveIR(new VarRegIR(5), new VarRegIR(4)));
-		list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(5), new VarIntIR(8)));
-		for(int i=1;i<6;++i)
-		{
-			list.add(new PushIR(new VarRegIR(idx[i])));
+			//callee-save regs
+			list.add(new PushIR(new VarRegIR(5)));
+			//move rbp rsp
+			list.add(new MoveIR(new VarRegIR(5), new VarRegIR(4)));
+			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(5), new VarIntIR(8)));
+			for(int i=1;i<6;++i)
+			{
+				list.add(new PushIR(new VarRegIR(idx[i])));
+			}
+			//skip temp vars
+			//Align to 16
+			//Enter this function we use call, so rsp = n*16+8
+			if((regNumber&1) == 0)
+				list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
+			else
+				list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
+			//tmp regs
+			//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
+			//paramters to new regs
+
+			list.addAll(plist);
+			//global variables
+			if(node.name().equals("main"))
+			{
+				list.addAll(globalVarInitList);
+			}
+
+			//function body
+			list.addAll((List<InsIR>) map.get(node.entity().body()));
+
+			//exitLabel:
+			list.add(new LabelIR(node.exitLabel().label()));
+
+			//move rsp rbp
+			if((regNumber&1) == 0)
+				list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
+			else
+				list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
+			//list.add(new MoveIR(new VarRegIR(4), new VarRegIR(5)));
+			//recover callee-saved regs
+			for(int i=5;i>=0;--i)
+				list.add(new PopIR(new VarRegIR(idx[i])));
+			//return
+			list.add(new ReturnIR());
+
+			Global.maxRegNumber = Math.max(Global.maxRegNumber, regNumber);
+			Global.regNumber.add(regNumber);
+			map.put(node, list);
+			return null;
 		}
-		//skip temp vars
-		//Align to 16
-		//Enter this function we use call, so rsp = n*16+8
-		if((regNumber&1) == 0)
-			list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
-		else
-			list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
-		//tmp regs
-		//list.add(new BinaryIR(BinaryIR.Op.SUB, new VarRegIR(4), new VarIntIR(8*(regNumber-16))));
-		//paramters to new regs
 
-		list.addAll(plist);
-		//global variables
-		if(node.name().equals("main"))
-		{
-			list.addAll(globalVarInitList);
-		}
-
-		//function body
-		list.addAll((List<InsIR>) map.get(node.entity().body()));
-
-	//exitLabel:
-		list.add(new LabelIR(node.exitLabel().label()));
-
-		//move rsp rbp
-		if((regNumber&1) == 0)
-			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+1))));
-		else
-			list.add(new BinaryIR(BinaryIR.Op.ADD, new VarRegIR(4), new VarIntIR(8*(regNumber-16+2))));
-		//list.add(new MoveIR(new VarRegIR(4), new VarRegIR(5)));
-		//recover callee-saved regs
-		for(int i=5;i>=0;--i)
-			list.add(new PopIR(new VarRegIR(idx[i])));
-		//return
-		list.add(new ReturnIR());
-
-		Global.maxRegNumber = Math.max(Global.maxRegNumber, regNumber);
-		Global.regNumber.add(regNumber);
-		map.put(node, list);
-		return null;
 	}
 
 	@Override
@@ -1157,12 +1232,12 @@ public class IRBuilder extends ASTBaseVisitor
 		VarIR preVar = (VarIR) map.get(node.function());
 		VarRegIR r0;
 		String funName;
-		/*
-		(member)
-			[this, param]
-		(variable)
+			/*
+			(member)
+				[this, param]
+			(variable)
 
-		 */
+			 */
 
 		if(node.function() instanceof MemberNode)
 			plist.add(preVar);
@@ -1172,17 +1247,36 @@ public class IRBuilder extends ASTBaseVisitor
 		}
 		for(int i=0;i<node.params().size(); ++i)
 		{
-			VarIR tmp;
-			plist.add(tmp = (VarIR) map.get(node.params().get(i)));
+			plist.add((VarIR) map.get(node.params().get(i)));
 		}
-		funName = ((VariableNode) node.function()).funName();
-		//Debuger.printInfo("funName",funName);
-		list.addAll(makeCall(funName, plist));
-		r0 = getNewReg();
-		list.add(new MoveIR(r0, new VarRegIR(0)));
-		map.put(node, new VarRegIR(list, r0.regIndex()));
 
-		return null;
+
+		if(nowInline)
+		{
+			r0 = getNewReg();
+			String name = ((VariableNode) node.function()).funName();
+			CallIR call;
+			call = new CallIR(name, 0, node.fDef(), plist,
+					((VariableNode) node.function()).funName(), r0);
+			list.add(call);
+			list.add(new MoveIR(r0, new VarRegIR(0)));
+			map.put(node, r0.clone(list));
+			return null;
+		}else
+		{
+			throw new RuntimeException("inline error");
+			/*
+			funName = ((VariableNode) node.function()).funName();
+			list.addAll(makeCall(funName, plist));
+			r0 = getNewReg();
+			list.add(new MoveIR(r0, new VarRegIR(0)));
+			map.put(node, new VarRegIR(list, r0.regIndex()));
+			return null;
+			*/
+		}
+
+
+
 	}
 
 
@@ -1205,6 +1299,10 @@ public class IRBuilder extends ASTBaseVisitor
 				 */
 				//((LinkedList<InsIR>) list).push();
 				r0 = ((ParameterEntity)node.refEntity()).regIR();
+				if(r0 instanceof VarRegIR)
+				{
+					r0 = new VarRegIR(((VarRegIR) r0).regIndex());
+				}
 				map.put(node, r0.clone(list));
 			}
 

@@ -623,7 +623,9 @@ public class MxASTVisitor extends MxBaseVisitor
 				(LinkedList<ParameterEntity>) map.get(ctx.parameterList());
 		entity = new FunctionEntity(name, type, new SourcePosition(ctx),
 				params, body);
-		map.put(ctx, new FunDefNode(new SourcePosition(ctx), entity));
+		FunDefNode node = new FunDefNode(new SourcePosition(ctx), entity);
+		entity.setDefNode(node);
+		map.put(ctx, node);
 		return ret;
 	}
 
@@ -639,7 +641,9 @@ public class MxASTVisitor extends MxBaseVisitor
 				(LinkedList<ParameterEntity>) map.get(ctx.parameterList());
 		entity = new FunctionEntity(name, type, new SourcePosition(ctx),
 				params, body);
-		map.put(ctx, new FunDefNode(new SourcePosition(ctx), entity));
+		FunDefNode node = new FunDefNode(new SourcePosition(ctx), entity);
+		entity.setDefNode(node);
+		map.put(ctx, node);
 		return ret;
 	}
 

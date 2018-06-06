@@ -1,3 +1,4 @@
+
 int worka(int x, int y) {
 	return x + x - y;
 }
@@ -42,7 +43,6 @@ int main() {
 }
 
 
-
 /*!! metadata:
 === comment ===
 optim-515030910645-suyufeng.txt
@@ -62,4 +62,3 @@ optim pretest
 
 
 !!*/
-

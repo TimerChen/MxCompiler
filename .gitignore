@@ -1,5 +1,7 @@
 #???temp files
+out/
 __*.bash
+*workspace.xml
 
 #Big files
 documents/

@@ -72,10 +72,11 @@ public class VarAnalyzer implements IRVisitor
 	private void analyze()
 	{
 		ConcurrentLinkedDeque<BasicBlock> bQue;
+		int idx = 0;
 		for(BasicBlock start: startBlocks)
 		{
 			nowPhase = Phases.PreCalc;
-			cGraphs.add(nowGraph = new ConflictGraph(Global.maxRegNumber));
+			cGraphs.add(nowGraph = new ConflictGraph(Global.regNumber.get(idx)));
 			size = 0;
 			BasicBlock nowBlock = start;
 			while(nowBlock!=null)
@@ -118,6 +119,7 @@ public class VarAnalyzer implements IRVisitor
 			buildCGraphLeft(start);
 
 			//printSet(start);
+			idx++;
 		}
 	}
 	/*

@@ -1,5 +1,6 @@
 package MxCompiler.AST;
 
+import MxCompiler.Entities.FunctionEntity;
 import MxCompiler.Options;
 import MxCompiler.Type.Type;
 import MxCompiler.Util.SemanticError;
@@ -10,6 +11,7 @@ public class FuncallNode extends ExprNode
 {
 	private ExprNode function;
 	private List<ExprNode> params;
+	private FunDefNode fDef;
 
 	public FuncallNode(ExprNode function, List<ExprNode> params)
 	{
@@ -45,6 +47,17 @@ public class FuncallNode extends ExprNode
 		return super.type();
 	}
 
+	public FunDefNode fDef()
+	{
+		return ((FunctionEntity)((VariableNode)function()).refEntity()).defNode();
+		//return fDef;
+	}
+/*
+	public void setfDef(FunDefNode fDef)
+	{
+		this.fDef = fDef;
+	}
+*/
 	public ExprNode function()
 	{
 		return function;
