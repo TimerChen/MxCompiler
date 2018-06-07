@@ -625,7 +625,7 @@ public class IRBuilder extends ASTBaseVisitor
 
 			//function body
 			list.addAll((List<InsIR>) map.get(node.entity().body()));
-
+			node.comp = list.size();
 			//exitLabel:
 			list.add(new LabelIR(node.exitLabel().label()));
 

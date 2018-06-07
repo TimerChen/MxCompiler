@@ -10,6 +10,7 @@ public class FunDefNode extends DefinitionNode
 	private VarLabelIR exitLabel;
 	private ClassEntity classEntity;
 	private boolean isMember;
+	public int comp = 0;
 
 	public FunDefNode(SourcePosition pos, FunctionEntity entity)
 	{

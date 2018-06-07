@@ -40,10 +40,15 @@ public class IRInliner implements IRVisitor
 		List<List<InsIR>> lists;
 		final int lineLimit = 2048;
 		final int regLimit = 1000;
-		leftInline = 0;
+		int maxReg = Global.maxRegNumber;
+		leftInline = 1;
+		if(ASTConstFolding.cf_count > 50)
+			leftInline = 0;
 		totalLines = 0;
 		stopInline = false;
-		while(leftInline > 0 && totalLines < lineLimit && regNumber < regLimit)
+
+		while(leftInline > 0 && totalLines < lineLimit && maxReg < regLimit &&
+				regNumber < regLimit )
 		{
 			lists = new ArrayList<List<InsIR>>();
 			inlined = false;
@@ -52,14 +57,28 @@ public class IRInliner implements IRVisitor
 			{
 				regNumber = Global.regNumber.get(idx);
 				newList = new ArrayList<>();
+				//Debuger.printInfo("952",""+regNumber);
 				for(InsIR i: list)
-				if(i instanceof CallIR && totalLines < lineLimit && regNumber < regLimit){
-					newList.addAll(visitCall((CallIR) i));
+				if(i instanceof CallIR && maxReg < regLimit){
+					int backReg = regNumber;
+
+					List<InsIR> l = visitCall((CallIR) i);
+					if(regNumber > regLimit && ((CallIR) i).funNode()!=null )
+					{
+						newList.add(i);
+						maxReg = Math.max(maxReg, regNumber);
+						regNumber = backReg;
+						//Global.maxRegNumber = Math.max(regNumber.);
+					}else
+					{
+						newList.addAll(l);
+					}
 					//i.accept(this);
 				}else
 					newList.add(i);
 				lists.add(newList);
 				Global.regNumber.set(idx, regNumber);
+				//Debuger.printInfo("952",""+regNumber);
 				idx++;
 				totalLines += newList.size();
 				//Debuger.printInfo("totalLines", ""+totalLines);

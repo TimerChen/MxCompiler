@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ASTConstFolding extends ASTBaseVisitor
 {
+	static int cf_count=0;
 	private ASTree ast;
 	public ASTConstFolding(ASTree ast)
 	{
@@ -38,6 +39,7 @@ public class ASTConstFolding extends ASTBaseVisitor
 	{
 		if(node.isConst())
 		{
+			cf_count++;
 			Type type = node.type();
 			ExprNode left, right;
 			left = node.left();
